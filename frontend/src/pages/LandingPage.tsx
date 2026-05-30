@@ -14,8 +14,11 @@ export default function LandingPage() {
 
       {/* ── TOP APP BAR ── */}
       <header className="bg-[#131314]/80 backdrop-blur-xl fixed top-0 left-0 w-full z-50 flex justify-between items-center border-b border-[#3f4852]/30 h-16" style={{ padding: '0 32px' }}>
-        <div className="flex items-center gap-4">
-          <span className="text-headline-md font-bold tracking-tighter" style={{ color: '#ffbf00', fontFamily: 'Geist' }}>TATVA</span>
+        <div className="flex items-center gap-8">
+          <span className="text-headline-md font-bold tracking-tighter cursor-pointer" style={{ color: '#ffbf00', fontFamily: 'Geist' }} onClick={() => navigate('/')}>TATVA</span>
+          <nav className="hidden md:flex gap-6">
+            <a href="#" onClick={(e) => { e.preventDefault(); navigate('/case/new') }} className="font-medium hover:text-[#ffdb9d] transition-colors duration-200" style={{ color: '#bec7d4', fontFamily: 'Geist', fontSize: '16px' }}>Dashboard</a>
+          </nav>
         </div>
         <div className="flex items-center gap-6">
           {/* Search */}

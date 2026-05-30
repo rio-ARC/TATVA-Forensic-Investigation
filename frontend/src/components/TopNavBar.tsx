@@ -5,10 +5,7 @@ interface TopNavBarProps {
 }
 
 const NAV_LINKS = [
-  { label: 'Dashboard', path: '/' },
-  { label: 'Analytics', path: '/investigation' },
-  { label: 'Reports', path: '/reconstruction' },
-  { label: 'Logs', path: '/case/new' },
+  { label: 'Dashboard', path: '/case/new' },
 ]
 
 export default function TopNavBar({ avatarSrc }: TopNavBarProps) {

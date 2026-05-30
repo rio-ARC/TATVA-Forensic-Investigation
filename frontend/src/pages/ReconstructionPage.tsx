@@ -99,10 +99,7 @@ export default function ReconstructionPage() {
               TATVA
             </span>
             <nav className="hidden md:flex gap-6">
-              {['Dashboard', 'Analytics', 'Reports'].map(l => (
-                <a key={l} href="#" className="font-medium hover:text-[#ffdb9d] transition-colors duration-200" style={{ color: '#bec7d4', fontFamily: 'Geist', fontSize: '16px' }}>{l}</a>
-              ))}
-              <a href="#" className="font-bold border-b-2 border-[#feb700] pb-1" style={{ color: '#ffdb9d', fontFamily: 'Geist', fontSize: '16px' }}>Logs</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); navigate('/case/new') }} className="font-medium hover:text-[#ffdb9d] transition-colors duration-200" style={{ color: '#bec7d4', fontFamily: 'Geist', fontSize: '16px' }}>Dashboard</a>
             </nav>
           </div>
           <div className="flex items-center gap-6">
