@@ -10,3 +10,4 @@ python-dotenv
 fastapi
 uvicorn
 neo4j
+google-generativeai
