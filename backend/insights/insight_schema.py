@@ -38,8 +38,8 @@ class RelationDetail(BaseModel):
     relation: str
     attributes: Dict[str, Any] = Field(default_factory=dict)
     timestamp: Optional[str] = None
-    confidence: float
-    source_type: str
+    confidence: float = 1.0
+    source_type: str = "unknown"
 
 class GraphPayload(BaseModel):
     master_entities: List[EntityDetail]

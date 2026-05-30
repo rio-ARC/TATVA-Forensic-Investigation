@@ -57,9 +57,13 @@ def ingest_unified_graph(client, graph_data, dataset_label="UnifiedGraph"):
         # Store entity_types as a JSON string
         if "entity_types" in entity:
             props["entity_types"] = json.dumps(entity["entity_types"])
+            
+        # Store resolved_values as a JSON string
+        if "resolved_values" in entity:
+            props["resolved_values"] = json.dumps(entity["resolved_values"])
         
-        # Flatten attributes or resolved_values into individual properties
-        resolved = entity.get("resolved_values") or entity.get("attributes") or {}
+        # Flatten attributes or resolved_values into individual properties if it's a dict
+        resolved = entity.get("attributes") or {}
         if isinstance(resolved, dict):
             for rk, rv in resolved.items():
                 safe_key = "".join(c for c in str(rk) if c.isalnum() or c == "_")

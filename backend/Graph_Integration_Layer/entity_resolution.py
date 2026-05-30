@@ -12,35 +12,59 @@ import json
 # DYNAMIC COORDINATE RESOLVER  (API-only, no hardcoded landmarks)
 # ------------------------------------------------
 
-# In-memory cache (populated from disk on first use)
+# In-memory cache (populated from disk/Redis on first use)
 _GEO_CACHE = {}
 _GEO_CACHE_LOADED = False
 
-# Persistent cache file lives next to this script
-_CACHE_FILE = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "geo_cache.json"
-)
+# Persistent cache files
+_CACHE_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+_CACHE_FILES = [
+    os.path.join(_CACHE_FILE_DIR, "geo_cache.json"),
+    os.path.join(_CACHE_FILE_DIR, "output", "geo_cache.json")
+]
 
 # Nominatim requires ≤1 request/second
 _last_request_time = 0.0
+_redis_client = None
 
+def _get_redis_client():
+    global _redis_client
+    if _redis_client is None:
+        try:
+            # Ensure backend is in python path
+            import sys
+            from pathlib import Path
+            backend_path = str(Path(__file__).parent.parent)
+            if backend_path not in sys.path:
+                sys.path.insert(0, backend_path)
+            from db.redis_client import RedisClient
+            _redis_client = RedisClient()
+        except Exception as e:
+            print(f"[Redis] Error initializing in entity_resolution: {e}")
+            _redis_client = False
+    return _redis_client
 
 def _load_geo_cache():
     """Load the persistent geo-cache from disk into memory (once)."""
     global _GEO_CACHE, _GEO_CACHE_LOADED
     if _GEO_CACHE_LOADED:
         return
-    if os.path.exists(_CACHE_FILE):
-        try:
-            with open(_CACHE_FILE, "r", encoding="utf-8") as f:
-                raw = json.load(f)
-            # Keys are stored as "lat,lon" strings in JSON
-            for k, v in raw.items():
-                parts = k.split(",")
-                _GEO_CACHE[(float(parts[0]), float(parts[1]))] = v
-        except Exception:
-            pass
+    
+    # Try local files
+    for cache_path in _CACHE_FILES:
+        if os.path.exists(cache_path):
+            try:
+                with open(cache_path, "r", encoding="utf-8") as f:
+                    raw = json.load(f)
+                # Keys are stored as "lat,lon" strings in JSON
+                for k, v in raw.items():
+                    parts = k.split(",")
+                    _GEO_CACHE[(float(parts[0]), float(parts[1]))] = v
+                print(f"[Geo Cache] Loaded {len(raw)} entries from {os.path.basename(cache_path)}")
+                break # Stop at first found cache file
+            except Exception:
+                pass
+                
     _GEO_CACHE_LOADED = True
 
 
@@ -51,8 +75,11 @@ def _save_geo_cache():
             f"{lat},{lon}": name
             for (lat, lon), name in _GEO_CACHE.items()
         }
-        with open(_CACHE_FILE, "w", encoding="utf-8") as f:
-            json.dump(serialisable, f, indent=2, ensure_ascii=False)
+        # Save to both locations to ensure consistency
+        for cache_path in _CACHE_FILES:
+            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            with open(cache_path, "w", encoding="utf-8") as f:
+                json.dump(serialisable, f, indent=2, ensure_ascii=False)
     except Exception:
         pass
 
@@ -71,19 +98,38 @@ def resolve_coordinates_dynamically(lat, lon):
     Resolve (lat, lon) → human-readable place name using the
     OpenStreetMap Nominatim reverse-geocoding API.
 
-    Results are cached both in-memory and on disk (geo_cache.json)
+    Results are cached both in-memory/disk and Upstash Redis
     so the API is only called once per unique coordinate pair.
     """
     global _last_request_time
 
     _load_geo_cache()
-
-    # 1. Check in-memory / disk cache first
     coord_key = (round(lat, 5), round(lon, 5))
+
+    # 1. Check Upstash Redis cache first
+    rc = _get_redis_client()
+    if rc and rc.connected:
+        try:
+            cached_val = rc.get_geo(lat, lon)
+            if cached_val:
+                # Also sync back to in-memory cache if not present
+                if coord_key not in _GEO_CACHE:
+                    _GEO_CACHE[coord_key] = cached_val
+                return cached_val
+        except Exception as e:
+            print(f"[Redis] Error getting geo cache: {e}")
+
+    # 2. Check local in-memory cache
     if coord_key in _GEO_CACHE:
+        # Sync back to Redis if Redis was missing it
+        if rc and rc.connected:
+            try:
+                rc.set_geo(lat, lon, _GEO_CACHE[coord_key])
+            except Exception:
+                pass
         return _GEO_CACHE[coord_key]
 
-    # 2. Call Nominatim reverse-geocoding API
+    # 3. Call Nominatim reverse-geocoding API
     try:
         # Rate-limit: wait if last request was < 1 s ago
         elapsed = time.time() - _last_request_time
@@ -118,8 +164,15 @@ def resolve_coordinates_dynamically(lat, lon):
         parts = [p for p in [road, suburb, city] if p]
         if parts:
             resolved_str = ", ".join(parts).lower()
+            # Cache locally
             _GEO_CACHE[coord_key] = resolved_str
             _save_geo_cache()
+            # Cache in Redis
+            if rc and rc.connected:
+                try:
+                    rc.set_geo(lat, lon, resolved_str)
+                except Exception:
+                    pass
             return resolved_str
 
         # If address parts are empty but display_name exists
@@ -129,14 +182,24 @@ def resolve_coordinates_dynamically(lat, lon):
             short = ", ".join(display.split(",")[:3]).strip().lower()
             _GEO_CACHE[coord_key] = short
             _save_geo_cache()
+            if rc and rc.connected:
+                try:
+                    rc.set_geo(lat, lon, short)
+                except Exception:
+                    pass
             return short
     except Exception:
         pass
 
-    # 3. Fallback to clean coordinate label
+    # 4. Fallback to clean coordinate label
     fallback_str = f"location near {lat:.4f}n, {lon:.4f}e"
     _GEO_CACHE[coord_key] = fallback_str
     _save_geo_cache()
+    if rc and rc.connected:
+        try:
+            rc.set_geo(lat, lon, fallback_str)
+        except Exception:
+            pass
     return fallback_str
 
 

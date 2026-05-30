@@ -1,5 +1,6 @@
 import json
 import networkx as nx
+import sys
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
@@ -35,14 +36,168 @@ def get_graph_file_path() -> Path:
     return candidates[0]
 
 
+def _get_redis_client():
+    try:
+        # Ensure backend is in python path
+        backend_path = str(Path(__file__).parent.parent)
+        if backend_path not in sys.path:
+            sys.path.insert(0, backend_path)
+        from db.redis_client import RedisClient
+        rc = RedisClient()
+        if rc.connected:
+            return rc
+    except Exception:
+        pass
+    return None
+
+def fetch_graph_from_neo4j(dataset_label="UnifiedGraph") -> Dict[str, Any]:
+    """Fetch the graph data from Neo4j AuraDB and structure it like unified_graph.json."""
+    # Ensure backend is in python path
+    backend_path = str(Path(__file__).parent.parent)
+    if backend_path not in sys.path:
+        sys.path.insert(0, backend_path)
+    from db.neo4j_client import Neo4jClient
+    
+    client = Neo4jClient()
+    if not client.driver:
+        raise Exception("Could not connect to Neo4j database")
+        
+    try:
+        # 1. Fetch all nodes matching the dataset label
+        node_query = f"""
+        MATCH (n:{dataset_label})
+        RETURN n.id AS master_id, labels(n) AS labels, properties(n) AS props
+        """
+        records = client.execute_read(node_query)
+        
+        master_entities = []
+        for rec in records:
+            props = dict(rec["props"])
+            master_id = rec["master_id"]
+            
+            # Reconstruct entity_types
+            entity_types = []
+            if "entity_types" in props:
+                try:
+                    entity_types = json.loads(props["entity_types"])
+                except Exception:
+                    pass
+            
+            # Reconstruct resolved_values
+            resolved_values = []
+            if "resolved_values" in props:
+                try:
+                    resolved_values = json.loads(props["resolved_values"])
+                except Exception:
+                    pass
+                    
+            # Reconstruct source_entities
+            source_entities = []
+            if "source_entities" in props:
+                try:
+                    source_entities = json.loads(props["source_entities"])
+                except Exception:
+                    pass
+            
+            master_type = props.get("master_type", "ENTITY")
+            
+            # Build attributes dict
+            attributes = {}
+            special_keys = {"id", "entity_types", "resolved_values", "source_entities", "master_type", "dataset"}
+            for k, v in props.items():
+                if k not in special_keys:
+                    try:
+                        if isinstance(v, str) and (v.startswith("[") or v.startswith("{")):
+                            attributes[k] = json.loads(v)
+                        else:
+                            attributes[k] = v
+                    except Exception:
+                        attributes[k] = v
+            
+            master_entities.append({
+                "master_id": master_id,
+                "master_type": master_type,
+                "entity_types": entity_types,
+                "resolved_values": resolved_values,
+                "source_entities": source_entities,
+                "attributes": attributes
+            })
+            
+        # 2. Fetch all relationships matching the dataset label
+        rel_query = f"""
+        MATCH (s:{dataset_label})-[r]->(t:{dataset_label})
+        WHERE r.dataset = $dataset_label
+        RETURN s.id AS source, t.id AS target, type(r) AS relation, properties(r) AS props
+        """
+        rel_records = client.execute_read(rel_query, {"dataset_label": dataset_label})
+        
+        relations = []
+        for rec in rel_records:
+            source = rec["source"]
+            target = rec["target"]
+            relation_type = rec["relation"]
+            props = dict(rec["props"])
+            
+            timestamp = props.pop("timestamp", None)
+            confidence = props.pop("confidence", None)
+            if confidence is not None:
+                try:
+                    confidence = float(confidence)
+                except Exception:
+                    pass
+            source_type = props.pop("source_type", None)
+            props.pop("dataset", None)
+            
+            # Reconstruct attributes
+            attributes = {}
+            for k, v in props.items():
+                clean_key = k
+                if k.startswith("attr_"):
+                    clean_key = k[5:]
+                try:
+                    if isinstance(v, str) and (v.startswith("[") or v.startswith("{")):
+                        attributes[clean_key] = json.loads(v)
+                    else:
+                        attributes[clean_key] = v
+                except Exception:
+                    attributes[clean_key] = v
+                    
+            rel = {
+                "source": source,
+                "target": target,
+                "relation": relation_type,
+                "attributes": attributes
+            }
+            if timestamp is not None:
+                rel["timestamp"] = timestamp
+            if confidence is not None:
+                rel["confidence"] = confidence
+            if source_type is not None:
+                rel["source_type"] = source_type
+                
+            relations.append(rel)
+            
+        return {
+            "master_entities": master_entities,
+            "relations": relations
+        }
+    finally:
+        client.close()
+
 def load_graph_data():
     global _GRAPH_DATA
-    path = get_graph_file_path()
-    if not path.exists():
-        raise FileNotFoundError(f"unified_graph.json not found at {path}")
-    
-    with open(path, "r", encoding="utf-8") as f:
-        _GRAPH_DATA = json.load(f)
+    try:
+        print("[Neo4j] Fetching graph data from AuraDB...")
+        _GRAPH_DATA = fetch_graph_from_neo4j()
+        print(f"[Neo4j] Successfully loaded {len(_GRAPH_DATA['master_entities'])} entities from database.")
+    except Exception as e:
+        print(f"[Neo4j] Failed to load from database, falling back to local file: {e}")
+        path = get_graph_file_path()
+        if not path.exists():
+            raise FileNotFoundError(f"unified_graph.json not found at {path}")
+        
+        with open(path, "r", encoding="utf-8") as f:
+            _GRAPH_DATA = json.load(f)
     return _GRAPH_DATA
 
 def compute_insights():
@@ -390,29 +545,111 @@ def compute_insights():
     )
 
 def get_graph_payload() -> GraphPayload:
+    rc = _get_redis_client()
+    if rc:
+        try:
+            cached = rc.get_cached_insights("graph_payload")
+            if cached:
+                return GraphPayload(**cached)
+        except Exception:
+            pass
+            
+    global _GRAPH_DATA
     if not _GRAPH_DATA:
         compute_insights()
-    return GraphPayload(
+        
+    payload = GraphPayload(
         master_entities=[EntityDetail(**m) for m in _GRAPH_DATA.get("master_entities", [])],
         relations=[RelationDetail(**r) for r in _GRAPH_DATA.get("relations", [])]
     )
+    
+    if rc:
+        try:
+            rc.cache_insights("graph_payload", payload.dict())
+        except Exception:
+            pass
+    return payload
 
 def get_suspects() -> List[SuspectDetail]:
+    rc = _get_redis_client()
+    if rc:
+        try:
+            cached = rc.get_cached_insights("suspects")
+            if cached:
+                return [SuspectDetail(**item) for item in cached]
+        except Exception:
+            pass
+            
+    global _SUSPECTS
     if not _SUSPECTS:
         compute_insights()
+        
+    if rc and _SUSPECTS:
+        try:
+            rc.cache_insights("suspects", [item.dict() for item in _SUSPECTS])
+        except Exception:
+            pass
     return _SUSPECTS
 
 def get_alerts() -> List[TransactionAlert]:
+    rc = _get_redis_client()
+    if rc:
+        try:
+            cached = rc.get_cached_insights("alerts")
+            if cached:
+                return [TransactionAlert(**item) for item in cached]
+        except Exception:
+            pass
+            
+    global _ALERTS
     if not _ALERTS:
         compute_insights()
+        
+    if rc and _ALERTS:
+        try:
+            rc.cache_insights("alerts", [item.dict() for item in _ALERTS])
+        except Exception:
+            pass
     return _ALERTS
 
 def get_timeline() -> List[TimelineEvent]:
+    rc = _get_redis_client()
+    if rc:
+        try:
+            cached = rc.get_cached_insights("timeline")
+            if cached:
+                return [TimelineEvent(**item) for item in cached]
+        except Exception:
+            pass
+            
+    global _TIMELINE
     if not _TIMELINE:
         compute_insights()
+        
+    if rc and _TIMELINE:
+        try:
+            rc.cache_insights("timeline", [item.dict() for item in _TIMELINE])
+        except Exception:
+            pass
     return _TIMELINE
 
 def get_summary() -> GraphSummary:
+    rc = _get_redis_client()
+    if rc:
+        try:
+            cached = rc.get_cached_insights("summary")
+            if cached:
+                return GraphSummary(**cached)
+        except Exception:
+            pass
+            
+    global _SUMMARY
     if not _SUMMARY:
         compute_insights()
+        
+    if rc and _SUMMARY:
+        try:
+            rc.cache_insights("summary", _SUMMARY.dict())
+        except Exception:
+            pass
     return _SUMMARY
