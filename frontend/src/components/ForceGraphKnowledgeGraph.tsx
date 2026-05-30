@@ -219,6 +219,32 @@ export default function ForceGraphKnowledgeGraph({
     return 0.004;
   }, [assessments]);
 
+  // Link dash pattern — dashed Three.js line for edges connected to CLEARED nodes
+  const getLinkThreeObject = useCallback((link: object) => {
+    const l = link as RenderLink;
+    const src = typeof l.source === 'string' ? l.source : (l.source as RenderNode).id;
+    const tgt = typeof l.target === 'string' ? l.target : (l.target as RenderNode).id;
+    const isCleared =
+      assessments[src]?.status === 'CLEARED' || assessments[tgt]?.status === 'CLEARED';
+    if (!isCleared) return undefined as any; // let ForceGraph3D use its default rendering
+
+    const material = new THREE.LineDashedMaterial({
+      color: new THREE.Color('#6b7280'),
+      dashSize: 3,
+      gapSize: 3,
+      opacity: 0.3,
+      transparent: true,
+    });
+    const geometry = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(1, 0, 0),
+    ]);
+    const line = new THREE.Line(geometry, material);
+    line.computeLineDistances(); // required for dashes to render
+    return line;
+  }, [assessments]);
+
+
   const clearedCount = Object.values(assessments).filter(a => a.status === 'CLEARED').length;
 
   return (
@@ -309,6 +335,20 @@ export default function ForceGraphKnowledgeGraph({
           }}
           linkDirectionalParticleColor={(link) => linkColor(link as RenderLink)}
           linkDirectionalParticleSpeed={getLinkParticleSpeed}
+          linkThreeObject={getLinkThreeObject}
+          linkPositionUpdate={(line, { start, end }) => {
+            // Only reposition our custom dashed lines; null objects are handled by default
+            if (!line) return false;
+            const l = line as THREE.Line;
+            const positions = new Float32Array([
+              start.x, start.y, start.z,
+              end.x, end.y, end.z,
+            ]);
+            l.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            l.geometry.computeBoundingSphere();
+            l.computeLineDistances();
+            return true;
+          }}
           // Physics
           d3AlphaDecay={0.02}
           d3VelocityDecay={0.3}
