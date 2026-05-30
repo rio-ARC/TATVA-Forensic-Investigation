@@ -15,6 +15,7 @@ import {
   GRAPH_FILTERS,
   filterGraphData,
 } from '../types/graph'
+import type { ReconstructedTimeline, ReconstructedEvent } from '../types/timeline'
 
 type TabType = 'EXPLAINABILITY' | 'TIMELINE' | 'ASSISTANT'
 
@@ -394,21 +395,54 @@ export default function InvestigationPage() {
 }
 
 function TimelineTab({ selectedEntityId }: { selectedEntityId?: string }) {
-  const [timeline, setTimeline] = useState<any[]>([]);
+  const [events, setEvents] = useState<ReconstructedEvent[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     fetch('http://localhost:8000/api/timeline')
-      .then(res => res.json())
-      .then(data => {
-        if (selectedEntityId) {
-          // Filter timeline events containing selected entity
-          setTimeline(data.filter((e: any) => e.source_id === selectedEntityId || e.target_id === selectedEntityId));
-        } else {
-          setTimeline(data.slice(0, 15)); // Default to first 15 events chronologically
-        }
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        return res.json();
       })
-      .catch(err => console.error('Failed to fetch timeline', err));
-  }, [selectedEntityId]);
+      .then((data: ReconstructedTimeline) => {
+        const allEvents = data.scenes ? data.scenes.flatMap(s => s.events || []) : [];
+        setEvents(allEvents);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch timeline', err);
+        setError(err.message || 'Failed to load timeline');
+        setLoading(false);
+      });
+  }, []);
+
+  const displayedEvents = useMemo(() => {
+    if (selectedEntityId) {
+      return events.filter(e => e.from_id === selectedEntityId || e.to_id === selectedEntityId);
+    }
+    return events;
+  }, [events, selectedEntityId]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-[#bec7d4] font-mono text-xs">
+        <div className="w-8 h-8 rounded-full border-2 border-[#feb700]/30 border-t-[#feb700] animate-spin mb-4" />
+        LOADING TIMELINE EVENTS...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-[#ffb4ab] text-xs font-mono">
+        <span className="material-symbols-outlined text-sm block mb-2">error</span>
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -417,21 +451,21 @@ function TimelineTab({ selectedEntityId }: { selectedEntityId?: string }) {
           {selectedEntityId ? 'Filtered Intel Timeline' : 'Global Temporal Sequence'}
         </h3>
       </div>
-      {timeline.length === 0 ? (
+      {displayedEvents.length === 0 ? (
         <div className="text-center py-8 text-[#bec7d4]/50 text-xs font-mono">No chronological activities found for this node.</div>
       ) : (
         <div className="relative border-l-2 border-[#3f4852]/50 pl-4 ml-2 space-y-6">
-          {timeline.map((event, index) => (
+          {displayedEvents.map((event, index) => (
             <div key={index} className="relative group">
               {/* Bullet node indicator */}
               <div 
                 className="absolute -left-[22px] top-1 w-2.5 h-2.5 rounded-full border border-black transition-transform duration-300 group-hover:scale-125" 
                 style={{ 
-                  background: event.relation_type === 'TRANSFERRED_TO' ? '#00a3ff' : 
-                              event.relation_type === 'CALLED' ? '#98cbff' : '#feb700' 
+                  background: event.action === 'TRANSFERRED_TO' || event.action === 'TRANSFERRED_MONEY' ? '#00a3ff' : 
+                              event.action === 'CALLED' ? '#98cbff' : '#feb700' 
                 }} 
               />
-              <div style={{ fontFamily: 'JetBrains Mono', fontSize: '11px', color: '#98cbff' }}>{event.timestamp}</div>
+              <div style={{ fontFamily: 'JetBrains Mono', fontSize: '11px', color: '#98cbff' }}>{event.timestamp.replace('T', ' ')}</div>
               <div style={{ fontFamily: 'Geist', fontSize: '13px', fontWeight: '500', color: '#e5e2e3', marginTop: '2px' }}>{event.description}</div>
               <div style={{ fontFamily: 'JetBrains Mono', fontSize: '9px', color: '#bec7d4', marginTop: '4px' }}>
                 Source: {event.source_type} // Conf: {Math.round(event.confidence * 100)}%

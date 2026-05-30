@@ -1,6 +1,7 @@
 # Environment / Virtual Environment
 env/
 venv/
+.venv/
 ENV/
 .env
 .env.*
@@ -38,3 +39,4 @@ ehthumbs.db
 *.crt
 secrets.txt
 current_state.md
+backend_databases_overview.md
