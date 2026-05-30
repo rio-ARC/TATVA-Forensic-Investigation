@@ -29,7 +29,21 @@ def clean_phone_number(number):
 # MAIN PREPROCESSOR
 # ------------------------------------------------
 
-def preprocess_cdr(file_path):
+def preprocess_cdr(file_path, mapping=None):
+    """
+    Process a CDR file into entities and relations.
+
+    Args:
+        file_path: Path to the CSV/XLSX file.
+        mapping:   Optional dict {canonical_col: raw_col}.
+                   When provided, the file is read with raw columns and
+                   accessed via the mapping.
+                   When None (default), the file is expected to already
+                   use canonical column names (backward-compatible).
+
+    Returns:
+        {"entities": [...], "relations": [...]}
+    """
 
     # ------------------------------------------------
     # LOAD FILE
@@ -43,6 +57,29 @@ def preprocess_cdr(file_path):
 
     else:
         raise ValueError("Unsupported file format")
+
+    # ------------------------------------------------
+    # COLUMN ACCESSOR HELPER
+    # ------------------------------------------------
+
+    def col(canonical_name, default=None):
+        """
+        Return the raw column name to use for a given canonical column.
+        Falls back to the canonical name itself (backward-compatible).
+        """
+        if mapping and canonical_name in mapping:
+            raw = mapping[canonical_name]
+            if raw in df.columns:
+                return raw
+        # canonical name used directly (no mapping, or already renamed)
+        if canonical_name in df.columns:
+            return canonical_name
+        if default is not None:
+            return None  # sentinel: use default value
+        raise KeyError(
+            f"[CDRPreprocessor] Column '{canonical_name}' not found. "
+            f"mapping={mapping}, columns={list(df.columns)}"
+        )
 
     # ------------------------------------------------
     # STORAGE
@@ -59,17 +96,20 @@ def preprocess_cdr(file_path):
 
     for _, row in df.iterrows():
 
-        caller_number = clean_phone_number(row["caller_number"])
+        caller_number = clean_phone_number(row[col("caller_number")])
 
-        receiver_number = clean_phone_number(row["receiver_number"])
+        receiver_number = clean_phone_number(row[col("receiver_number")])
 
-        timestamp = str(row["timestamp"])
+        timestamp = str(row[col("timestamp")])
 
-        duration = int(row["duration"])
+        duration = int(row[col("duration")])
 
-        call_type = str(row["call_type"]).upper()
+        # Optional fields — use schema defaults if column absent
+        call_type_col = col("call_type", default="VOICE")
+        call_type = str(row[call_type_col]).upper() if call_type_col else "VOICE"
 
-        tower_id = str(row["tower_id"])
+        tower_id_col = col("tower_id", default="TWR_UNKNOWN")
+        tower_id = str(row[tower_id_col]) if tower_id_col else "TWR_UNKNOWN"
 
         # ------------------------------------------------
         # CREATE CALLER NODE

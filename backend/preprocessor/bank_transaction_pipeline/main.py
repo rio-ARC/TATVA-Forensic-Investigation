@@ -17,17 +17,20 @@ NODE_OUTPUT = "data/processed/nodes.json"
 EDGE_OUTPUT = "data/processed/edges.json"
 
 
-def preprocess_transaction(raw_data_path, base_directory=".", save_intermediates=True):
+def preprocess_transaction(raw_data_path, base_directory=".", save_intermediates=True, mapping=None):
     """
     Preprocess bank transactions and return graph data as JSON.
     
     Args:
-        raw_data_path (str): Path to the raw transactions CSV file
-        base_directory (str): Base directory for saving processed files. Defaults to current directory.
-        save_intermediates (bool): Whether to save intermediate processing files. Defaults to True.
+        raw_data_path (str):    Path to the raw transactions CSV file.
+        base_directory (str):   Base directory for saving processed files.
+        save_intermediates (bool): Whether to save intermediate processing files.
+        mapping (dict|None):    Optional {canonical_col: raw_col} from SchemaAnalyzer.
+                                When provided, arbitrary column names are remapped to
+                                canonical names before processing.
     
     Returns:
-        dict: JSON structure with 'nodes' and 'edges' keys
+        dict: JSON structure with 'entities' and 'relations' keys.
     """
     
     # Build output paths based on base_directory
@@ -43,9 +46,9 @@ def preprocess_transaction(raw_data_path, base_directory=".", save_intermediates
 
     print("Cleaning transaction data...")
     if save_intermediates:
-        df = clean_transactions(raw_data_path, cleaned_data_path)
+        df = clean_transactions(raw_data_path, cleaned_data_path, mapping=mapping)
     else:
-        df = clean_transactions(raw_data_path, None)
+        df = clean_transactions(raw_data_path, None, mapping=mapping)
 
     print("Generating features...")
     features = generate_features(df)

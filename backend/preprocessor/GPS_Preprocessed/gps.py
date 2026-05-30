@@ -52,7 +52,20 @@ def normalize_timestamp(timestamp):
 # MAIN PREPROCESSOR
 # ------------------------------------------------
 
-def preprocess_gps(file_path):
+def preprocess_gps(file_path, mapping=None):
+    """
+    Process a GPS location log file into entities and relations.
+
+    Args:
+        file_path: Path to the CSV/XLSX/JSON file.
+        mapping:   Optional dict {canonical_col: raw_col}.
+                   When provided, raw column names are translated via the mapping.
+                   When None (default), canonical column names are expected directly
+                   (backward-compatible).
+
+    Returns:
+        {"entities": [...], "relations": [...]}
+    """
 
     # ------------------------------------------------
     # LOAD FILE
@@ -71,6 +84,20 @@ def preprocess_gps(file_path):
         raise ValueError("Unsupported file format")
 
     # ------------------------------------------------
+    # COLUMN ACCESSOR HELPER
+    # ------------------------------------------------
+
+    def raw(canonical_name):
+        """Return the actual column name to use for a canonical field."""
+        if mapping and canonical_name in mapping:
+            raw_col = mapping[canonical_name]
+            if raw_col in df.columns:
+                return raw_col
+        if canonical_name in df.columns:
+            return canonical_name
+        return None  # column absent
+
+    # ------------------------------------------------
     # STORAGE
     # ------------------------------------------------
 
@@ -81,6 +108,21 @@ def preprocess_gps(file_path):
 
     previous_locations = {}
 
+    # Resolve column names once
+    device_id_col   = raw("device_id")
+    latitude_col    = raw("latitude")
+    longitude_col   = raw("longitude")
+    timestamp_col   = raw("timestamp")
+    accuracy_col    = raw("accuracy")
+    speed_col       = raw("speed")
+    source_col      = raw("source")
+
+    # Also check legacy multi-identifier columns that gps.py originally supported
+    phone_col   = raw("phone_number")
+    vehicle_col = raw("vehicle_id")
+    watch_col   = raw("watch_id")
+    tracker_col = raw("tracker_id")
+
     # ------------------------------------------------
     # ITERATE RECORDS
     # ------------------------------------------------
@@ -88,40 +130,30 @@ def preprocess_gps(file_path):
     for _, row in df.iterrows():
 
         # ------------------------------------------------
-        # FLEXIBLE IDENTIFIER HANDLING
+        # ENTITY IDENTIFICATION (flexible)
         # ------------------------------------------------
 
         tracked_entity_id = None
         tracked_entity_type = "UNKNOWN_DEVICE"
 
-        # Mobile device
-        if "device_id" in row and pd.notna(row["device_id"]):
-
-            tracked_entity_id = str(row["device_id"])
+        if device_id_col and pd.notna(row.get(device_id_col)):
+            tracked_entity_id = str(row[device_id_col])
             tracked_entity_type = "DEVICE"
 
-        # Phone number
-        elif "phone_number" in row and pd.notna(row["phone_number"]):
-
-            tracked_entity_id = str(row["phone_number"])
+        elif phone_col and pd.notna(row.get(phone_col)):
+            tracked_entity_id = str(row[phone_col])
             tracked_entity_type = "PHONE_NUMBER"
 
-        # Vehicle
-        elif "vehicle_id" in row and pd.notna(row["vehicle_id"]):
-
-            tracked_entity_id = str(row["vehicle_id"])
+        elif vehicle_col and pd.notna(row.get(vehicle_col)):
+            tracked_entity_id = str(row[vehicle_col])
             tracked_entity_type = "VEHICLE"
 
-        # Smart watch
-        elif "watch_id" in row and pd.notna(row["watch_id"]):
-
-            tracked_entity_id = str(row["watch_id"])
+        elif watch_col and pd.notna(row.get(watch_col)):
+            tracked_entity_id = str(row[watch_col])
             tracked_entity_type = "WEARABLE_DEVICE"
 
-        # Generic tracker
-        elif "tracker_id" in row and pd.notna(row["tracker_id"]):
-
-            tracked_entity_id = str(row["tracker_id"])
+        elif tracker_col and pd.notna(row.get(tracker_col)):
+            tracked_entity_id = str(row[tracker_col])
             tracked_entity_type = "TRACKER"
 
         else:
@@ -132,9 +164,8 @@ def preprocess_gps(file_path):
         # ------------------------------------------------
 
         try:
-
-            latitude = float(row["latitude"])
-            longitude = float(row["longitude"])
+            latitude  = float(row[latitude_col])
+            longitude = float(row[longitude_col])
 
         except (ValueError, TypeError, KeyError):
             continue
@@ -153,13 +184,10 @@ def preprocess_gps(file_path):
         # OPTIONAL FIELDS
         # ------------------------------------------------
 
-        timestamp = normalize_timestamp(row.get("timestamp", None))
-
-        accuracy = float(row.get("accuracy", 0))
-
-        speed = float(row.get("speed", 0))
-
-        source = str(row.get("source", "unknown_source"))
+        timestamp = normalize_timestamp(row[timestamp_col] if timestamp_col else None)
+        accuracy  = float(row[accuracy_col]) if accuracy_col and pd.notna(row.get(accuracy_col)) else 0.0
+        speed     = float(row[speed_col])    if speed_col   and pd.notna(row.get(speed_col))    else 0.0
+        source    = str(row[source_col])     if source_col  and pd.notna(row.get(source_col))   else "gps_analysis"
 
         # ------------------------------------------------
         # CREATE TRACKED ENTITY NODE
@@ -291,7 +319,6 @@ def preprocess_gps(file_path):
 # ------------------------------------------------
 
 if __name__ == "__main__":
-    # graph_objects = preprocess_gps("gps_data.csv")
     graph_objects = preprocess_gps("gps_data_short.csv")
 
     print(json.dumps(graph_objects, indent=4))
