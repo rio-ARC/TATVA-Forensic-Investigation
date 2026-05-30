@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 // overflow: hidden — full viewport
 // ====================================================================
 
-import D3KnowledgeGraph from '../components/D3KnowledgeGraph'
+import ForceGraphKnowledgeGraph from '../components/ForceGraphKnowledgeGraph'
 
 type TabType = 'EXPLAINABILITY' | 'TIMELINE' | 'ASSISTANT'
 
@@ -141,9 +141,9 @@ export default function InvestigationPage() {
 
         {/* ── CENTER: 3D Knowledge Graph Space ── */}
         <main className="flex-1 relative overflow-hidden scanline-grid">
-          {/* D3 force knowledge graph */}
+          {/* 3D Force Knowledge Graph — data from GET /graph/render */}
           <div className="absolute inset-0 z-0">
-            <D3KnowledgeGraph onNodeClick={(node) => setSelectedEntity(node)} />
+            <ForceGraphKnowledgeGraph onNodeClick={(node) => setSelectedEntity(node)} />
           </div>
 
           {/* ── Temporal Controls (Bottom) ── */}

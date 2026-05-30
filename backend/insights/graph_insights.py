@@ -16,11 +16,24 @@ _TIMELINE: List[TimelineEvent] = []
 _SUMMARY: Optional[GraphSummary] = None
 
 def get_graph_file_path() -> Path:
-    # Look for unified_graph.json in Graph_Integration_Layer first, then in backend folder
-    path = Path(__file__).parent.parent / "Graph_Integration_Layer" / "unified_graph.json"
-    if not path.exists():
-        path = Path(__file__).parent.parent / "unified_graph.json"
-    return path
+    """
+    Locate unified_graph.json.  Search order:
+    1. backend/Graph_Integration_Layer/output/unified_graph.json  ← actual output location
+    2. backend/Graph_Integration_Layer/unified_graph.json          ← legacy flat location
+    3. backend/unified_graph.json                                  ← fallback
+    """
+    base = Path(__file__).parent.parent  # → backend/
+    candidates = [
+        base / "Graph_Integration_Layer" / "output" / "unified_graph.json",
+        base / "Graph_Integration_Layer" / "unified_graph.json",
+        base / "unified_graph.json",
+    ]
+    for path in candidates:
+        if path.exists():
+            return path
+    # Return the primary expected path so the FileNotFoundError message is informative
+    return candidates[0]
+
 
 def load_graph_data():
     global _GRAPH_DATA

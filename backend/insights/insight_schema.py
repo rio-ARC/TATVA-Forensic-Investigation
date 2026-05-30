@@ -1,6 +1,30 @@
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 
+# ── Visualization-ready models (used by GET /graph/render) ──────────────────
+
+class RenderNode(BaseModel):
+    """A node pre-adapted for direct consumption by react-force-graph-3d.
+    All graph-semantic interpretation has already happened in the backend."""
+    id: str
+    label: str       # Human-readable display name
+    type: str        # master_type: PERSON | PLACE | INFRASTRUCTURE | ENTITY
+    sub_type: str    # entity_types[0]: ACCOUNT | CELL_TOWER | VEHICLE | …
+    risk_score: float  # 0.0 for non-suspects, actual score for suspects
+
+class RenderLink(BaseModel):
+    """An edge pre-adapted for direct consumption by react-force-graph-3d."""
+    source: str
+    target: str
+    type: str        # relation name: CALLED | TRANSFERRED_TO | …
+    confidence: float
+
+class GraphRenderPayload(BaseModel):
+    nodes: List[RenderNode]
+    links: List[RenderLink]
+
+# ── Raw graph models (used by legacy GET /api/graph) ───────────────────────
+
 class EntityDetail(BaseModel):
     master_id: str
     master_type: str
