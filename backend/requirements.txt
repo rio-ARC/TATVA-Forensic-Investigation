@@ -9,6 +9,8 @@ networkx
 python-dotenv
 fastapi
 uvicorn
+python-multipart
+aiofiles
 neo4j
 sqlalchemy
 psycopg2-binary

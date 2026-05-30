@@ -1,4 +1,8 @@
-from fastapi import FastAPI, HTTPException, Body, Query
+from fastapi import FastAPI, HTTPException, Body, Query, UploadFile, File
+import hashlib
+import os
+import shutil
+import aiofiles
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
@@ -119,6 +123,13 @@ def get_graph_render_payload() -> GraphRenderPayload:
 
     return GraphRenderPayload(nodes=nodes, links=links)
 
+
+# ── Upload directory (local filesystem storage) ──────────────
+UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Allowed file extensions
+ALLOWED_EXTENSIONS = {"csv", "json", "txt", "pdf", "wav", "jpg", "jpeg", "png", "log"}
 
 app = FastAPI(title="TATVA Insights & Forensic API", version="1.1.0")
 
@@ -297,6 +308,78 @@ def add_evidence(case_id: str, ev: EvidenceCreate):
 def get_evidence(case_id: str):
     """Get all logged evidence files for a case."""
     return db.get_evidence(case_id=case_id)
+
+@app.post("/api/cases/{case_id}/upload")
+async def upload_evidence_file(case_id: str, file: UploadFile = File(...)):
+    """
+    Upload a physical evidence file for a case.
+    - Streams file to backend/uploads/{case_id}/
+    - Computes SHA-256 hash
+    - Records metadata in PostgreSQL evidence_files table
+    """
+    # Validate file extension
+    ext = (file.filename or "").rsplit(".", 1)[-1].lower()
+    if ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"File type '.{ext}' not allowed. Supported: {', '.join(sorted(ALLOWED_EXTENSIONS))}"
+        )
+
+    # Ensure case exists
+    case_data = db.get_case(case_id=case_id)
+    if not case_data:
+        raise HTTPException(status_code=404, detail=f"Case '{case_id}' not found")
+
+    # Create upload directory for this case
+    case_upload_dir = os.path.join(UPLOAD_DIR, case_id)
+    os.makedirs(case_upload_dir, exist_ok=True)
+
+    # Sanitize filename to prevent directory traversal
+    safe_filename = os.path.basename(file.filename or "upload")
+    dest_path = os.path.join(case_upload_dir, safe_filename)
+
+    # Stream file to disk and compute SHA-256 hash simultaneously
+    hasher = hashlib.sha256()
+    try:
+        with open(dest_path, "wb") as dest:
+            while chunk := await file.read(1024 * 64):  # 64KB chunks
+                hasher.update(chunk)
+                dest.write(chunk)
+    except Exception as e:
+        # Clean up partial file on error
+        if os.path.exists(dest_path):
+            os.remove(dest_path)
+        raise HTTPException(status_code=500, detail=f"File write error: {e}")
+
+    file_hash = hasher.hexdigest()
+    file_size = os.path.getsize(dest_path)
+
+    # Record metadata in PostgreSQL
+    try:
+        record = db.add_evidence(
+            case_id=case_id,
+            filename=safe_filename,
+            file_type=ext,
+            file_hash=file_hash,
+            record_count=0,
+            metadata={
+                "original_filename": file.filename,
+                "content_type": file.content_type,
+                "size_bytes": file_size,
+                "local_path": dest_path,
+            }
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    return {
+        "id": record.get("id"),
+        "filename": safe_filename,
+        "file_type": ext,
+        "file_hash": file_hash,
+        "size_bytes": file_size,
+        "status": "uploaded",
+    }
 
 # ── AUDIT & SYSTEM STATUS ENDPOINTS ─────────────────────────
 
