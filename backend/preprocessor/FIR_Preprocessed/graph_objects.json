@@ -1,0 +1,87 @@
+{
+    "entities": [
+        {
+            "temp_id": "TEMP_5b4536ef",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_758224e7",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Howrah Station"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_70dc2674",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Rahul"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_f7631f9c",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Arjun"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_1d4f54d6",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Vikram"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_61da7dd8",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Rajan"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        }
+    ],
+    "relations": [
+        {
+            "source": "TEMP_70dc2674",
+            "target": "TEMP_f7631f9c",
+            "relation": "INTERACTED_WITH",
+            "attributes": {},
+            "timestamp": "2026-05-28T21:00:00",
+            "confidence": 0.75,
+            "source_type": "fir_document"
+        },
+        {
+            "source": "TEMP_f7631f9c",
+            "target": "TEMP_1d4f54d6",
+            "relation": "CALLED",
+            "attributes": {},
+            "timestamp": null,
+            "confidence": 0.75,
+            "source_type": "fir_document"
+        },
+        {
+            "source": "TEMP_1d4f54d6",
+            "target": "TEMP_758224e7",
+            "relation": "VISITED",
+            "attributes": {},
+            "timestamp": null,
+            "confidence": 0.75,
+            "source_type": "fir_document"
+        }
+    ]
+}

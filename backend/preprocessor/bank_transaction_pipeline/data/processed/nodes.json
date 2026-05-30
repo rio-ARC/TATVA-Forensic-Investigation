@@ -1,0 +1,71 @@
+[
+    {
+        "id": "ACC1001",
+        "type": "ACCOUNT",
+        "risk_score": 0.82,
+        "features": {
+            "txn_frequency": 5,
+            "avg_amount": 5300.0,
+            "night_txn_ratio": 0.0,
+            "unique_receivers": 5
+        }
+    },
+    {
+        "id": "ACC1002",
+        "type": "ACCOUNT",
+        "risk_score": 0.74,
+        "features": {
+            "txn_frequency": 1,
+            "avg_amount": 120000.0,
+            "night_txn_ratio": 1.0,
+            "unique_receivers": 1
+        }
+    },
+    {
+        "id": "ACC6001",
+        "type": "ACCOUNT",
+        "risk_score": 0.1,
+        "features": {}
+    },
+    {
+        "id": "ACC2001",
+        "type": "ACCOUNT",
+        "risk_score": 0.1,
+        "features": {}
+    },
+    {
+        "id": "ACC4001",
+        "type": "ACCOUNT",
+        "risk_score": 0.1,
+        "features": {}
+    },
+    {
+        "id": "ACC5001",
+        "type": "ACCOUNT",
+        "risk_score": 0.1,
+        "features": {}
+    },
+    {
+        "id": "ACC3001",
+        "type": "ACCOUNT",
+        "risk_score": 0.1,
+        "features": {}
+    },
+    {
+        "id": "ACC1003",
+        "type": "ACCOUNT",
+        "risk_score": 0.74,
+        "features": {
+            "txn_frequency": 1,
+            "avg_amount": 300000.0,
+            "night_txn_ratio": 1.0,
+            "unique_receivers": 1
+        }
+    },
+    {
+        "id": "ACC7001",
+        "type": "ACCOUNT",
+        "risk_score": 0.1,
+        "features": {}
+    }
+]

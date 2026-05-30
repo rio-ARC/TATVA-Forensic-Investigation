@@ -1,0 +1,13 @@
+source_entity,target_entity,relation,confidence,evidence
+Rahul,9876543210,USES_PHONE,0.99,SIM registration records
+Rahul,ANDROID_001,USES_DEVICE,0.97,Device seizure - forensic report
+Rahul,ACC1001,OWNS_ACCOUNT,0.99,Bank KYC documents
+Rahul,rahul.sen.work@gmail.com,USES_EMAIL,0.96,Recovered from seized laptop
+Arjun,9123456780,USES_PHONE,0.94,Witness statement + SIM records
+Arjun,arjun.ghosh.kol@gmail.com,USES_EMAIL,0.95,Email ownership verification
+Vikram,9988776655,USES_PHONE,0.92,Call pattern analysis + SIM registration
+Vikram,WATCH_ABC,USES_DEVICE,0.91,Wearable device ownership confirmed
+Rajan,8877665544,USES_PHONE,0.88,SIM registered to Rajan Mehta
+Rajan,ACC9001,OWNS_ACCOUNT,0.90,Bank KYC - account holder Rajan Mehta
+Park Street,22.5726,LOCATED_AT,0.93,Geo coordinate mapping - Survey of India
+Howrah Station,22.5850,LOCATED_AT,0.91,GIS mapping - Railway Authority records

@@ -1,0 +1,11 @@
+opencv-python
+easyocr
+numpy
+pandas
+spacy
+dateparser
+python-dateutil
+networkx
+python-dotenv
+fastapi
+uvicorn

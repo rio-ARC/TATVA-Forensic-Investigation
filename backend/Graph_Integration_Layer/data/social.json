@@ -1,0 +1,62 @@
+[
+  {
+    "post_id": "tatva_post_001",
+    "platform": "twitter",
+    "author_handle": "@RahulSen",
+    "author_name": "Rahul Sen",
+    "timestamp": "2026-05-22 20:40:00 +0530",
+    "content": "Big plans for tonight near Park Street. @ArjunG keep the account ready. All systems go.",
+    "mentions": ["@ArjunG"],
+    "hashtags": ["kolkata", "tonight"]
+  },
+  {
+    "post_id": "tatva_post_002",
+    "platform": "instagram",
+    "author_handle": "@ArjunG",
+    "author_name": "Arjun Ghosh",
+    "timestamp": "2026-05-22 21:10:00 +0530",
+    "content": "Waiting near Park Street. Rahul said Vikram will confirm after the call. Everything on schedule.",
+    "mentions": ["@RahulSen"],
+    "hashtags": ["meet", "kolkata"]
+  },
+  {
+    "post_id": "tatva_post_003",
+    "platform": "facebook",
+    "author_handle": "@VikramK",
+    "author_name": "Vikram Khanna",
+    "timestamp": "2026-05-22 22:05:00 +0530",
+    "content": "Reached Howrah Station after the withdrawal. Device WATCH_ABC is still on. Job done.",
+    "mentions": [],
+    "hashtags": ["movement", "done"]
+  },
+  {
+    "post_id": "tatva_post_004",
+    "platform": "twitter",
+    "author_handle": "@RahulSen",
+    "author_name": "Rahul Sen",
+    "timestamp": "2026-05-22 20:15:00 +0530",
+    "content": "Using ANDROID_001 tonight. Transfers split as planned across 7 accounts. @ArjunG confirm receipt.",
+    "mentions": ["@ArjunG"],
+    "hashtags": ["transfer", "plan"]
+  },
+  {
+    "post_id": "tatva_post_005",
+    "platform": "instagram",
+    "author_handle": "@ArjunG",
+    "author_name": "Arjun Ghosh",
+    "timestamp": "2026-05-22 22:45:00 +0530",
+    "content": "All clear. @VikramK handled the delivery perfectly. Rajan confirmed receipt at Howrah.",
+    "mentions": ["@VikramK"],
+    "hashtags": ["success"]
+  },
+  {
+    "post_id": "tatva_post_006",
+    "platform": "facebook",
+    "author_handle": "@VikramK",
+    "author_name": "Vikram Khanna",
+    "timestamp": "2026-05-22 21:00:00 +0530",
+    "content": "Parked the white Hyundai TN09BY9726 near Park Street. Waiting for signal from Rahul.",
+    "mentions": [],
+    "hashtags": ["standby", "kolkata"]
+  }
+]

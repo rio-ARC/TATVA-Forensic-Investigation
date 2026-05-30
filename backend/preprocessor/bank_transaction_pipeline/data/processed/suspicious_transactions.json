@@ -1,0 +1,27 @@
+[
+    {
+        "account": "ACC1001",
+        "reason": "Burst transactions",
+        "risk_score": 0.82
+    },
+    {
+        "account": "ACC1002",
+        "reason": "High value transaction",
+        "risk_score": 0.91
+    },
+    {
+        "account": "ACC1002",
+        "reason": "Night transaction anomaly",
+        "risk_score": 0.74
+    },
+    {
+        "account": "ACC1003",
+        "reason": "High value transaction",
+        "risk_score": 0.91
+    },
+    {
+        "account": "ACC1003",
+        "reason": "Night transaction anomaly",
+        "risk_score": 0.74
+    }
+]

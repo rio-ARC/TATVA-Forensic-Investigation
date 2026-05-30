@@ -1,0 +1,65 @@
+[
+    {
+        "source": "ACC1001",
+        "target": "ACC2001",
+        "relation": "TRANSFERRED_TO",
+        "amount": 5000,
+        "timestamp": "2026-05-22 22:11:00",
+        "transaction_type": "UPI",
+        "location": "Kolkata"
+    },
+    {
+        "source": "ACC1001",
+        "target": "ACC3001",
+        "relation": "TRANSFERRED_TO",
+        "amount": 7000,
+        "timestamp": "2026-05-22 22:12:00",
+        "transaction_type": "UPI",
+        "location": "Kolkata"
+    },
+    {
+        "source": "ACC1002",
+        "target": "ACC2001",
+        "relation": "TRANSFERRED_TO",
+        "amount": 120000,
+        "timestamp": "2026-05-22 02:15:00",
+        "transaction_type": "IMPS",
+        "location": "Delhi"
+    },
+    {
+        "source": "ACC1001",
+        "target": "ACC4001",
+        "relation": "TRANSFERRED_TO",
+        "amount": 4500,
+        "timestamp": "2026-05-22 22:13:00",
+        "transaction_type": "UPI",
+        "location": "Kolkata"
+    },
+    {
+        "source": "ACC1003",
+        "target": "ACC5001",
+        "relation": "TRANSFERRED_TO",
+        "amount": 300000,
+        "timestamp": "2026-05-22 03:40:00",
+        "transaction_type": "NEFT",
+        "location": "Mumbai"
+    },
+    {
+        "source": "ACC1001",
+        "target": "ACC6001",
+        "relation": "TRANSFERRED_TO",
+        "amount": 4900,
+        "timestamp": "2026-05-22 22:14:00",
+        "transaction_type": "UPI",
+        "location": "Kolkata"
+    },
+    {
+        "source": "ACC1001",
+        "target": "ACC7001",
+        "relation": "TRANSFERRED_TO",
+        "amount": 5100,
+        "timestamp": "2026-05-22 22:15:00",
+        "transaction_type": "UPI",
+        "location": "Kolkata"
+    }
+]

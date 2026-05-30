@@ -1,0 +1,4 @@
+image_name,vehicle_id,number_plate,vehicle_brand,vehicle_color,vehicle_type,detection_confidence
+hyundai_white.png,TEMP_3768c5f8,TN09BY9726,Hyundai,White,Car,0.97
+kia_black.png,TEMP_c1fe450c,MH12AB4589,Kia,Black,SUV,0.53
+yamaha_red.png,TEMP_983f564d,CB24CD7788,Yamaha,Red,Bike,0.60

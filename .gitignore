@@ -1,0 +1,39 @@
+# Environment / Virtual Environment
+env/
+venv/
+ENV/
+.env
+.env.*
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Secret files
+*.pem
+*.key
+*.crt
+secrets.txt
+current_state.md

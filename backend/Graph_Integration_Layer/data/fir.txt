@@ -1,0 +1,19 @@
+First Information Report (FIR)
+Police Station: Park Street, Kolkata
+FIR Number: 214/2026
+Date: 22 May 2026
+Complainant: Assistant Commissioner of Police, Cyber-Financial Crime Unit
+
+Summary of Offence:
+On the evening of 22 May 2026, a coordinated financial fraud operation was conducted in the Park Street area of Kolkata. The primary accused Rahul Sen met Arjun Ghosh at Park Street at 9 PM to coordinate an illegal money transfer operation. Rahul transferred money to multiple accounts controlled by Rajan Mehta to evade detection. Arjun called Vikram Khanna to confirm coordination before the withdrawal. Rahul contacted Rajan regarding the account transfers using his device ANDROID_001. Vikram visited Howrah Station after the meeting to collect a package. A white Hyundai car bearing registration TN09BY9726 was seen near Park Street at 9:15 PM. A black Kia SUV with registration MH12AB4589 was spotted near Howrah Station at 10:20 PM. A red Yamaha bike with registration CB24CD7788 was used as a lookout vehicle near the transaction point.
+
+Accused persons:
+1. Rahul Sen — primary accused, orchestrated the operation from Park Street using phone 9876543210 and device ANDROID_001. Transferred funds from account ACC1001 in small tranches below ten thousand rupees to evade RBI reporting thresholds.
+2. Arjun Ghosh — co-accused, managed withdrawal coordination. Contacted Rahul and Vikram by phone. Was present near Park Street at the time of the transaction.
+3. Vikram Khanna — courier, physically received cash at Howrah Station. Tracked via wearable device WATCH_ABC near Park Street at 9:14 PM. Moved to Howrah Station by 10:40 PM.
+4. Rajan Mehta — account mule, provided shell accounts to receive fragmented transfers. Connected to phone number 8877665544.
+
+Key locations:
+Park Street, Kolkata was the primary coordination point. Howrah Station served as the cash handoff location. Accounts linked to Delhi and Mumbai were also used, suggesting a wider network beyond Kolkata.
+
+Charges: Section 420 IPC (Cheating), Section 120B IPC (Criminal Conspiracy), Prevention of Money Laundering Act 2002 Section 3 and 4.

@@ -1,0 +1,2726 @@
+{
+    "entities": [
+        {
+            "temp_id": "TEMP_69d16152",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_531c0a6f",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_b12a5d04",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Kolkata"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_ab8ccb9d",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_d20b246a",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_9f33043f",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Howrah Station"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_7dc8d35f",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_e69a6d85",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_d179ba51",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_20934a9c",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Park Street"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_48fb412a",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Delhi"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_fc2b21e6",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Mumbai"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_a55992db",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Kolkata"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_1990c6f3",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Rahul Sen"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_043f77b2",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Arjun Ghosh"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_4197357a",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Rajan Mehta"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "TEMP_b13d280b",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Vikram Khanna"
+            },
+            "confidence": 0.9,
+            "source": "fir_document"
+        },
+        {
+            "temp_id": "PHONE_60273b11",
+            "type": "PHONE_NUMBER",
+            "attributes": {
+                "number": "9876543210"
+            },
+            "confidence": 0.99,
+            "source": "cdr_record"
+        },
+        {
+            "temp_id": "PHONE_a059bc58",
+            "type": "PHONE_NUMBER",
+            "attributes": {
+                "number": "9123456780"
+            },
+            "confidence": 0.99,
+            "source": "cdr_record"
+        },
+        {
+            "temp_id": "TOWER_b04e4f24",
+            "type": "CELL_TOWER",
+            "attributes": {
+                "tower_id": "TWR_KOL_102"
+            },
+            "confidence": 0.95,
+            "source": "cdr_record"
+        },
+        {
+            "temp_id": "TOWER_1159a334",
+            "type": "CELL_TOWER",
+            "attributes": {
+                "tower_id": "TWR_KOL_105"
+            },
+            "confidence": 0.95,
+            "source": "cdr_record"
+        },
+        {
+            "temp_id": "PHONE_f924f375",
+            "type": "PHONE_NUMBER",
+            "attributes": {
+                "number": "9988776655"
+            },
+            "confidence": 0.99,
+            "source": "cdr_record"
+        },
+        {
+            "temp_id": "TOWER_a21d00a3",
+            "type": "CELL_TOWER",
+            "attributes": {
+                "tower_id": "TWR_KOL_210"
+            },
+            "confidence": 0.95,
+            "source": "cdr_record"
+        },
+        {
+            "temp_id": "PHONE_562a6b77",
+            "type": "PHONE_NUMBER",
+            "attributes": {
+                "number": "8877665544"
+            },
+            "confidence": 0.99,
+            "source": "cdr_record"
+        },
+        {
+            "temp_id": "TOWER_49cc2d20",
+            "type": "CELL_TOWER",
+            "attributes": {
+                "tower_id": "TWR_KOL_315"
+            },
+            "confidence": 0.95,
+            "source": "cdr_record"
+        },
+        {
+            "temp_id": "DEVICE_bbee2aac",
+            "type": "DEVICE",
+            "attributes": {
+                "identifier": "ANDROID_001"
+            },
+            "confidence": 0.99,
+            "source": "mobile_gps"
+        },
+        {
+            "temp_id": "LOCATION_6376570b",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5726,
+                "longitude": 88.3639
+            },
+            "confidence": 0.95,
+            "source": "mobile_gps"
+        },
+        {
+            "temp_id": "LOCATION_eb0d8b3a",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5728,
+                "longitude": 88.3641
+            },
+            "confidence": 0.95,
+            "source": "mobile_gps"
+        },
+        {
+            "temp_id": "LOCATION_98d84913",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.573,
+                "longitude": 88.3644
+            },
+            "confidence": 0.95,
+            "source": "mobile_gps"
+        },
+        {
+            "temp_id": "LOCATION_674fed29",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5729,
+                "longitude": 88.3642
+            },
+            "confidence": 0.95,
+            "source": "mobile_gps"
+        },
+        {
+            "temp_id": "LOCATION_02a000e5",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.574,
+                "longitude": 88.366
+            },
+            "confidence": 0.95,
+            "source": "mobile_gps"
+        },
+        {
+            "temp_id": "LOCATION_70c8e8eb",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.58,
+                "longitude": 88.372
+            },
+            "confidence": 0.95,
+            "source": "mobile_gps"
+        },
+        {
+            "temp_id": "PHONE_NUMBER_8ee2d8c2",
+            "type": "PHONE_NUMBER",
+            "attributes": {
+                "identifier": "9876543210.0"
+            },
+            "confidence": 0.99,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "LOCATION_b0e43edd",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5726,
+                "longitude": 88.3638
+            },
+            "confidence": 0.95,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "LOCATION_7845d8b5",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5728,
+                "longitude": 88.364
+            },
+            "confidence": 0.95,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "PHONE_NUMBER_5a789d3d",
+            "type": "PHONE_NUMBER",
+            "attributes": {
+                "identifier": "9123456780.0"
+            },
+            "confidence": 0.99,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "LOCATION_4d0e1ee2",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5735,
+                "longitude": 88.3648
+            },
+            "confidence": 0.95,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "LOCATION_663725f1",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5733,
+                "longitude": 88.3645
+            },
+            "confidence": 0.95,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "PHONE_NUMBER_4ed7fadd",
+            "type": "PHONE_NUMBER",
+            "attributes": {
+                "identifier": "9988776655.0"
+            },
+            "confidence": 0.99,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "LOCATION_f2cf56f0",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5722,
+                "longitude": 88.3635
+            },
+            "confidence": 0.95,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "LOCATION_926aedc0",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.585,
+                "longitude": 88.3426
+            },
+            "confidence": 0.95,
+            "source": "telecom_tower"
+        },
+        {
+            "temp_id": "VEHICLE_4398a420",
+            "type": "VEHICLE",
+            "attributes": {
+                "identifier": "CAB_102"
+            },
+            "confidence": 0.99,
+            "source": "vehicle_tracker"
+        },
+        {
+            "temp_id": "WEARABLE_DEVICE_cc0181fb",
+            "type": "WEARABLE_DEVICE",
+            "attributes": {
+                "identifier": "WATCH_ABC"
+            },
+            "confidence": 0.99,
+            "source": "wearable_device"
+        },
+        {
+            "temp_id": "LOCATION_062ad478",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5726,
+                "longitude": 88.3636
+            },
+            "confidence": 0.95,
+            "source": "wearable_device"
+        },
+        {
+            "temp_id": "LOCATION_504eb4a9",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5725,
+                "longitude": 88.3637
+            },
+            "confidence": 0.95,
+            "source": "wearable_device"
+        },
+        {
+            "temp_id": "LOCATION_90d85366",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.5731,
+                "longitude": 88.3643
+            },
+            "confidence": 0.95,
+            "source": "wearable_device"
+        },
+        {
+            "temp_id": "TRACKER_098d4a41",
+            "type": "TRACKER",
+            "attributes": {
+                "identifier": "TRACKER_001"
+            },
+            "confidence": 0.99,
+            "source": "asset_tracker"
+        },
+        {
+            "temp_id": "LOCATION_f64d9650",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.59,
+                "longitude": 88.39
+            },
+            "confidence": 0.95,
+            "source": "asset_tracker"
+        },
+        {
+            "temp_id": "LOCATION_6a3e06f9",
+            "type": "LOCATION",
+            "attributes": {
+                "latitude": 22.65,
+                "longitude": 88.45
+            },
+            "confidence": 0.95,
+            "source": "asset_tracker"
+        },
+        {
+            "temp_id": "PERSON_a19696d9",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Rahul Sen",
+                "email": "rahul.sen.work@gmail.com"
+            },
+            "confidence": 0.95,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_3c3e4acc",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Arjun Ghosh",
+                "email": "arjun.ghosh.kol@gmail.com"
+            },
+            "confidence": 0.95,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_aa18d03b",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Vikram"
+            },
+            "confidence": 0.8,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_fdeac208",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Howrah Station"
+            },
+            "confidence": 0.8,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_641466e5",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Arjun Ghosh"
+            },
+            "confidence": 0.8,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_769b0f3d",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Rahul Sen"
+            },
+            "confidence": 0.8,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_9ef79d16",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Howrah"
+            },
+            "confidence": 0.8,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_91acb2b8",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Hyundai"
+            },
+            "confidence": 0.8,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_0afea4cc",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Vehicle Confirmation\nDate"
+            },
+            "confidence": 0.8,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_7d31d572",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Rajan"
+            },
+            "confidence": 0.8,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PHONE_NUMBER_4cddb368",
+            "type": "PHONE_NUMBER",
+            "attributes": {
+                "number": "9876543210"
+            },
+            "confidence": 0.95,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "EMAIL_ADDRESS_60d878bd",
+            "type": "EMAIL_ADDRESS",
+            "attributes": {
+                "address": "arjun.ghosh.kol@gmail.com"
+            },
+            "confidence": 0.97,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "EMAIL_ADDRESS_3a04a5cd",
+            "type": "EMAIL_ADDRESS",
+            "attributes": {
+                "address": "rahul.sen.work@gmail.com"
+            },
+            "confidence": 0.97,
+            "source": "emails.txt"
+        },
+        {
+            "temp_id": "PERSON_0e9f6d6d",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Rahul",
+                "platform": "chat"
+            },
+            "confidence": 0.9,
+            "source": "chat.txt"
+        },
+        {
+            "temp_id": "PERSON_4bf64d0f",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Arjun",
+                "platform": "chat"
+            },
+            "confidence": 0.9,
+            "source": "chat.txt"
+        },
+        {
+            "temp_id": "PLATFORM_1efa6d44",
+            "type": "PLATFORM",
+            "attributes": {
+                "name": "group_chat"
+            },
+            "confidence": 1.0,
+            "source": "chat.txt"
+        },
+        {
+            "temp_id": "PERSON_2855f216",
+            "type": "PERSON",
+            "attributes": {
+                "name": "ANDROID_001"
+            },
+            "confidence": 0.8,
+            "source": "chat.txt"
+        },
+        {
+            "temp_id": "PERSON_59fe9d31",
+            "type": "PERSON",
+            "attributes": {
+                "name": "ACC1001"
+            },
+            "confidence": 0.8,
+            "source": "chat.txt"
+        },
+        {
+            "temp_id": "PERSON_adb0c10c",
+            "type": "PERSON",
+            "attributes": {
+                "name": "Reached Howrah Station"
+            },
+            "confidence": 0.8,
+            "source": "chat.txt"
+        },
+        {
+            "temp_id": "SOCIAL_HANDLE_3cf789d2",
+            "type": "SOCIAL_HANDLE",
+            "attributes": {
+                "handle": "@RahulSen",
+                "name": "Rahul Sen",
+                "platform": "twitter"
+            },
+            "confidence": 0.9,
+            "source": "social.json"
+        },
+        {
+            "temp_id": "SOCIAL_HANDLE_37ee6403",
+            "type": "SOCIAL_HANDLE",
+            "attributes": {
+                "handle": "@ArjunG",
+                "name": "Arjun Ghosh",
+                "platform": "instagram"
+            },
+            "confidence": 0.9,
+            "source": "social.json"
+        },
+        {
+            "temp_id": "SOCIAL_HANDLE_a36cd127",
+            "type": "SOCIAL_HANDLE",
+            "attributes": {
+                "handle": "@VikramK",
+                "name": "Vikram Khanna",
+                "platform": "facebook"
+            },
+            "confidence": 0.9,
+            "source": "social.json"
+        },
+        {
+            "temp_id": "PLATFORM_65cff8eb",
+            "type": "PLATFORM",
+            "attributes": {
+                "name": "twitter"
+            },
+            "confidence": 1.0,
+            "source": "social.json"
+        },
+        {
+            "temp_id": "PLATFORM_8fe168ec",
+            "type": "PLATFORM",
+            "attributes": {
+                "name": "instagram"
+            },
+            "confidence": 1.0,
+            "source": "social.json"
+        },
+        {
+            "temp_id": "PLATFORM_5acb0323",
+            "type": "PLATFORM",
+            "attributes": {
+                "name": "facebook"
+            },
+            "confidence": 1.0,
+            "source": "social.json"
+        },
+        {
+            "temp_id": "PERSON_1a258f5b",
+            "type": "PERSON",
+            "attributes": {
+                "name": "@VikramK"
+            },
+            "confidence": 0.8,
+            "source": "social.json"
+        },
+        {
+            "temp_id": "LOCATION_6270887a",
+            "type": "LOCATION",
+            "attributes": {
+                "name": "Rahul"
+            },
+            "confidence": 0.8,
+            "source": "social.json"
+        },
+        {
+            "temp_id": "ACC4001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC4001",
+                "risk_score": 0.1,
+                "features": {
+                    "txn_frequency": 1,
+                    "avg_amount": 9500.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 1
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC1001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC1001",
+                "risk_score": 0.82,
+                "features": {
+                    "txn_frequency": 7,
+                    "avg_amount": 9200.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 7
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC9001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC9001",
+                "risk_score": 0.1,
+                "features": {
+                    "txn_frequency": 1,
+                    "avg_amount": 64400.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 1
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC5001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC5001",
+                "risk_score": 0.1,
+                "features": {
+                    "txn_frequency": 1,
+                    "avg_amount": 8900.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 1
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC6001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC6001",
+                "risk_score": 0.1,
+                "features": {
+                    "txn_frequency": 1,
+                    "avg_amount": 9300.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 1
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC3001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC3001",
+                "risk_score": 0.1,
+                "features": {
+                    "txn_frequency": 1,
+                    "avg_amount": 9200.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 1
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC7001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC7001",
+                "risk_score": 0.1,
+                "features": {
+                    "txn_frequency": 1,
+                    "avg_amount": 9100.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 1
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC_HAWALA",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC_HAWALA",
+                "risk_score": 0.1,
+                "features": {}
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC2001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC2001",
+                "risk_score": 0.1,
+                "features": {
+                    "txn_frequency": 1,
+                    "avg_amount": 9400.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 1
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "ACC8001",
+            "type": "ACCOUNT",
+            "attributes": {
+                "account_id": "ACC8001",
+                "risk_score": 0.1,
+                "features": {
+                    "txn_frequency": 1,
+                    "avg_amount": 9000.0,
+                    "night_txn_ratio": 0.0,
+                    "unique_receivers": 1
+                }
+            },
+            "confidence": 0.95,
+            "source": "bank_transaction"
+        },
+        {
+            "temp_id": "CAMERA_001",
+            "type": "CAMERA",
+            "attributes": {
+                "location": "traffic_signal"
+            },
+            "confidence": 1.0,
+            "source": "system"
+        },
+        {
+            "temp_id": "TEMP_3de00d0a",
+            "type": "VEHICLE",
+            "attributes": {
+                "number_plate": "TN09BY9726",
+                "vehicle_brand": "Hyundai",
+                "vehicle_color": "White",
+                "vehicle_type": "Car"
+            },
+            "confidence": 0.9664841923965559,
+            "source": "vehicle_camera"
+        },
+        {
+            "temp_id": "TEMP_c76f9987",
+            "type": "VEHICLE",
+            "attributes": {
+                "number_plate": "MH12AB4589",
+                "vehicle_brand": "Kia",
+                "vehicle_color": "Black",
+                "vehicle_type": "SUV"
+            },
+            "confidence": 0.5320098696167053,
+            "source": "vehicle_camera"
+        },
+        {
+            "temp_id": "TEMP_034677a4",
+            "type": "VEHICLE",
+            "attributes": {
+                "number_plate": "CB24CD7788",
+                "vehicle_brand": "Yamaha",
+                "vehicle_color": "Red",
+                "vehicle_type": "Bike"
+            },
+            "confidence": 0.5973557175167218,
+            "source": "vehicle_camera"
+        }
+    ],
+    "relations": [
+        {
+            "source": "TEMP_1990c6f3",
+            "target": "TEMP_043f77b2",
+            "relation": "TRANSFERRED_MONEY",
+            "attributes": {},
+            "timestamp": "2026-05-29T21:00:00",
+            "confidence": 0.75,
+            "source_type": "fir_document"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "PHONE_a059bc58",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 185,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 20:30:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "TOWER_b04e4f24",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 20:30:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_a059bc58",
+            "target": "PHONE_60273b11",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 60,
+                "call_type": "INCOMING"
+            },
+            "timestamp": "2026-05-22 20:45:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_a059bc58",
+            "target": "TOWER_1159a334",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 20:45:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "PHONE_f924f375",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 240,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 20:55:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "TOWER_b04e4f24",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 20:55:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_f924f375",
+            "target": "PHONE_60273b11",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 90,
+                "call_type": "INCOMING"
+            },
+            "timestamp": "2026-05-22 21:05:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_f924f375",
+            "target": "TOWER_a21d00a3",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 21:05:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "PHONE_562a6b77",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 310,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 21:10:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "TOWER_b04e4f24",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 21:10:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_562a6b77",
+            "target": "PHONE_60273b11",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 45,
+                "call_type": "INCOMING"
+            },
+            "timestamp": "2026-05-22 21:15:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_562a6b77",
+            "target": "TOWER_49cc2d20",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 21:15:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_a059bc58",
+            "target": "PHONE_f924f375",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 200,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 21:20:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_a059bc58",
+            "target": "TOWER_1159a334",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 21:20:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "PHONE_a059bc58",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 320,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 21:35:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "TOWER_b04e4f24",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 21:35:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_f924f375",
+            "target": "PHONE_562a6b77",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 180,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 21:45:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_f924f375",
+            "target": "TOWER_a21d00a3",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 21:45:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_562a6b77",
+            "target": "PHONE_a059bc58",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 75,
+                "call_type": "INCOMING"
+            },
+            "timestamp": "2026-05-22 22:00:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_562a6b77",
+            "target": "TOWER_49cc2d20",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 22:00:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "PHONE_f924f375",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 240,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 22:05:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "TOWER_b04e4f24",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 22:05:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_f924f375",
+            "target": "PHONE_a059bc58",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 130,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 22:20:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_f924f375",
+            "target": "TOWER_a21d00a3",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 22:20:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_562a6b77",
+            "target": "PHONE_60273b11",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 45,
+                "call_type": "INCOMING"
+            },
+            "timestamp": "2026-05-22 22:35:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_562a6b77",
+            "target": "TOWER_b04e4f24",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 22:35:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "PHONE_562a6b77",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 165,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 22:50:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_60273b11",
+            "target": "TOWER_b04e4f24",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 22:50:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_a059bc58",
+            "target": "PHONE_562a6b77",
+            "relation": "CALLED",
+            "attributes": {
+                "duration": 95,
+                "call_type": "OUTGOING"
+            },
+            "timestamp": "2026-05-22 23:00:00",
+            "confidence": 0.99,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "PHONE_a059bc58",
+            "target": "TOWER_1159a334",
+            "relation": "CONNECTED_TO_TOWER",
+            "attributes": {},
+            "timestamp": "2026-05-22 23:00:00",
+            "confidence": 0.95,
+            "source_type": "cdr_record"
+        },
+        {
+            "source": "DEVICE_bbee2aac",
+            "target": "LOCATION_6376570b",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 4.2,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T20:30:00",
+            "confidence": 0.95,
+            "source_type": "mobile_gps"
+        },
+        {
+            "source": "DEVICE_bbee2aac",
+            "target": "LOCATION_eb0d8b3a",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 3.9,
+                "speed": 2.5
+            },
+            "timestamp": "2026-05-22T20:45:00",
+            "confidence": 0.95,
+            "source_type": "mobile_gps"
+        },
+        {
+            "source": "LOCATION_6376570b",
+            "target": "LOCATION_eb0d8b3a",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 30.27
+            },
+            "timestamp": "2026-05-22T20:45:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "DEVICE_bbee2aac",
+            "target": "LOCATION_6376570b",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 5.1,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T21:00:00",
+            "confidence": 0.95,
+            "source_type": "mobile_gps"
+        },
+        {
+            "source": "LOCATION_eb0d8b3a",
+            "target": "LOCATION_6376570b",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 30.27
+            },
+            "timestamp": "2026-05-22T21:00:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "DEVICE_bbee2aac",
+            "target": "LOCATION_98d84913",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 4.5,
+                "speed": 3.0
+            },
+            "timestamp": "2026-05-22T21:30:00",
+            "confidence": 0.95,
+            "source_type": "mobile_gps"
+        },
+        {
+            "source": "LOCATION_6376570b",
+            "target": "LOCATION_98d84913",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 67.93
+            },
+            "timestamp": "2026-05-22T21:30:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "DEVICE_bbee2aac",
+            "target": "LOCATION_674fed29",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 4.8,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T22:05:00",
+            "confidence": 0.95,
+            "source_type": "mobile_gps"
+        },
+        {
+            "source": "LOCATION_98d84913",
+            "target": "LOCATION_674fed29",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 23.35
+            },
+            "timestamp": "2026-05-22T22:05:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "DEVICE_bbee2aac",
+            "target": "LOCATION_02a000e5",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 5.2,
+                "speed": 8.5
+            },
+            "timestamp": "2026-05-22T22:20:00",
+            "confidence": 0.95,
+            "source_type": "mobile_gps"
+        },
+        {
+            "source": "LOCATION_674fed29",
+            "target": "LOCATION_02a000e5",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 221.63
+            },
+            "timestamp": "2026-05-22T22:20:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "DEVICE_bbee2aac",
+            "target": "LOCATION_70c8e8eb",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 4.7,
+                "speed": 15.0
+            },
+            "timestamp": "2026-05-22T22:35:00",
+            "confidence": 0.95,
+            "source_type": "mobile_gps"
+        },
+        {
+            "source": "LOCATION_02a000e5",
+            "target": "LOCATION_70c8e8eb",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 908.09
+            },
+            "timestamp": "2026-05-22T22:35:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "PHONE_NUMBER_8ee2d8c2",
+            "target": "LOCATION_b0e43edd",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 120.0,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T20:31:00",
+            "confidence": 0.95,
+            "source_type": "telecom_tower"
+        },
+        {
+            "source": "PHONE_NUMBER_8ee2d8c2",
+            "target": "LOCATION_7845d8b5",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 115.0,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T21:35:00",
+            "confidence": 0.95,
+            "source_type": "telecom_tower"
+        },
+        {
+            "source": "LOCATION_b0e43edd",
+            "target": "LOCATION_7845d8b5",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 30.27
+            },
+            "timestamp": "2026-05-22T21:35:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "PHONE_NUMBER_5a789d3d",
+            "target": "LOCATION_4d0e1ee2",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 140.0,
+                "speed": 5.5
+            },
+            "timestamp": "2026-05-22T20:45:00",
+            "confidence": 0.95,
+            "source_type": "telecom_tower"
+        },
+        {
+            "source": "PHONE_NUMBER_5a789d3d",
+            "target": "LOCATION_663725f1",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 135.0,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T21:20:00",
+            "confidence": 0.95,
+            "source_type": "telecom_tower"
+        },
+        {
+            "source": "LOCATION_4d0e1ee2",
+            "target": "LOCATION_663725f1",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 37.99
+            },
+            "timestamp": "2026-05-22T21:20:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "PHONE_NUMBER_4ed7fadd",
+            "target": "LOCATION_f2cf56f0",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 130.0,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T21:00:00",
+            "confidence": 0.95,
+            "source_type": "telecom_tower"
+        },
+        {
+            "source": "PHONE_NUMBER_4ed7fadd",
+            "target": "LOCATION_926aedc0",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 145.0,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T22:40:00",
+            "confidence": 0.95,
+            "source_type": "telecom_tower"
+        },
+        {
+            "source": "LOCATION_f2cf56f0",
+            "target": "LOCATION_926aedc0",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 2574.96
+            },
+            "timestamp": "2026-05-22T22:40:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "VEHICLE_4398a420",
+            "target": "LOCATION_6376570b",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 3.5,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T21:00:00",
+            "confidence": 0.95,
+            "source_type": "vehicle_tracker"
+        },
+        {
+            "source": "VEHICLE_4398a420",
+            "target": "LOCATION_70c8e8eb",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 3.2,
+                "speed": 35.0
+            },
+            "timestamp": "2026-05-22T21:30:00",
+            "confidence": 0.95,
+            "source_type": "vehicle_tracker"
+        },
+        {
+            "source": "LOCATION_6376570b",
+            "target": "LOCATION_70c8e8eb",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 1169.93
+            },
+            "timestamp": "2026-05-22T21:30:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "VEHICLE_4398a420",
+            "target": "LOCATION_926aedc0",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 3.8,
+                "speed": 42.0
+            },
+            "timestamp": "2026-05-22T22:10:00",
+            "confidence": 0.95,
+            "source_type": "vehicle_tracker"
+        },
+        {
+            "source": "LOCATION_70c8e8eb",
+            "target": "LOCATION_926aedc0",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 3069.25
+            },
+            "timestamp": "2026-05-22T22:10:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "WEARABLE_DEVICE_cc0181fb",
+            "target": "LOCATION_062ad478",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 6.5,
+                "speed": 2.1
+            },
+            "timestamp": "2026-05-22T20:58:00",
+            "confidence": 0.95,
+            "source_type": "wearable_device"
+        },
+        {
+            "source": "WEARABLE_DEVICE_cc0181fb",
+            "target": "LOCATION_504eb4a9",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 6.2,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T21:15:00",
+            "confidence": 0.95,
+            "source_type": "wearable_device"
+        },
+        {
+            "source": "LOCATION_062ad478",
+            "target": "LOCATION_504eb4a9",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 15.14
+            },
+            "timestamp": "2026-05-22T21:15:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "WEARABLE_DEVICE_cc0181fb",
+            "target": "LOCATION_90d85366",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 5.9,
+                "speed": 4.5
+            },
+            "timestamp": "2026-05-22T21:30:00",
+            "confidence": 0.95,
+            "source_type": "wearable_device"
+        },
+        {
+            "source": "LOCATION_504eb4a9",
+            "target": "LOCATION_90d85366",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 90.81
+            },
+            "timestamp": "2026-05-22T21:30:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "WEARABLE_DEVICE_cc0181fb",
+            "target": "LOCATION_926aedc0",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 7.1,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T22:38:00",
+            "confidence": 0.95,
+            "source_type": "wearable_device"
+        },
+        {
+            "source": "LOCATION_90d85366",
+            "target": "LOCATION_926aedc0",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 2591.29
+            },
+            "timestamp": "2026-05-22T22:38:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "TRACKER_098d4a41",
+            "target": "LOCATION_6376570b",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 2.5,
+                "speed": 0.0
+            },
+            "timestamp": "2026-05-22T20:55:00",
+            "confidence": 0.95,
+            "source_type": "asset_tracker"
+        },
+        {
+            "source": "TRACKER_098d4a41",
+            "target": "LOCATION_f64d9650",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 2.3,
+                "speed": 52.0
+            },
+            "timestamp": "2026-05-22T21:45:00",
+            "confidence": 0.95,
+            "source_type": "asset_tracker"
+        },
+        {
+            "source": "LOCATION_6376570b",
+            "target": "LOCATION_f64d9650",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 3305.17
+            },
+            "timestamp": "2026-05-22T21:45:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "TRACKER_098d4a41",
+            "target": "LOCATION_6a3e06f9",
+            "relation": "LOCATED_AT",
+            "attributes": {
+                "accuracy": 2.1,
+                "speed": 65.0
+            },
+            "timestamp": "2026-05-22T22:40:00",
+            "confidence": 0.95,
+            "source_type": "asset_tracker"
+        },
+        {
+            "source": "LOCATION_f64d9650",
+            "target": "LOCATION_6a3e06f9",
+            "relation": "MOVED_TO",
+            "attributes": {
+                "distance_meters": 9079.56
+            },
+            "timestamp": "2026-05-22T22:40:00",
+            "confidence": 0.9,
+            "source_type": "gps_analysis"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_3c3e4acc",
+            "relation": "EMAILED",
+            "attributes": {
+                "subject": "Tonight's Operation - Final Plan",
+                "is_reply": false,
+                "forensic_signals": {
+                    "requests_otp": false,
+                    "impersonates_bank": false,
+                    "requests_account_info": false,
+                    "urgency_language": false,
+                    "delete_instruction": true
+                }
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.97,
+            "provenance": "emails.txt:header"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_aa18d03b",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_fdeac208",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_641466e5",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_769b0f3d",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_9ef79d16",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_91acb2b8",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_0afea4cc",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PERSON_7d31d572",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "PHONE_NUMBER_4cddb368",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "EMAIL_ADDRESS_60d878bd",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_a19696d9",
+            "target": "EMAIL_ADDRESS_3a04a5cd",
+            "relation": "MENTIONED",
+            "attributes": {
+                "context": "email_body"
+            },
+            "timestamp": "2026-05-22T19:45:00+05:30",
+            "confidence": 0.75,
+            "provenance": "emails.txt:body"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Arjun, tonight is the night. Park Street, 9 PM sharp.",
+                "platform": "whatsapp/telegram",
+                "message_index": 0,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T20:15:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_0"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Confirmed. Vikram is also on standby near Park Street.",
+                "platform": "whatsapp/telegram",
+                "message_index": 1,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T20:17:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_1"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PERSON_aa18d03b",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 1
+            },
+            "timestamp": "2026-05-22T20:17:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_1"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "I will use ANDROID_001. Keep 9876543210 active at all times.",
+                "platform": "whatsapp/telegram",
+                "message_index": 2,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T20:20:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_2"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PERSON_2855f216",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 2
+            },
+            "timestamp": "2026-05-22T20:20:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_2"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PHONE_NUMBER_4cddb368",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 2
+            },
+            "timestamp": "2026-05-22T20:20:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_2"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Rajan confirmed the mule accounts are ready. All below 10k each transfer.",
+                "platform": "whatsapp/telegram",
+                "message_index": 3,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": true,
+                    "has_target_ref": false,
+                    "has_coordination": true
+                }
+            },
+            "timestamp": "2026-05-22T20:22:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_3"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PERSON_7d31d572",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 3
+            },
+            "timestamp": "2026-05-22T20:22:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_3"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Good. ACC1001 will initiate. Split into at least 7 tranches.",
+                "platform": "whatsapp/telegram",
+                "message_index": 4,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T20:25:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_4"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PERSON_59fe9d31",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 4
+            },
+            "timestamp": "2026-05-22T20:25:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_4"
+        },
+        {
+            "source": "PERSON_aa18d03b",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "WATCH_ABC shows I am 500 meters from Park Street. Arriving in 5 minutes.",
+                "platform": "whatsapp/telegram",
+                "message_index": 5,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T20:30:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_5"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Arjun, transfer work will happen near Park Street tonight.",
+                "platform": "whatsapp/telegram",
+                "message_index": 6,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": true,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T20:45:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_6"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "I am ready. Coordinate with Vikram before withdrawing.",
+                "platform": "whatsapp/telegram",
+                "message_index": 7,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": true
+                }
+            },
+            "timestamp": "2026-05-22T20:47:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_7"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PERSON_aa18d03b",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 7
+            },
+            "timestamp": "2026-05-22T20:47:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_7"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Use ANDROID_001 and keep 9876543210 active.",
+                "platform": "whatsapp/telegram",
+                "message_index": 8,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T20:50:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_8"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PHONE_NUMBER_4cddb368",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 8
+            },
+            "timestamp": "2026-05-22T20:50:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_8"
+        },
+        {
+            "source": "PERSON_aa18d03b",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "WATCH_ABC shows I am close to Park Street. In position.",
+                "platform": "whatsapp/telegram",
+                "message_index": 9,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T21:05:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_9"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Rahul, Rajan just confirmed all 7 sub-accounts are live.",
+                "platform": "whatsapp/telegram",
+                "message_index": 10,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T21:10:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_10"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "ACC1001 should send the amount in small parts, below 9500 each.",
+                "platform": "whatsapp/telegram",
+                "message_index": 11,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": true,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T21:20:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_11"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PERSON_59fe9d31",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 11
+            },
+            "timestamp": "2026-05-22T21:20:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_11"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Starting transfers now. Delete this chat after reading.",
+                "platform": "whatsapp/telegram",
+                "message_index": 12,
+                "forensic_signals": {
+                    "has_urgency": true,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T21:25:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_12"
+        },
+        {
+            "source": "PERSON_aa18d03b",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Cash in hand. Moving to Howrah Station now for delivery.",
+                "platform": "whatsapp/telegram",
+                "message_index": 13,
+                "forensic_signals": {
+                    "has_urgency": true,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T21:45:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_13"
+        },
+        {
+            "source": "PERSON_aa18d03b",
+            "target": "PERSON_fdeac208",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 13
+            },
+            "timestamp": "2026-05-22T21:45:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_13"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Confirm when Vikram reaches Howrah. I will alert Rajan.",
+                "platform": "whatsapp/telegram",
+                "message_index": 14,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": true
+                }
+            },
+            "timestamp": "2026-05-22T22:05:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_14"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PERSON_aa18d03b",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 14
+            },
+            "timestamp": "2026-05-22T22:05:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_14"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PERSON_9ef79d16",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 14
+            },
+            "timestamp": "2026-05-22T22:05:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_14"
+        },
+        {
+            "source": "PERSON_4bf64d0f",
+            "target": "PERSON_7d31d572",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 14
+            },
+            "timestamp": "2026-05-22T22:05:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_14"
+        },
+        {
+            "source": "PERSON_aa18d03b",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Reached Howrah Station. Package handed over successfully.",
+                "platform": "whatsapp/telegram",
+                "message_index": 15,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T22:38:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_15"
+        },
+        {
+            "source": "PERSON_aa18d03b",
+            "target": "PERSON_adb0c10c",
+            "relation": "MENTIONED",
+            "attributes": {
+                "message_index": 15
+            },
+            "timestamp": "2026-05-22T22:38:00",
+            "confidence": 0.75,
+            "provenance": "chat.txt:message_15"
+        },
+        {
+            "source": "PERSON_0e9f6d6d",
+            "target": "PLATFORM_1efa6d44",
+            "relation": "MESSAGED",
+            "attributes": {
+                "text": "Good work everyone. Clear your devices.",
+                "platform": "whatsapp/telegram",
+                "message_index": 16,
+                "forensic_signals": {
+                    "has_urgency": false,
+                    "has_money_ref": false,
+                    "has_target_ref": false,
+                    "has_coordination": false
+                }
+            },
+            "timestamp": "2026-05-22T22:40:00",
+            "confidence": 0.95,
+            "provenance": "chat.txt:message_16"
+        },
+        {
+            "source": "SOCIAL_HANDLE_3cf789d2",
+            "target": "PLATFORM_65cff8eb",
+            "relation": "POSTED_ON",
+            "attributes": {
+                "post_id": "tatva_post_001",
+                "content": "Big plans for tonight near Park Street. @ArjunG keep the account ready. All systems go.",
+                "hashtags": [
+                    "kolkata",
+                    "tonight"
+                ]
+            },
+            "timestamp": "2026-05-22T20:40:00+05:30",
+            "confidence": 0.95,
+            "provenance": "social.json:post_tatva_post_001"
+        },
+        {
+            "source": "SOCIAL_HANDLE_3cf789d2",
+            "target": "SOCIAL_HANDLE_37ee6403",
+            "relation": "MENTIONED_USER",
+            "attributes": {
+                "post_id": "tatva_post_001"
+            },
+            "timestamp": "2026-05-22T20:40:00+05:30",
+            "confidence": 0.85,
+            "provenance": "social.json:post_tatva_post_001"
+        },
+        {
+            "source": "SOCIAL_HANDLE_37ee6403",
+            "target": "PLATFORM_8fe168ec",
+            "relation": "POSTED_ON",
+            "attributes": {
+                "post_id": "tatva_post_002",
+                "content": "Waiting near Park Street. Rahul said Vikram will confirm after the call. Everything on schedule.",
+                "hashtags": [
+                    "meet",
+                    "kolkata"
+                ]
+            },
+            "timestamp": "2026-05-22T21:10:00+05:30",
+            "confidence": 0.95,
+            "provenance": "social.json:post_tatva_post_002"
+        },
+        {
+            "source": "SOCIAL_HANDLE_37ee6403",
+            "target": "SOCIAL_HANDLE_3cf789d2",
+            "relation": "MENTIONED_USER",
+            "attributes": {
+                "post_id": "tatva_post_002"
+            },
+            "timestamp": "2026-05-22T21:10:00+05:30",
+            "confidence": 0.85,
+            "provenance": "social.json:post_tatva_post_002"
+        },
+        {
+            "source": "SOCIAL_HANDLE_37ee6403",
+            "target": "PERSON_aa18d03b",
+            "relation": "MENTIONED",
+            "attributes": {
+                "post_id": "tatva_post_002"
+            },
+            "timestamp": "2026-05-22T21:10:00+05:30",
+            "confidence": 0.7,
+            "provenance": "social.json:post_tatva_post_002"
+        },
+        {
+            "source": "SOCIAL_HANDLE_a36cd127",
+            "target": "PLATFORM_5acb0323",
+            "relation": "POSTED_ON",
+            "attributes": {
+                "post_id": "tatva_post_003",
+                "content": "Reached Howrah Station after the withdrawal. Device WATCH_ABC is still on. Job done.",
+                "hashtags": [
+                    "movement",
+                    "done"
+                ]
+            },
+            "timestamp": "2026-05-22T22:05:00+05:30",
+            "confidence": 0.95,
+            "provenance": "social.json:post_tatva_post_003"
+        },
+        {
+            "source": "SOCIAL_HANDLE_a36cd127",
+            "target": "PERSON_adb0c10c",
+            "relation": "MENTIONED",
+            "attributes": {
+                "post_id": "tatva_post_003"
+            },
+            "timestamp": "2026-05-22T22:05:00+05:30",
+            "confidence": 0.7,
+            "provenance": "social.json:post_tatva_post_003"
+        },
+        {
+            "source": "SOCIAL_HANDLE_3cf789d2",
+            "target": "PLATFORM_65cff8eb",
+            "relation": "POSTED_ON",
+            "attributes": {
+                "post_id": "tatva_post_004",
+                "content": "Using ANDROID_001 tonight. Transfers split as planned across 7 accounts. @ArjunG confirm receipt.",
+                "hashtags": [
+                    "transfer",
+                    "plan"
+                ]
+            },
+            "timestamp": "2026-05-22T20:15:00+05:30",
+            "confidence": 0.95,
+            "provenance": "social.json:post_tatva_post_004"
+        },
+        {
+            "source": "SOCIAL_HANDLE_3cf789d2",
+            "target": "SOCIAL_HANDLE_37ee6403",
+            "relation": "MENTIONED_USER",
+            "attributes": {
+                "post_id": "tatva_post_004"
+            },
+            "timestamp": "2026-05-22T20:15:00+05:30",
+            "confidence": 0.85,
+            "provenance": "social.json:post_tatva_post_004"
+        },
+        {
+            "source": "SOCIAL_HANDLE_37ee6403",
+            "target": "PLATFORM_8fe168ec",
+            "relation": "POSTED_ON",
+            "attributes": {
+                "post_id": "tatva_post_005",
+                "content": "All clear. @VikramK handled the delivery perfectly. Rajan confirmed receipt at Howrah.",
+                "hashtags": [
+                    "success"
+                ]
+            },
+            "timestamp": "2026-05-22T22:45:00+05:30",
+            "confidence": 0.95,
+            "provenance": "social.json:post_tatva_post_005"
+        },
+        {
+            "source": "SOCIAL_HANDLE_37ee6403",
+            "target": "SOCIAL_HANDLE_a36cd127",
+            "relation": "MENTIONED_USER",
+            "attributes": {
+                "post_id": "tatva_post_005"
+            },
+            "timestamp": "2026-05-22T22:45:00+05:30",
+            "confidence": 0.85,
+            "provenance": "social.json:post_tatva_post_005"
+        },
+        {
+            "source": "SOCIAL_HANDLE_37ee6403",
+            "target": "PERSON_1a258f5b",
+            "relation": "MENTIONED",
+            "attributes": {
+                "post_id": "tatva_post_005"
+            },
+            "timestamp": "2026-05-22T22:45:00+05:30",
+            "confidence": 0.7,
+            "provenance": "social.json:post_tatva_post_005"
+        },
+        {
+            "source": "SOCIAL_HANDLE_37ee6403",
+            "target": "PERSON_9ef79d16",
+            "relation": "MENTIONED",
+            "attributes": {
+                "post_id": "tatva_post_005"
+            },
+            "timestamp": "2026-05-22T22:45:00+05:30",
+            "confidence": 0.7,
+            "provenance": "social.json:post_tatva_post_005"
+        },
+        {
+            "source": "SOCIAL_HANDLE_a36cd127",
+            "target": "PLATFORM_5acb0323",
+            "relation": "POSTED_ON",
+            "attributes": {
+                "post_id": "tatva_post_006",
+                "content": "Parked the white Hyundai TN09BY9726 near Park Street. Waiting for signal from Rahul.",
+                "hashtags": [
+                    "standby",
+                    "kolkata"
+                ]
+            },
+            "timestamp": "2026-05-22T21:00:00+05:30",
+            "confidence": 0.95,
+            "provenance": "social.json:post_tatva_post_006"
+        },
+        {
+            "source": "SOCIAL_HANDLE_a36cd127",
+            "target": "PERSON_91acb2b8",
+            "relation": "MENTIONED",
+            "attributes": {
+                "post_id": "tatva_post_006"
+            },
+            "timestamp": "2026-05-22T21:00:00+05:30",
+            "confidence": 0.7,
+            "provenance": "social.json:post_tatva_post_006"
+        },
+        {
+            "source": "SOCIAL_HANDLE_a36cd127",
+            "target": "LOCATION_6270887a",
+            "relation": "MENTIONED",
+            "attributes": {
+                "post_id": "tatva_post_006"
+            },
+            "timestamp": "2026-05-22T21:00:00+05:30",
+            "confidence": 0.7,
+            "provenance": "social.json:post_tatva_post_006"
+        },
+        {
+            "source": "ACC1001",
+            "target": "ACC2001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9400,
+                "transaction_type": "UPI",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:11:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC1001",
+            "target": "ACC3001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9200,
+                "transaction_type": "UPI",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:12:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC1001",
+            "target": "ACC4001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9500,
+                "transaction_type": "UPI",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:13:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC1001",
+            "target": "ACC5001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 8900,
+                "transaction_type": "UPI",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:14:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC1001",
+            "target": "ACC6001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9300,
+                "transaction_type": "UPI",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:15:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC1001",
+            "target": "ACC7001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9100,
+                "transaction_type": "UPI",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:16:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC1001",
+            "target": "ACC8001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9000,
+                "transaction_type": "UPI",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:17:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC2001",
+            "target": "ACC9001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9400,
+                "transaction_type": "IMPS",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:35:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC3001",
+            "target": "ACC9001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9200,
+                "transaction_type": "IMPS",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:36:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC4001",
+            "target": "ACC9001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9500,
+                "transaction_type": "IMPS",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:37:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC5001",
+            "target": "ACC9001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 8900,
+                "transaction_type": "IMPS",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:38:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC6001",
+            "target": "ACC9001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9300,
+                "transaction_type": "IMPS",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:39:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC7001",
+            "target": "ACC9001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9100,
+                "transaction_type": "IMPS",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:40:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC8001",
+            "target": "ACC9001",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 9000,
+                "transaction_type": "IMPS",
+                "location": "Kolkata"
+            },
+            "timestamp": "2026-05-22 21:41:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "ACC9001",
+            "target": "ACC_HAWALA",
+            "relation": "TRANSFERRED_TO",
+            "attributes": {
+                "amount": 64400,
+                "transaction_type": "NEFT",
+                "location": "Mumbai"
+            },
+            "timestamp": "2026-05-22 22:05:00",
+            "confidence": 0.99,
+            "source_type": "bank_transaction"
+        },
+        {
+            "source": "CAMERA_001",
+            "target": "TEMP_3de00d0a",
+            "relation": "DETECTED",
+            "attributes": {},
+            "timestamp": "2026-05-29T23:30:07.719349",
+            "confidence": 0.95,
+            "source_type": "vehicle_camera"
+        },
+        {
+            "source": "CAMERA_001",
+            "target": "TEMP_c76f9987",
+            "relation": "DETECTED",
+            "attributes": {},
+            "timestamp": "2026-05-29T23:30:09.733647",
+            "confidence": 0.95,
+            "source_type": "vehicle_camera"
+        },
+        {
+            "source": "CAMERA_001",
+            "target": "TEMP_034677a4",
+            "relation": "DETECTED",
+            "attributes": {},
+            "timestamp": "2026-05-29T23:30:11.656211",
+            "confidence": 0.95,
+            "source_type": "vehicle_camera"
+        }
+    ]
+}

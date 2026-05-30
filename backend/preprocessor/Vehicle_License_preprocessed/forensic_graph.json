@@ -1,0 +1,78 @@
+{
+    "entities": [
+        {
+            "temp_id": "CAMERA_001",
+            "type": "CAMERA",
+            "attributes": {
+                "location": "traffic_signal"
+            },
+            "confidence": 1.0,
+            "source": "system"
+        },
+        {
+            "temp_id": "TEMP_3768c5f8",
+            "type": "VEHICLE",
+            "attributes": {
+                "number_plate": "TN09BY9726",
+                "vehicle_brand": "Hyundai",
+                "vehicle_color": "White",
+                "vehicle_type": "Car"
+            },
+            "confidence": 0.9664841923965559,
+            "source": "vehicle_camera"
+        },
+        {
+            "temp_id": "TEMP_c1fe450c",
+            "type": "VEHICLE",
+            "attributes": {
+                "number_plate": "MH12AB4589",
+                "vehicle_brand": "Kia",
+                "vehicle_color": "Black",
+                "vehicle_type": "SUV"
+            },
+            "confidence": 0.5320098696167053,
+            "source": "vehicle_camera"
+        },
+        {
+            "temp_id": "TEMP_983f564d",
+            "type": "VEHICLE",
+            "attributes": {
+                "number_plate": "CB24CD7788",
+                "vehicle_brand": "Yamaha",
+                "vehicle_color": "Red",
+                "vehicle_type": "Bike"
+            },
+            "confidence": 0.5973557175167218,
+            "source": "vehicle_camera"
+        }
+    ],
+    "relations": [
+        {
+            "source": "CAMERA_001",
+            "target": "TEMP_3768c5f8",
+            "relation": "DETECTED",
+            "attributes": {},
+            "timestamp": "2026-05-28T21:00:00",
+            "confidence": 0.95,
+            "source_type": "vehicle_camera"
+        },
+        {
+            "source": "CAMERA_001",
+            "target": "TEMP_c1fe450c",
+            "relation": "DETECTED",
+            "attributes": {},
+            "timestamp": "2026-05-28T21:00:00",
+            "confidence": 0.95,
+            "source_type": "vehicle_camera"
+        },
+        {
+            "source": "CAMERA_001",
+            "target": "TEMP_983f564d",
+            "relation": "DETECTED",
+            "attributes": {},
+            "timestamp": "2026-05-28T21:00:00",
+            "confidence": 0.95,
+            "source_type": "vehicle_camera"
+        }
+    ]
+}

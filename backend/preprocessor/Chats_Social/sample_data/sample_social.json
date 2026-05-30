@@ -1,0 +1,32 @@
+[
+  {
+    "post_id": "post001",
+    "platform": "twitter",
+    "author_handle": "@RajanB",
+    "author_name": "Rajan",
+    "timestamp": "2024-03-01 22:15:00 +0530",
+    "content": "Transfer 50000 to @ArjunG at Kolkata tonight, ready to move funds.",
+    "mentions": ["@ArjunG"],
+    "hashtags": ["money", "urgent"]
+  },
+  {
+    "post_id": "post002",
+    "platform": "facebook",
+    "author_handle": "@PriyaP",
+    "author_name": "Priya",
+    "timestamp": "2024-03-02 09:30:00 +0530",
+    "content": "Need SIM swap asap, OTP is 123456, meet at 5 PM.",
+    "mentions": ["@RajanB"],
+    "hashtags": ["swap"]
+  },
+  {
+    "post_id": "post003",
+    "platform": "instagram",
+    "author_handle": "@ArjunG",
+    "author_name": "Arjun",
+    "timestamp": "2024-03-03 18:45:00 +0530",
+    "content": "Received the cash, 47000 credited, thanks @RajanB.",
+    "mentions": ["@RajanB"],
+    "hashtags": ["cash"]
+  }
+]

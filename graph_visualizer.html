@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tatva AI Forensic Graph Visualizer</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Vis.js library for physics-enabled 2D interactive graphs -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --bg-panel: rgba(17, 24, 39, 0.85);
+            --bg-input: #1f2937;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-glow: 0 0 15px rgba(6, 182, 212, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Loading / Drag-and-drop Overlay */
+        #drop-zone {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(11, 15, 25, 0.95);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 3px dashed var(--accent-cyan);
+            margin: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 30px rgba(6, 182, 212, 0.1);
+        }
+
+        #drop-zone.dragover {
+            background-color: rgba(6, 182, 212, 0.08);
+            border-color: var(--accent-blue);
+        }
+
+        .drop-icon {
+            font-size: 64px;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .drop-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 8px;
+        }
+
+        .drop-desc {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            max-width: 400px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .btn-upload {
+            background-color: var(--accent-cyan);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-upload:hover {
+            background-color: #22d3ee;
+            transform: translateY(-1px);
+        }
+
+        /* Main Workspace */
+        #main-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Sidebar Control Panel */
+        #sidebar {
+            width: 340px;
+            background-color: var(--bg-panel);
+            backdrop-filter: blur(16px);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            transition: transform 0.3s ease;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-tag {
+            background-color: rgba(6, 182, 212, 0.1);
+            color: var(--accent-cyan);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        /* Form elements */
+        .search-box {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.15);
+        }
+
+        /* Filters checkbox list */
+        .filter-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-custom {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-input);
+            border-radius: 4px;
+            position: relative;
+            display: inline-block;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        input[type="checkbox"]:checked + .checkbox-custom {
+            background-color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        input[type="checkbox"]:checked + .checkbox-custom::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid #000;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .node-count-badge {
+            font-size: 11px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1px 6px;
+            border-radius: 10px;
+            color: var(--text-muted);
+        }
+
+        /* Color legends */
+        .color-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Center Canvas container */
+        #canvas-container {
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        #network-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Floating Details Panel */
+        #details-panel {
+            width: 360px;
+            background-color: var(--bg-panel);
+            backdrop-filter: blur(16px);
+            border-left: 1px solid var(--border-color);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #details-panel.open {
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--accent-red);
+        }
+
+        .panel-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .info-card {
+            background-color: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            word-break: break-all;
+        }
+
+        .info-value-mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            background-color: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.03);
+            margin-top: 4px;
+        }
+
+        /* Stats Display bar */
+        #stats-hud {
+            position: absolute;
+            top: 24px;
+            left: 364px;
+            background-color: var(--bg-panel);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 20px;
+            display: flex;
+            gap: 24px;
+            z-index: 5;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .hud-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hud-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .hud-val {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        /* Action Buttons */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-action {
+            flex: 1;
+            background-color: rgba(255,255,255,0.05);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: var(--accent-cyan);
+        }
+
+        .btn-reset {
+            margin-top: 20px;
+            width: 100%;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset:hover {
+            background-color: rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Upload/Drag zone overlay -->
+    <div id="drop-zone">
+        <div class="drop-icon">🌐</div>
+        <h2 class="drop-title">Tatva AI Knowledge Graph</h2>
+        <p class="drop-desc">Drag and drop your resolved <strong>unified_graph.json</strong> file here, or click the button below to browse and visualize.</p>
+        <button class="btn-upload" onclick="document.getElementById('file-input').click()">Browse JSON File</button>
+        <input type="file" id="file-input" style="display: none;" accept=".json">
+    </div>
+
+    <!-- Main visualizer workspace -->
+    <div id="main-container">
+        
+        <!-- Sidebar Panel -->
+        <div id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-title">TATVA FORENSICS <span class="brand-tag">AI v1.1</span></div>
+            </div>
+            
+            <div class="sidebar-scroll">
+                
+                <!-- Search -->
+                <div class="section-title">Search Entities</div>
+                <div class="search-box">
+                    <input type="text" id="search-input" class="search-input" placeholder="Search by name, ID or values...">
+                </div>
+
+                <!-- Node Filters -->
+                <div class="section-title">
+                    <span>Node Types</span>
+                    <span id="node-types-count">0</span>
+                </div>
+                <div id="node-filters-list">
+                    <!-- Dynamic node filters -->
+                </div>
+
+                <!-- Edge Filters -->
+                <div class="section-title">
+                    <span>Relation Types</span>
+                    <span id="edge-types-count">0</span>
+                </div>
+                <div id="edge-filters-list">
+                    <!-- Dynamic edge filters -->
+                </div>
+
+                <!-- Simulation Settings -->
+                <div class="section-title">Graph Settings</div>
+                <div class="filter-item">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="toggle-physics" checked>
+                        <span class="checkbox-custom"></span>
+                        Enable Physics Force
+                    </label>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn-action" onclick="stabilizeGraph()">Stabilize</button>
+                    <button class="btn-action" onclick="resetZoom()">Reset View</button>
+                </div>
+
+                <button class="btn-reset" onclick="reloadFile()">Load Different File</button>
+
+            </div>
+        </div>
+
+        <!-- Center Interactive Area -->
+        <div id="canvas-container">
+            
+            <!-- Statistics HUD -->
+            <div id="stats-hud">
+                <div class="hud-stat">
+                    <span class="hud-label">Master Entities</span>
+                    <span class="hud-val" id="hud-total-nodes">0</span>
+                </div>
+                <div class="hud-stat">
+                    <span class="hud-label">Relations</span>
+                    <span class="hud-val" id="hud-total-edges">0</span>
+                </div>
+                <div class="hud-stat">
+                    <span class="hud-label">Density</span>
+                    <span class="hud-val" id="hud-density">0.00</span>
+                </div>
+            </div>
+
+            <!-- Vis.js canvas target -->
+            <div id="network-canvas"></div>
+
+        </div>
+
+        <!-- Sliding Details Panel -->
+        <div id="details-panel">
+            <div class="panel-header">
+                <h3 id="panel-title" style="font-weight: 700; font-size: 16px;">Entity Profile</h3>
+                <button class="close-btn" onclick="closeDetailsPanel()">&times;</button>
+            </div>
+            
+            <div class="panel-scroll" id="panel-content">
+                <!-- Dynamically populated detail cards -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Graph Rendering Script -->
+    <script>
+        // Core data structures
+        let rawGraphData = null;
+        let network = null;
+        
+        let allNodes = [];
+        let allEdges = [];
+        
+        let filteredNodes = [];
+        let filteredEdges = [];
+        
+        let nodeTypesMap = {};
+        let edgeTypesMap = {};
+        
+        let selectedNodeId = null;
+
+        // Custom palettes based on Cyberpunk Forensic theme
+        const MASTER_TYPE_STYLING = {
+            "PLACE": { color: "#06b6d4", shape: "dot", size: 24, font: { color: "#22d3ee" } },
+            "PERSON": { color: "#8b5cf6", shape: "dot", size: 24, font: { color: "#c084fc" } },
+            "INFRASTRUCTURE": { color: "#f59e0b", shape: "dot", size: 24, font: { color: "#fbbf24" } },
+            "ENTITY": { color: "#10b981", shape: "dot", size: 20, font: { color: "#34d399" } },
+            "UNKNOWN": { color: "#9ca3af", shape: "dot", size: 18, font: { color: "#d1d5db" } }
+        };
+
+        // File drop operations
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        // Drag/Drop Listeners
+        window.addEventListener('dragover', (e) => e.preventDefault());
+        window.addEventListener('drop', (e) => e.preventDefault());
+
+        dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.json')) {
+                parseFile(file);
+            } else {
+                alert('Please upload a valid knowledge graph JSON file.');
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) parseFile(file);
+        });
+
+        function parseFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const parsed = JSON.parse(event.target.value || event.target.result);
+                    if (!parsed.master_entities || !parsed.relations) {
+                        throw new Error('JSON structure does not match standard Tatva Forensic Graph schema.');
+                    }
+                    rawGraphData = parsed;
+                    
+                    // Hide overlay
+                    dropZone.style.display = 'none';
+                    
+                    // Initialize graph
+                    initializeGraph();
+                } catch (e) {
+                    alert('Error parsing knowledge graph JSON: ' + e.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function reloadFile() {
+            if (network) network.destroy();
+            rawGraphData = null;
+            document.getElementById('drop-zone').style.display = 'flex';
+            document.getElementById('details-panel').classList.remove('open');
+            fileInput.value = '';
+        }
+
+        // Initialize Graph Visualizer
+        function initializeGraph() {
+            allNodes = [];
+            allEdges = [];
+            nodeTypesMap = {};
+            edgeTypesMap = {};
+
+            // 1. Build Nodes
+            rawGraphData.master_entities.forEach(entity => {
+                const type = entity.master_type || "UNKNOWN";
+                nodeTypesMap[type] = (nodeTypesMap[type] || 0) + 1;
+
+                // Create a clean label prioritising human-readable text
+                let label = "";
+                if (entity.resolved_values && entity.resolved_values.length > 0) {
+                    // Grab shortest, most readable string (avoid lists or extremely long names)
+                    label = entity.resolved_values[0];
+                } else {
+                    label = entity.master_id;
+                }
+
+                const style = MASTER_TYPE_STYLING[type] || MASTER_TYPE_STYLING["UNKNOWN"];
+
+                allNodes.push({
+                    id: entity.master_id,
+                    label: capitalizeText(label),
+                    group: type,
+                    shape: style.shape,
+                    size: style.size,
+                    color: {
+                        background: style.color,
+                        border: "rgba(255,255,255,0.15)",
+                        highlight: { background: "#fff", border: style.color }
+                    },
+                    font: {
+                        face: 'Inter',
+                        size: 13,
+                        color: style.font.color,
+                        vadjust: 6
+                    },
+                    borderWidth: 2,
+                    shadow: {
+                        enabled: true,
+                        color: style.color + "33", // hex transparent shadow
+                        size: 10,
+                        x: 0,
+                        y: 0
+                    },
+                    // Attach full object
+                    raw: entity
+                });
+            });
+
+            // 2. Build Edges
+            rawGraphData.relations.forEach((rel, index) => {
+                const relationName = rel.relation || "CONNECTED";
+                edgeTypesMap[relationName] = (edgeTypesMap[relationName] || 0) + 1;
+
+                allEdges.push({
+                    id: `edge_${index}`,
+                    from: rel.source,
+                    to: rel.target,
+                    label: relationName.toLowerCase().replace(/_/g, ' '),
+                    arrows: {
+                        to: { enabled: true, scaleFactor: 0.5 }
+                    },
+                    font: {
+                        face: 'Inter',
+                        size: 9,
+                        color: '#9ca3af',
+                        align: 'middle',
+                        vadjust: -8
+                    },
+                    color: {
+                        color: 'rgba(255,255,255,0.12)',
+                        highlight: varColorForRelation(relationName),
+                        hover: '#22d3ee'
+                    },
+                    width: Math.max(1, (rel.confidence || 0.8) * 2.5),
+                    smooth: {
+                        type: 'curvedCW',
+                        roundness: 0.15
+                    },
+                    // Attach full relation
+                    raw: rel
+                });
+            });
+
+            // Update filters list UI
+            renderFilterControls();
+            
+            // Render Graph
+            filterAndRender();
+        }
+
+        // Help text formats
+        function capitalizeText(str) {
+            if (!str) return '';
+            return str.replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        function varColorForRelation(relName) {
+            const relColors = {
+                "DETECTED": "#f59e0b",
+                "CONNECTED_TO_TOWER": "#f59e0b",
+                "LOCATED_AT": "#06b6d4",
+                "CALLED": "#8b5cf6",
+                "USES_PHONE": "#8b5cf6",
+                "TRANSFERRED_MONEY": "#10b981",
+                "INTERACTED_WITH": "#3b82f6",
+                "USES_DEVICE": "#a78bfa"
+            };
+            return relColors[relName] || "rgba(255,255,255,0.4)";
+        }
+
+        // Draw node & edge selectors dynamically in Sidebar
+        function renderFilterControls() {
+            const nodeFiltersContainer = document.getElementById('node-filters-list');
+            nodeFiltersContainer.innerHTML = '';
+            
+            // Node Types count badge
+            document.getElementById('node-types-count').innerText = Object.keys(nodeTypesMap).length;
+
+            Object.entries(nodeTypesMap).forEach(([type, count]) => {
+                const styling = MASTER_TYPE_STYLING[type] || MASTER_TYPE_STYLING["UNKNOWN"];
+                const item = document.createElement('div');
+                item.className = 'filter-item';
+                item.innerHTML = `
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="node-filter-chk" value="${type}" checked onchange="filterAndRender()">
+                        <span class="checkbox-custom" style="border-color: ${styling.color}"></span>
+                        <span class="color-dot" style="background-color: ${styling.color}"></span>
+                        <span>${capitalizeText(type)}</span>
+                    </label>
+                    <span class="node-count-badge">${count}</span>
+                `;
+                nodeFiltersContainer.appendChild(item);
+            });
+
+            // Edge Filters count badge
+            const edgeFiltersContainer = document.getElementById('edge-filters-list');
+            edgeFiltersContainer.innerHTML = '';
+            
+            document.getElementById('edge-types-count').innerText = Object.keys(edgeTypesMap).length;
+
+            Object.entries(edgeTypesMap).forEach(([type, count]) => {
+                const color = varColorForRelation(type);
+                const item = document.createElement('div');
+                item.className = 'filter-item';
+                item.innerHTML = `
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="edge-filter-chk" value="${type}" checked onchange="filterAndRender()">
+                        <span class="checkbox-custom" style="border-color: ${color}"></span>
+                        <span class="color-dot" style="background-color: ${color}; border-radius: 2px;"></span>
+                        <span>${type.toLowerCase().replace(/_/g, ' ')}</span>
+                    </label>
+                    <span class="node-count-badge">${count}</span>
+                `;
+                edgeFiltersContainer.appendChild(item);
+            });
+        }
+
+        // Filter & update UI
+        function filterAndRender() {
+            // 1. Get enabled types
+            const enabledNodeTypes = Array.from(document.querySelectorAll('.node-filter-chk:checked')).map(chk => chk.value);
+            const enabledEdgeTypes = Array.from(document.querySelectorAll('.edge-filter-chk:checked')).map(chk => chk.value);
+            const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+
+            // 2. Filter nodes
+            filteredNodes = allNodes.filter(node => {
+                const matchesType = enabledNodeTypes.includes(node.group);
+                if (!matchesType) return false;
+
+                if (searchQuery) {
+                    const matchesId = node.id.toLowerCase().includes(searchQuery);
+                    const matchesLabel = node.label.toLowerCase().includes(searchQuery);
+                    const matchesResolvedVal = node.raw.resolved_values.some(v => v.toLowerCase().includes(searchQuery));
+                    return matchesId || matchesLabel || matchesResolvedVal;
+                }
+                return true;
+            });
+
+            // 3. Keep tracking filtered node IDs
+            const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
+
+            // 4. Filter edges
+            filteredEdges = allEdges.filter(edge => {
+                const matchesType = enabledEdgeTypes.includes(edge.raw.relation);
+                const nodesExist = filteredNodeIds.has(edge.from) && filteredNodeIds.has(edge.to);
+                return matchesType && nodesExist;
+            });
+
+            // Update stats indicators
+            document.getElementById('hud-total-nodes').innerText = filteredNodes.length;
+            document.getElementById('hud-total-edges').innerText = filteredEdges.length;
+            
+            // Network density formula (E / (V * (V - 1)))
+            const V = filteredNodes.length;
+            const E = filteredEdges.length;
+            const density = V > 1 ? (E / (V * (V - 1))) : 0.00;
+            document.getElementById('hud-density').innerText = density.toFixed(3);
+
+            // 5. Draw Canvas
+            drawNetwork();
+        }
+
+        // Draw Canvas with Network nodes
+        function drawNetwork() {
+            const container = document.getElementById('network-canvas');
+            const data = {
+                nodes: new vis.DataSet(filteredNodes),
+                edges: new vis.DataSet(filteredEdges)
+            };
+
+            const options = {
+                nodes: {
+                    scaling: { min: 10, max: 30 }
+                },
+                edges: {
+                    hoverWidth: 2,
+                    selectionWidth: 3
+                },
+                interaction: {
+                    hover: true,
+                    keyboard: false,
+                    zoomView: true,
+                    dragView: true,
+                    selectConnectedEdges: true
+                },
+                physics: {
+                    enabled: document.getElementById('toggle-physics').checked,
+                    barnesHut: {
+                        gravitationalConstant: -3000,
+                        centralGravity: 0.15,
+                        springLength: 140,
+                        springConstant: 0.04,
+                        damping: 0.85,
+                        avoidOverlap: 1
+                    },
+                    stabilization: {
+                        enabled: true,
+                        iterations: 150,
+                        fit: true
+                    }
+                }
+            };
+
+            network = new vis.Network(container, data, options);
+
+            // Canvas selection listeners
+            network.on("selectNode", (params) => {
+                const nodeId = params.nodes[0];
+                const node = filteredNodes.find(n => n.id === nodeId);
+                if (node) showNodeDetails(node);
+            });
+
+            network.on("selectEdge", (params) => {
+                // If node is selected concurrently, selectNode handles it.
+                if (params.nodes.length === 0) {
+                    const edgeId = params.edges[0];
+                    const edge = filteredEdges.find(e => e.id === edgeId);
+                    if (edge) showEdgeDetails(edge);
+                }
+            });
+
+            network.on("deselectNode", () => {
+                closeDetailsPanel();
+            });
+
+            network.on("deselectEdge", () => {
+                closeDetailsPanel();
+            });
+        }
+
+        // Details Panel Inspectors
+        function showNodeDetails(node) {
+            const panel = document.getElementById('details-panel');
+            const title = document.getElementById('panel-title');
+            const content = document.getElementById('panel-content');
+
+            title.innerText = "Entity Profile";
+            content.innerHTML = `
+                <div class="info-card">
+                    <div class="info-label">Master Type</div>
+                    <div class="info-value" style="font-weight: 700; color: ${MASTER_TYPE_STYLING[node.group].color}">
+                        ${node.group}
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Master ID</div>
+                    <div class="info-value info-value-mono">${node.id}</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Resolved Values</div>
+                    <div class="info-value">
+                        <ul style="list-style: none; margin-top: 4px;">
+                            ${node.raw.resolved_values.map(val => `<li style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03); color: #fff;">👉 ${capitalizeText(val)}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Original Source IDs</div>
+                    <div class="info-value">
+                        <div style="max-height: 120px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);">
+                            ${node.raw.source_entities.map(src => `<div style="padding: 3px 0;">🔗 ${src}</div>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Entity Sub-Types</div>
+                    <div class="info-value">
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+                            ${node.raw.entity_types.map(t => `<span style="font-size: 10px; background-color: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-color);">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            panel.classList.add('open');
+        }
+
+        function showEdgeDetails(edge) {
+            const panel = document.getElementById('details-panel');
+            const title = document.getElementById('panel-title');
+            const content = document.getElementById('panel-content');
+
+            title.innerText = "Forensic Relation";
+            
+            const sourceNode = allNodes.find(n => n.id === edge.from);
+            const targetNode = allNodes.find(n => n.id === edge.to);
+
+            content.innerHTML = `
+                <div class="info-card">
+                    <div class="info-label">Relation Type</div>
+                    <div class="info-value" style="font-weight: 700; color: #22d3ee; font-family: 'JetBrains Mono', monospace; text-transform: uppercase;">
+                        ${edge.raw.relation}
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Confidence</div>
+                    <div class="info-value" style="font-size: 20px; font-weight: 700; color: ${edge.raw.confidence >= 0.9 ? 'var(--accent-green)' : 'var(--accent-amber)'}">
+                        ${(edge.raw.confidence * 100).toFixed(0)}%
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Source Node</div>
+                    <div class="info-value">${capitalizeText(sourceNode ? sourceNode.label : edge.from)}</div>
+                    <div class="info-value-mono" style="font-size: 11px; margin-top: 4px;">${edge.from}</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Target Node</div>
+                    <div class="info-value">${capitalizeText(targetNode ? targetNode.label : edge.to)}</div>
+                    <div class="info-value-mono" style="font-size: 11px; margin-top: 4px;">${edge.to}</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Forensic Source</div>
+                    <div class="info-value" style="text-transform: capitalize;">📄 ${edge.raw.source_type ? edge.raw.source_type.replace(/_/g, ' ') : 'System Registry'}</div>
+                </div>
+
+                ${edge.raw.timestamp ? `
+                <div class="info-card">
+                    <div class="info-label">Event Timestamp</div>
+                    <div class="info-value" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #fff;">🕒 ${edge.raw.timestamp}</div>
+                </div>
+                ` : ''}
+            `;
+
+            panel.classList.add('open');
+        }
+
+        function closeDetailsPanel() {
+            document.getElementById('details-panel').classList.remove('open');
+            if (network) network.unselectAll();
+        }
+
+        // Graph Interaction Actions
+        function stabilizeGraph() {
+            if (network) network.stabilize();
+        }
+
+        function resetZoom() {
+            if (network) network.fit({ animation: true });
+        }
+
+        // Listen for Search events
+        document.getElementById('search-input').addEventListener('input', () => {
+            filterAndRender();
+        });
+
+        // Listen for physics checkbox toggles
+        document.getElementById('toggle-physics').addEventListener('change', (e) => {
+            if (network) {
+                network.setOptions({ physics: { enabled: e.target.checked } });
+            }
+        });
+    </script>
+</body>
+</html>
