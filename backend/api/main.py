@@ -3,18 +3,29 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
 
-from ..insights.graph_insights import (
+# from ..insights.graph_insights import (
+#     get_suspects, get_alerts, get_timeline, get_summary, compute_insights
+# )
+# from ..insights import graph_insights
+# from ..insights.insight_schema import (
+#     GraphPayload, SuspectDetail, TransactionAlert, TimelineEvent, GraphSummary,
+#     EntityDetail, RelationDetail,
+#     GraphRenderPayload, RenderNode, RenderLink,
+# )
+# from ..db.postgres_client import PostgresClient
+# from ..db.redis_client import RedisClient
+
+from insights.graph_insights import (
     get_suspects, get_alerts, get_timeline, get_summary, compute_insights
 )
-from ..insights import graph_insights
-from ..insights.insight_schema import (
+from insights import graph_insights
+from insights.insight_schema import (
     GraphPayload, SuspectDetail, TransactionAlert, TimelineEvent, GraphSummary,
     EntityDetail, RelationDetail,
     GraphRenderPayload, RenderNode, RenderLink,
 )
-from ..db.postgres_client import PostgresClient
-from ..db.redis_client import RedisClient
-
+from db.postgres_client import PostgresClient
+from db.redis_client import RedisClient
 
 # ---------------------------------------------------------------------------
 # Helper: legacy raw-graph payload (kept for backward compatibility)

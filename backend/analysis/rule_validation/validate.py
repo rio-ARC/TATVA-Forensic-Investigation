@@ -24,7 +24,7 @@ from collections import defaultdict
 # Neo4j integration (optional — falls back to JSON if unavailable)
 try:
     import sys
-    sys.path.insert(0, str(Path(__file__).parent.parent))
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from db_helper.dp_helper import get_graph_data_from_neo4j, is_neo4j_available
     _NEO4J_IMPORTED = True
 except ImportError:
@@ -33,7 +33,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-GRAPH_PATH = Path(__file__).parent.parent / "Graph_Integration_Layer" / "output" / "unified_graph.json"
+GRAPH_PATH = Path(__file__).parent.parent.parent / "Graph_Integration_Layer" / "output" / "unified_graph.json"
 OUTPUT_PATH = Path(__file__).parent / "flags.json"
 
 TIMESTAMP_FORMATS = [

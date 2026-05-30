@@ -25,9 +25,10 @@ from Gemini_Engine.gemini_client import generate_report
 
 # Live source directories of the 3 outputs
 BASE_DIR = Path(__file__).parent.parent
-REAL_SUMMARY_PATH = BASE_DIR / "graph_summary" / "summary.json"
-REAL_FLAGS_PATH   = BASE_DIR / "rule_validation" / "flags.json"
-REAL_TIMELINE_PATH = BASE_DIR / "timeline_reconstruction" / "timeline.json"
+REAL_SUMMARY_PATH = BASE_DIR / "analysis" / "graph_summary" / "summary.json"
+REAL_FLAGS_PATH   = BASE_DIR / "analysis" / "rule_validation" / "flags.json"
+REAL_TIMELINE_PATH = BASE_DIR / "analysis" / "timeline_reconstruction" / "timeline.json"
+
 
 # Local fallback directories as per gemini_engine_implementation.md
 LOCAL_INPUTS_DIR = Path(__file__).parent / "inputs"
