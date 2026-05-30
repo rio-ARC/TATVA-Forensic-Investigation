@@ -30,6 +30,11 @@ from insights.insight_schema import (
 )
 from db.postgres_client import PostgresClient
 from db.redis_client import RedisClient
+# Import all pipeline runners from modular analysis packages
+from analysis.graph_summary.summarize import run_summary
+from analysis.timeline_reconstruction.reconstruct import run_reconstruction
+from analysis.rule_validation.validate import run_validation_pipeline
+from Gemini_Engine.main import run_engine
 
 # ---------------------------------------------------------------------------
 # Helper: legacy raw-graph payload (kept for backward compatibility)
@@ -91,11 +96,23 @@ def get_graph_render_payload() -> GraphRenderPayload:
     if not graph_insights._SUSPECTS:
         compute_insights()
 
-    # Build a risk-score lookup: master_id → risk_score
-    risk_lookup: dict[str, float] = {
-        s.master_id: s.risk_score
-        for s in graph_insights._SUSPECTS
-    }
+    # Sync risk scores with premium Person Risk Profiles from Risk Intelligence Engine
+    import json
+    profiles_path = os.path.join(os.path.dirname(__file__), "analysis", "rule_validation", "output", "person_risk_profiles.json")
+    risk_lookup = {}
+    if os.path.exists(profiles_path):
+        try:
+            with open(profiles_path, "r", encoding="utf-8") as f:
+                profs = json.load(f)
+                risk_lookup = {p["person_id"]: p["risk_score"] for p in profs}
+        except Exception:
+            pass
+
+    if not risk_lookup:
+        risk_lookup = {
+            s.master_id: s.risk_score
+            for s in graph_insights._SUSPECTS
+        }
 
     masters = graph_insights._GRAPH_DATA.get("master_entities", [])
     relations = graph_insights._GRAPH_DATA.get("relations", [])
@@ -233,6 +250,28 @@ def read_timeline():
 def read_summary():
     """Returns global metrics of the graph."""
     return get_summary()
+
+@app.get("/api/insights/risk-profiles")
+def read_person_risk_profiles():
+    """Returns the generated person risk profiles."""
+    import os
+    import json
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "analysis", "rule_validation", "output", "person_risk_profiles.json")
+    if os.path.exists(file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+@app.get("/api/insights/relationship-profiles")
+def read_relationship_risk_profiles():
+    """Returns the generated relationship risk profiles."""
+    import os
+    import json
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "analysis", "rule_validation", "output", "relationship_risk_profiles.json")
+    if os.path.exists(file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
 
 # ── NEW POSTGRES CASES & USER INPUTS ENDPOINTS ───────────────
 
@@ -403,7 +442,7 @@ def clear_insights_cache():
 
 @app.post("/api/case/process")
 def process_case(case_id: str = Body(..., embed=True)):
-    """Simulates evidence ingestion pipeline and updates PostgreSQL."""
+    """Executes the full forensic data processing and LLM report generation pipeline sequentially."""
     # Log progress to Supabase
     db.log_query(
         query_text=f"Triggered processing pipeline for case '{case_id}'",
@@ -414,9 +453,29 @@ def process_case(case_id: str = Body(..., embed=True)):
     # Clear old insights cache since new processing is starting
     if cache.connected:
         cache.invalidate_insights()
-        
-    return {
-        "status": "success",
-        "message": f"Evidence ingested for case {case_id} and pipeline started.",
-        "cache_invalidated": cache.connected
-    }
+
+    try:
+        print(f"[API] Running Graph summary calculation...")
+        summary = run_summary()
+
+        print(f"[API] Running Timeline reconstruction...")
+        timeline = run_reconstruction()
+
+        print(f"[API] Running Risk Intelligence rule validation engine...")
+        validation = run_validation_pipeline()
+
+        print(f"[API] Running Gemini Engine forensic report generator...")
+        run_engine()
+
+        return {
+            "status": "success",
+            "message": f"Full TATVA pipeline successfully executed for case '{case_id}'!",
+            "report_path": "backend/Gemini_Engine/outputs/investigation_report.md",
+            "cache_invalidated": cache.connected
+        }
+    except Exception as e:
+        print(f"[API] Pipeline execution failed: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Pipeline execution failed for case '{case_id}': {str(e)}"
+        )

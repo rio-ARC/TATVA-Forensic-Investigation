@@ -1,0 +1,459 @@
+[
+  {
+    "entity_1_id": "MASTER_b41353c7",
+    "entity_1": "Rahul Sen",
+    "entity_2_id": "MASTER_d7c86824",
+    "entity_2": "ACC2001",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,400"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between Rahul Sen and ACC2001 is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,400."
+  },
+  {
+    "entity_1_id": "MASTER_0435e1b0",
+    "entity_1": "ACC3001",
+    "entity_2_id": "MASTER_b41353c7",
+    "entity_2": "Rahul Sen",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,200"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC3001 and Rahul Sen is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,200."
+  },
+  {
+    "entity_1_id": "MASTER_03b528ae",
+    "entity_1": "ACC4001",
+    "entity_2_id": "MASTER_b41353c7",
+    "entity_2": "Rahul Sen",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,500"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC4001 and Rahul Sen is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,500."
+  },
+  {
+    "entity_1_id": "MASTER_2eb1ee24",
+    "entity_1": "ACC5001",
+    "entity_2_id": "MASTER_b41353c7",
+    "entity_2": "Rahul Sen",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.8,900"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC5001 and Rahul Sen is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.8,900."
+  },
+  {
+    "entity_1_id": "MASTER_b41353c7",
+    "entity_1": "Rahul Sen",
+    "entity_2_id": "MASTER_f3d6d2a8",
+    "entity_2": "ACC6001",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,300"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between Rahul Sen and ACC6001 is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,300."
+  },
+  {
+    "entity_1_id": "MASTER_5945757a",
+    "entity_1": "ACC7001",
+    "entity_2_id": "MASTER_b41353c7",
+    "entity_2": "Rahul Sen",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,100"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC7001 and Rahul Sen is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,100."
+  },
+  {
+    "entity_1_id": "MASTER_9c967250",
+    "entity_1": "ACC8001",
+    "entity_2_id": "MASTER_b41353c7",
+    "entity_2": "Rahul Sen",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,000"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC8001 and Rahul Sen is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,000."
+  },
+  {
+    "entity_1_id": "MASTER_d7c86824",
+    "entity_1": "ACC2001",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,400"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC2001 and Rajan Mehta is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,400."
+  },
+  {
+    "entity_1_id": "MASTER_0435e1b0",
+    "entity_1": "ACC3001",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,200"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC3001 and Rajan Mehta is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,200."
+  },
+  {
+    "entity_1_id": "MASTER_03b528ae",
+    "entity_1": "ACC4001",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,500"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC4001 and Rajan Mehta is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,500."
+  },
+  {
+    "entity_1_id": "MASTER_2eb1ee24",
+    "entity_1": "ACC5001",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.8,900"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC5001 and Rajan Mehta is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.8,900."
+  },
+  {
+    "entity_1_id": "MASTER_ee1fa35b",
+    "entity_1": "Rajan Mehta",
+    "entity_2_id": "MASTER_f3d6d2a8",
+    "entity_2": "ACC6001",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,300"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between Rajan Mehta and ACC6001 is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,300."
+  },
+  {
+    "entity_1_id": "MASTER_5945757a",
+    "entity_1": "ACC7001",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,100"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC7001 and Rajan Mehta is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,100."
+  },
+  {
+    "entity_1_id": "MASTER_9c967250",
+    "entity_1": "ACC8001",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.9,000"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC8001 and Rajan Mehta is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.9,000."
+  },
+  {
+    "entity_1_id": "MASTER_d551104f",
+    "entity_1": "ACC_HAWALA",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 19.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 0,
+      "transfers": 1,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 money transfer(s) totaling Rs.64,400"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between ACC_HAWALA and Rajan Mehta is classified as LOW RISK with a score of 19.8. Supporting indicators: 1 money transfer(s) totaling Rs.64,400."
+  },
+  {
+    "entity_1_id": "MASTER_b41353c7",
+    "entity_1": "Rahul Sen",
+    "entity_2_id": "MASTER_cc9e76cc",
+    "entity_2": "Group_Chat",
+    "risk_score": 17.0,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 7,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "7 message/email exchange(s)"
+    ],
+    "confidence": 0.95,
+    "explanation": "The connection between Rahul Sen and Group_Chat is classified as LOW RISK with a score of 17.0. Supporting indicators: 7 message/email exchange(s)."
+  },
+  {
+    "entity_1_id": "MASTER_b41353c7",
+    "entity_1": "Rahul Sen",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 15.8,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 4,
+      "messages": 0,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "4 phone call(s)"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between Rahul Sen and Rajan Mehta is classified as LOW RISK with a score of 15.8. Supporting indicators: 4 phone call(s)."
+  },
+  {
+    "entity_1_id": "MASTER_6137f90b",
+    "entity_1": "Arjun",
+    "entity_2_id": "MASTER_cc9e76cc",
+    "entity_2": "Group_Chat",
+    "risk_score": 14.5,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 6,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "6 message/email exchange(s)"
+    ],
+    "confidence": 0.95,
+    "explanation": "The connection between Arjun and Group_Chat is classified as LOW RISK with a score of 14.5. Supporting indicators: 6 message/email exchange(s)."
+  },
+  {
+    "entity_1_id": "MASTER_6137f90b",
+    "entity_1": "Arjun",
+    "entity_2_id": "MASTER_b41353c7",
+    "entity_2": "Rahul Sen",
+    "risk_score": 14.4,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 3,
+      "messages": 1,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "3 phone call(s)",
+      "1 message/email exchange(s)"
+    ],
+    "confidence": 0.98,
+    "explanation": "The connection between Arjun and Rahul Sen is classified as LOW RISK with a score of 14.4. Supporting indicators: 3 phone call(s); 1 message/email exchange(s)."
+  },
+  {
+    "entity_1_id": "MASTER_b41353c7",
+    "entity_1": "Rahul Sen",
+    "entity_2_id": "MASTER_f24caf16",
+    "entity_2": "Vikram Khanna",
+    "risk_score": 11.9,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 3,
+      "messages": 0,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "3 phone call(s)"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between Rahul Sen and Vikram Khanna is classified as LOW RISK with a score of 11.9. Supporting indicators: 3 phone call(s)."
+  },
+  {
+    "entity_1_id": "MASTER_cc9e76cc",
+    "entity_1": "Group_Chat",
+    "entity_2_id": "MASTER_f24caf16",
+    "entity_2": "Vikram Khanna",
+    "risk_score": 9.7,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 0,
+      "messages": 4,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "4 message/email exchange(s)"
+    ],
+    "confidence": 0.95,
+    "explanation": "The connection between Group_Chat and Vikram Khanna is classified as LOW RISK with a score of 9.7. Supporting indicators: 4 message/email exchange(s)."
+  },
+  {
+    "entity_1_id": "MASTER_6137f90b",
+    "entity_1": "Arjun",
+    "entity_2_id": "MASTER_f24caf16",
+    "entity_2": "Vikram Khanna",
+    "risk_score": 7.9,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 2,
+      "messages": 0,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "2 phone call(s)"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between Arjun and Vikram Khanna is classified as LOW RISK with a score of 7.9. Supporting indicators: 2 phone call(s)."
+  },
+  {
+    "entity_1_id": "MASTER_6137f90b",
+    "entity_1": "Arjun",
+    "entity_2_id": "MASTER_ee1fa35b",
+    "entity_2": "Rajan Mehta",
+    "risk_score": 7.9,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 2,
+      "messages": 0,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "2 phone call(s)"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between Arjun and Rajan Mehta is classified as LOW RISK with a score of 7.9. Supporting indicators: 2 phone call(s)."
+  },
+  {
+    "entity_1_id": "MASTER_ee1fa35b",
+    "entity_1": "Rajan Mehta",
+    "entity_2_id": "MASTER_f24caf16",
+    "entity_2": "Vikram Khanna",
+    "risk_score": 4.0,
+    "risk_level": "LOW",
+    "interaction_counts": {
+      "calls": 1,
+      "messages": 0,
+      "transfers": 0,
+      "shared_devices": 0
+    },
+    "supporting_evidence": [
+      "1 phone call(s)"
+    ],
+    "confidence": 0.99,
+    "explanation": "The connection between Rajan Mehta and Vikram Khanna is classified as LOW RISK with a score of 4.0. Supporting indicators: 1 phone call(s)."
+  }
+]

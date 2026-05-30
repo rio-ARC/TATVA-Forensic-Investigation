@@ -6,8 +6,8 @@ from pathlib import Path
 def main():
     # Paths
     current_dir = Path(__file__).parent
-    json_path = current_dir / "flags.json"
-    html_path = current_dir / "flags_report.html"
+    json_path = current_dir / "output" / "flags.json"
+    html_path = current_dir / "output" / "flags_report.html"
 
     if not json_path.exists():
         print(f"Error: {json_path} does not exist. Please run 'python -m rule_validation.validate' first.")

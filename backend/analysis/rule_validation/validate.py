@@ -1,105 +1,60 @@
 """
-Rule-Based Validation Layer
-============================
-Scans unified_graph.json for concrete, deterministic violations.
-No ML, no guesswork — pure pattern matching against predefined forensic rules.
-
-Rules Implemented:
-  1. SMURFING_DETECTED    — rapid sub-threshold transfers from one source
-  2. FORENSIC_HIT         — explicit forensic signal flags in communications
-  3. COMMUNICATION_BURST  — unusually dense comms between actors in a time window
-  4. RENDEZVOUS           — multiple persons co-located within ±15 minutes
-  5. CO_CORROBORATION     — entity appears across 3+ distinct data sources
-
-Run standalone:
-    cd backend
-    python -m rule_validation.validate
+validate.py
+=============
+Main orchestrator for the Risk Intelligence Engine.
+Loads the unified graph, runs all 10 rules and temporal analyzers,
+computes confidence-weighted and time-decayed risk scores,
+and generates person_risk_profiles.json, relationship_risk_profiles.json,
+alerts.json, and backward-compatible flags.json.
 """
 
 import json
+import os
+import sys
 from pathlib import Path
 from datetime import datetime, timedelta
 from collections import defaultdict
 
-# Neo4j integration (optional — falls back to JSON if unavailable)
+# Ensure packages can be imported
+CURRENT_DIR = Path(__file__).parent
+sys.path.insert(0, str(CURRENT_DIR.parent.parent))
+sys.path.insert(0, str(CURRENT_DIR))
+
+# Import modular components
+from rule_engine import run_rule_engine, parse_timestamp, normalize_ts
+from graph_metrics import compute_graph_metrics
+from temporal_analyzer import run_temporal_analysis, get_colocations
+from evidence_aggregator import aggregate_and_weight_evidence
+from person_profile_builder import build_person_profile
+from relationship_profile_builder import build_relationship_profiles
+
+# Configuration
+GRAPH_PATH = CURRENT_DIR.parent.parent / "Graph_Integration_Layer" / "output" / "unified_graph.json"
+OUTPUT_DIR = CURRENT_DIR / "output"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+PERSON_PROFILES_OUT = OUTPUT_DIR / "person_risk_profiles.json"
+RELATIONSHIP_PROFILES_OUT = OUTPUT_DIR / "relationship_risk_profiles.json"
+FLAGS_OUT = OUTPUT_DIR / "flags.json"
+ALERTS_OUT = OUTPUT_DIR / "alerts.json"
+
+# Neo4j integration
 try:
-    import sys
-    sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from db_helper.dp_helper import get_graph_data_from_neo4j, is_neo4j_available
     _NEO4J_IMPORTED = True
 except ImportError:
     _NEO4J_IMPORTED = False
 
-# ---------------------------------------------------------------------------
-# Config
-# ---------------------------------------------------------------------------
-GRAPH_PATH = Path(__file__).parent.parent.parent / "Graph_Integration_Layer" / "output" / "unified_graph.json"
-OUTPUT_PATH = Path(__file__).parent / "flags.json"
-
-TIMESTAMP_FORMATS = [
-    "%Y-%m-%d %H:%M:%S",
-    "%Y-%m-%dT%H:%M:%S",
-    "%Y-%m-%dT%H:%M:%S%z",
-    "%Y-%m-%dT%H:%M:%S.%f",
-    "%Y-%m-%dT%H:%M:%S.%f%z",
-    "%Y-%m-%dT%H:%M:%S+05:30",
-]
-
-# Rule thresholds — easy to tune
-SMURF_AMOUNT_THRESHOLD = 10000       # max per-transfer amount (INR)
-SMURF_MIN_TRANSFERS = 3              # minimum transfers from one source
-SMURF_WINDOW_MINUTES = 30            # time window for rapid transfers
-
-BURST_MIN_INTERACTIONS = 5           # minimum interactions to flag
-BURST_WINDOW_MINUTES = 60            # sliding window size
-
-COLOCATION_TIME_TOLERANCE_MIN = 15   # ±15 minutes overlap
-CORROBORATION_MIN_SOURCES = 3        # minimum distinct data sources
-
-
-# ---------------------------------------------------------------------------
-# Graph Loading
-# ---------------------------------------------------------------------------
 def load_graph() -> dict:
-    """
-    Load graph data.
-    Priority: Neo4j AuraDB → unified_graph.json (fallback).
-    """
+    """Load graph data. Priority: Neo4j AuraDB -> unified_graph.json (fallback)."""
     if _NEO4J_IMPORTED and is_neo4j_available():
         try:
-            print("[rule_validation] Using Neo4j as data source.")
+            print("[validate] Using Neo4j as data source.")
             return get_graph_data_from_neo4j()
         except Exception as e:
-            print(f"[rule_validation] Neo4j failed ({e}), falling back to JSON.")
-    print("[rule_validation] Using unified_graph.json (fallback).")
+            print(f"[validate] Neo4j failed ({e}), falling back to JSON.")
+    print("[validate] Using unified_graph.json (fallback).")
     with open(GRAPH_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-def parse_timestamp(ts_str: str) -> datetime | None:
-    """Try parsing a timestamp string with multiple known formats."""
-    if not ts_str:
-        return None
-    for fmt in TIMESTAMP_FORMATS:
-        try:
-            return datetime.strptime(ts_str, fmt)
-        except (ValueError, TypeError):
-            continue
-    try:
-        return datetime.fromisoformat(ts_str)
-    except (ValueError, TypeError):
-        return None
-
-
-def normalize_ts(dt: datetime) -> datetime:
-    """Strip timezone info for safe comparison."""
-    if dt and dt.tzinfo is not None:
-        return dt.replace(tzinfo=None)
-    return dt
-
 
 def get_entity_name(master: dict) -> str:
     """Extract the best human-readable name for a master entity."""
@@ -129,457 +84,475 @@ def get_entity_name(master: dict) -> str:
 
     return master.get("master_id", "Unknown")
 
-
-def build_lookups(graph: dict) -> tuple[dict, dict]:
-    """
-    Build lookup dictionaries from the graph.
-    Returns:
-        masters: { master_id: master_entity_dict }
-        name_map: { master_id: "human readable name" }
-    """
-    masters = {}
-    name_map = {}
-    for m in graph.get("master_entities", []):
-        mid = m["master_id"]
-        masters[mid] = m
-        name_map[mid] = get_entity_name(m)
-    return masters, name_map
-
-
-def severity_for_amount(total: float) -> str:
-    """Assign severity based on total transaction volume."""
-    if total >= 50000:
-        return "CRITICAL"
-    if total >= 25000:
-        return "HIGH"
-    return "MEDIUM"
-
-
 # ---------------------------------------------------------------------------
-# Rule 1: Smurfing Detection
+# Extra Rules Implemented in Orchestrator for direct access to context
 # ---------------------------------------------------------------------------
-def detect_smurfing(relations: list, name_map: dict) -> list[dict]:
-    """
-    Detect structuring / smurfing patterns:
-    A single source sends multiple transfers in a short window,
-    each under the reporting threshold, to avoid AML detection.
-    """
-    # Filter TRANSFERRED_TO relations
-    transfers = [
-        r for r in relations
-        if r.get("relation") == "TRANSFERRED_TO"
-    ]
 
-    # Group by source account
+# Rule 5: Smurfing (3+ transfers under 10,000 INR in 30 mins)
+def detect_smurfing_triggers(relations: list, name_map: dict) -> list[dict]:
+    triggers = []
+    transfers = [r for r in relations if r.get("relation") == "TRANSFERRED_TO"]
     by_source = defaultdict(list)
     for t in transfers:
         by_source[t["source"]].append(t)
-
-    flags = []
+        
     for source_id, txns in by_source.items():
-        if len(txns) < SMURF_MIN_TRANSFERS:
+        if len(txns) < 3:
             continue
-
-        # Parse and sort by timestamp
+            
         timed = []
         for t in txns:
             ts = parse_timestamp(t.get("timestamp", ""))
             if ts:
                 timed.append((normalize_ts(ts), t))
         timed.sort(key=lambda x: x[0])
-
-        if len(timed) < SMURF_MIN_TRANSFERS:
-            continue
-
-        # Sliding window: find clusters of rapid transfers
+        
         for i in range(len(timed)):
-            window_end = timed[i][0] + timedelta(minutes=SMURF_WINDOW_MINUTES)
-            cluster = [(ts, t) for ts, t in timed[i:] if ts <= window_end]
-
-            if len(cluster) < SMURF_MIN_TRANSFERS:
+            window_end = timed[i][0] + timedelta(minutes=30)
+            cluster = [x for x in timed[i:] if x[0] <= window_end]
+            
+            if len(cluster) < 3:
                 continue
+                
+            amounts = [x[1].get("attributes", {}).get("amount", 0) for x in cluster]
+            if all(a < 10000 for a in amounts):
+                total = sum(amounts)
+                first_ts = cluster[0][0]
+                
+                triggers.append({
+                    "person_id": source_id,
+                    "rule_code": "FIN_SMURFING",
+                    "rule_name": "Smurfing",
+                    "weight": 15.0,
+                    "confidence": sum(x[1].get("confidence", 1.0) for x in cluster) / len(cluster),
+                    "source_type": "bank_transaction",
+                    "timestamp": first_ts.isoformat(),
+                    "evidence": {
+                        "transfer_count": len(cluster),
+                        "total_amount": total,
+                        "amounts": amounts,
+                        "targets": [name_map.get(x[1]["target"], x[1]["target"]) for x in cluster]
+                    }
+                })
+                break
+    return triggers
 
-            amounts = [
-                t.get("attributes", {}).get("amount", 0)
-                for _, t in cluster
-            ]
+# Rule 6: High Velocity (10+ transfers in 30 mins)
+def detect_high_velocity(relations: list, name_map: dict) -> list[dict]:
+    triggers = []
+    transfers = [r for r in relations if r.get("relation") == "TRANSFERRED_TO"]
+    by_account = defaultdict(list)
+    for t in transfers:
+        by_account[t["source"]].append(t)
+        by_account[t["target"]].append(t)
+        
+    for acc_id, txns in by_account.items():
+        if len(txns) < 10:
+            continue
+            
+        timed = []
+        for t in txns:
+            ts = parse_timestamp(t.get("timestamp", ""))
+            if ts:
+                timed.append((normalize_ts(ts), t))
+        timed.sort(key=lambda x: x[0])
+        
+        for i in range(len(timed)):
+            window_end = timed[i][0] + timedelta(minutes=30)
+            cluster = [x for x in timed[i:] if x[0] <= window_end]
+            
+            if len(cluster) >= 10:
+                first_ts = cluster[0][0]
+                triggers.append({
+                    "person_id": acc_id,
+                    "rule_code": "FIN_HIGH_VELOCITY",
+                    "rule_name": "High Velocity Transactions",
+                    "weight": 10.0,
+                    "confidence": sum(x[1].get("confidence", 1.0) for x in cluster) / len(cluster),
+                    "source_type": "bank_transaction",
+                    "timestamp": first_ts.isoformat(),
+                    "evidence": {
+                        "transaction_count": len(cluster),
+                        "window_start": first_ts.isoformat()
+                    }
+                })
+                break
+    return triggers
 
-            # Check if ALL transfers are under the threshold
-            if not all(a < SMURF_AMOUNT_THRESHOLD for a in amounts):
-                continue
-
-            total = sum(amounts)
-            recipients = [
-                name_map.get(t["target"], t["target"])
-                for _, t in cluster
-            ]
-            recipient_ids = [t["target"] for _, t in cluster]
-
-            first_ts = cluster[0][0]
-            last_ts = cluster[-1][0]
-            window_str = f"{first_ts.strftime('%H:%M')} - {last_ts.strftime('%H:%M')}"
-            duration_min = int((last_ts - first_ts).total_seconds() / 60)
-
-            flags.append({
-                "rule": "SMURFING_DETECTED",
-                "severity": severity_for_amount(total),
-                "account_id": source_id,
-                "account_name": name_map.get(source_id, source_id),
-                "recipients": recipients,
-                "recipient_ids": recipient_ids,
-                "amounts": amounts,
-                "total_amount": total,
-                "transfer_count": len(cluster),
-                "time_window": window_str,
-                "duration_minutes": duration_min,
-                "description": (
-                    f"{len(cluster)} rapid transfers under Rs.{SMURF_AMOUNT_THRESHOLD:,} each "
-                    f"within {duration_min} minutes -- total Rs.{total:,}"
-                ),
+# Rule 7: Suspicious Co-location (Co-location with a known suspect (Rahul Sen) within 15 mins)
+def detect_suspicious_colocation(relations: list, masters: dict, name_map: dict) -> list[dict]:
+    triggers = []
+    colocations = get_colocations(relations, masters)
+    
+    # Identify Rahul Sen ID
+    rahul_ids = set()
+    for mid, m in masters.items():
+        r_vals = [v.lower() for v in m.get("resolved_values", [])]
+        if any("rahul" in v for v in r_vals):
+            rahul_ids.add(mid)
+            
+    for coloc in colocations:
+        p_a = coloc["person_a"]
+        p_b = coloc["person_b"]
+        
+        # Check if one of them is Rahul
+        if p_a in rahul_ids and p_b not in rahul_ids:
+            triggers.append({
+                "person_id": p_b,
+                "rule_code": "GPS_SUSPICIOUS_COLOCATION",
+                "rule_name": "Suspicious Co-location",
+                "weight": 12.0,
+                "confidence": coloc["confidence"],
+                "source_type": coloc["source_type"],
+                "timestamp": coloc["timestamp"].isoformat(),
+                "evidence": {
+                    "suspect": name_map.get(p_a, p_a),
+                    "location": name_map.get(coloc["location_id"], coloc["location_id"]),
+                    "timestamp": coloc["timestamp"].isoformat()
+                }
             })
-            break  # One flag per source is enough
+        elif p_b in rahul_ids and p_a not in rahul_ids:
+            triggers.append({
+                "person_id": p_a,
+                "rule_code": "GPS_SUSPICIOUS_COLOCATION",
+                "rule_name": "Suspicious Co-location",
+                "weight": 12.0,
+                "confidence": coloc["confidence"],
+                "source_type": coloc["source_type"],
+                "timestamp": coloc["timestamp"].isoformat(),
+                "evidence": {
+                    "suspect": name_map.get(p_b, p_b),
+                    "location": name_map.get(coloc["location_id"], coloc["location_id"]),
+                    "timestamp": coloc["timestamp"].isoformat()
+                }
+            })
+    return triggers
 
-    return flags
+# Rule 8: Frequent Visits (3+ visits by a person to the same location)
+def detect_frequent_visits(relations: list, masters: dict, name_map: dict) -> list[dict]:
+    triggers = []
+    location_visits = defaultdict(list)
+    
+    for r in relations:
+        if r.get("relation") == "LOCATED_AT":
+            person_id = r["source"]
+            loc_id = r["target"]
+            ts = parse_timestamp(r.get("timestamp", ""))
+            
+            if ts and person_id in masters and masters[person_id].get("master_type") == "PERSON":
+                location_visits[(person_id, loc_id)].append(normalize_ts(ts))
+                
+    for (person_id, loc_id), timestamps in location_visits.items():
+        # Keep unique dates or distinct hours to filter duplicate pings
+        unique_visits = sorted(list(set(timestamps)))
+        
+        # Filter pings within 10 minutes to count as distinct visits
+        distinct_visits = []
+        for v in unique_visits:
+            if not distinct_visits or (v - distinct_visits[-1]).total_seconds() > 10 * 60:
+                distinct_visits.append(v)
+                
+        if len(distinct_visits) >= 3:
+            triggers.append({
+                "person_id": person_id,
+                "rule_code": "GPS_FREQUENT_VISITS",
+                "rule_name": "Frequent Visits",
+                "weight": 8.0,
+                "confidence": 0.95,
+                "source_type": "gps_analysis",
+                "timestamp": distinct_visits[-1].isoformat(),
+                "evidence": {
+                    "location": name_map.get(loc_id, loc_id),
+                    "visit_count": len(distinct_visits),
+                    "visit_times": [v.isoformat() for v in distinct_visits]
+                }
+            })
+    return triggers
 
-
-# ---------------------------------------------------------------------------
-# Rule 2: Forensic Signal Hits
-# ---------------------------------------------------------------------------
-def detect_forensic_hits(relations: list, name_map: dict) -> list[dict]:
-    """
-    Scan all relations for explicit forensic signal flags.
-    Checks both email-style signals (delete_instruction, impersonates_bank, etc.)
-    and chat-style signals (has_urgency, has_money_ref, has_coordination, etc.)
-    """
-    SIGNAL_NAMES = {
-        # Email signals
-        "delete_instruction", "urgency_language", "impersonates_bank",
-        "requests_otp", "requests_account_info",
-        # Chat signals
-        "has_urgency", "has_money_ref", "has_target_ref", "has_coordination",
-    }
-
-    flags = []
-    for rel in relations:
-        attrs = rel.get("attributes", {})
-        forensic = attrs.get("forensic_signals", {})
-        if not forensic:
-            continue
-
-        # Check each known signal
-        for signal_name in SIGNAL_NAMES:
-            if forensic.get(signal_name) is True:
-                channel = rel.get("relation", "unknown").lower()
-                if channel == "messaged":
-                    channel = "chat"
-                elif channel == "emailed":
-                    channel = "email"
-
-                flags.append({
-                    "rule": "FORENSIC_HIT",
-                    "severity": "HIGH" if signal_name in ("delete_instruction", "impersonates_bank", "has_urgency") else "MEDIUM",
-                    "channel": channel,
-                    "source": name_map.get(rel["source"], rel["source"]),
-                    "source_id": rel["source"],
-                    "target": name_map.get(rel["target"], rel["target"]),
-                    "target_id": rel["target"],
-                    "signal": signal_name,
-                    "timestamp": rel.get("timestamp", ""),
-                    "text_snippet": (attrs.get("text", "") or attrs.get("subject", ""))[:120],
-                    "description": (
-                        f"{channel.upper()} from {name_map.get(rel['source'], '?')} "
-                        f"-> {name_map.get(rel['target'], '?')} flagged: {signal_name}"
-                    ),
-                })
-
-    return flags
-
-
-# ---------------------------------------------------------------------------
-# Rule 3: Communication Burst
-# ---------------------------------------------------------------------------
-def detect_communication_burst(relations: list, name_map: dict) -> list[dict]:
-    """
-    Flag pairs of actors who exchange an unusually high number of
-    calls/messages/emails within a sliding 60-minute window.
-    """
-    COMM_TYPES = {"CALLED", "MESSAGED", "EMAILED"}
-
-    comms = [r for r in relations if r.get("relation") in COMM_TYPES]
-
-    # Group by actor-pair (merge both directions into a canonical pair)
-    by_pair = defaultdict(list)
-    for r in comms:
-        a, b = sorted([r["source"], r["target"]])
-        ts = parse_timestamp(r.get("timestamp", ""))
-        if ts:
-            by_pair[(a, b)].append(normalize_ts(ts))
-
-    flags = []
-    for (a, b), timestamps in by_pair.items():
-        timestamps.sort()
-        if len(timestamps) < BURST_MIN_INTERACTIONS:
-            continue
-
-        # Sliding window
-        for i in range(len(timestamps)):
-            window_end = timestamps[i] + timedelta(minutes=BURST_WINDOW_MINUTES)
-            in_window = [t for t in timestamps[i:] if t <= window_end]
-
-            if len(in_window) >= BURST_MIN_INTERACTIONS:
-                window_str = (
-                    f"{timestamps[i].strftime('%H:%M')} - "
-                    f"{in_window[-1].strftime('%H:%M')}"
-                )
-                flags.append({
-                    "rule": "COMMUNICATION_BURST",
-                    "severity": "HIGH" if len(in_window) >= 8 else "MEDIUM",
-                    "actors": [
-                        name_map.get(a, a),
-                        name_map.get(b, b),
-                    ],
-                    "actor_ids": [a, b],
-                    "count": len(in_window),
-                    "window": window_str,
-                    "description": (
-                        f"{len(in_window)} interactions between "
-                        f"{name_map.get(a, '?')} and {name_map.get(b, '?')} "
-                        f"in {BURST_WINDOW_MINUTES}-min window ({window_str})"
-                    ),
-                })
-                break  # One flag per pair
-
-    return flags
-
-
-# ---------------------------------------------------------------------------
-# Rule 4: Co-Location / Rendezvous Detection
-# ---------------------------------------------------------------------------
-def detect_colocation(
-    relations: list, masters: dict, name_map: dict
-) -> list[dict]:
-    """
-    Detect co-location events: 2+ PERSON (or ENTITY) entities observed
-    at the same location within ±15 minutes of each other.
-    """
-    # Collect LOCATED_AT relations, grouped by target location
-    location_visits = defaultdict(list)  # location_id → [(person_id, datetime)]
-
-    for rel in relations:
-        if rel.get("relation") != "LOCATED_AT":
-            continue
-
-        person_id = rel["source"]
-        location_id = rel["target"]
-        ts = parse_timestamp(rel.get("timestamp", ""))
-
-        if not ts:
-            continue
-
-        # Only consider PERSON or mobile entity types (vehicles, devices)
-        person_master = masters.get(person_id, {})
-        ptype = person_master.get("master_type", "")
-        if ptype not in ("PERSON", "ENTITY"):
-            continue
-
-        location_visits[location_id].append((person_id, normalize_ts(ts)))
-
-    flags = []
-    for location_id, visits in location_visits.items():
-        # Need at least 2 different entities
-        unique_entities = set(v[0] for v in visits)
-        if len(unique_entities) < 2:
-            continue
-
-        # Check all pairs for time overlap
-        visits.sort(key=lambda x: x[1])
-        overlapping_groups = []
-
-        for i, (pid_a, ts_a) in enumerate(visits):
-            group = {pid_a: ts_a}
-            for j in range(i + 1, len(visits)):
-                pid_b, ts_b = visits[j]
-                if pid_b == pid_a:
-                    continue
-                if abs((ts_b - ts_a).total_seconds()) <= COLOCATION_TIME_TOLERANCE_MIN * 60:
-                    group[pid_b] = ts_b
-
-            if len(group) >= 2:
-                # Check if we already have a superset group
-                group_key = frozenset(group.keys())
-                if not any(group_key <= existing for existing in overlapping_groups):
-                    overlapping_groups.append(group_key)
-
-                    persons = [name_map.get(pid, pid) for pid in group.keys()]
-                    person_ids = list(group.keys())
-                    timestamps_str = [
-                        ts.strftime("%H:%M") for ts in group.values()
-                    ]
-
-                    flags.append({
-                        "rule": "RENDEZVOUS",
-                        "severity": "HIGH" if len(group) >= 3 else "MEDIUM",
-                        "persons": persons,
-                        "person_ids": person_ids,
-                        "location": name_map.get(location_id, location_id),
-                        "location_id": location_id,
-                        "timestamps": timestamps_str,
-                        "description": (
-                            f"{', '.join(persons)} co-located at "
-                            f"{name_map.get(location_id, '?')} "
-                            f"(within ±{COLOCATION_TIME_TOLERANCE_MIN} min)"
-                        ),
-                    })
-
-    # Deduplicate: keep only unique person-set + location combos
-    seen = set()
-    unique_flags = []
-    for f in flags:
-        key = (frozenset(f["person_ids"]), f["location_id"])
-        if key not in seen:
-            seen.add(key)
-            unique_flags.append(f)
-
-    return unique_flags
-
-
-# ---------------------------------------------------------------------------
-# Rule 5: Cross-Source Corroboration
-# ---------------------------------------------------------------------------
-def detect_cross_source_corroboration(
-    relations: list, masters: dict, name_map: dict
-) -> list[dict]:
-    """
-    Flag entities that appear across 3+ distinct raw data source types.
-    This indicates strong multi-source evidence corroboration.
-    """
+# Rule 11: Cross-source Corroboration (3+ distinct raw data source types)
+def detect_cross_source_corroboration(relations: list, masters: dict, name_map: dict) -> list[dict]:
     entity_sources = defaultdict(set)
-
-    for rel in relations:
-        # Determine source_type (some older relations use 'provenance' instead)
-        st = rel.get("source_type", "")
+    for r in relations:
+        st = r.get("source_type", "")
         if not st:
-            prov = rel.get("provenance", "")
+            prov = r.get("provenance", "")
             if prov:
                 st = prov.split(":")[0].replace(".txt", "").replace(".json", "")
-
         if not st:
             continue
-
-        for eid in [rel.get("source"), rel.get("target")]:
+            
+        for eid in [r.get("source"), r.get("target")]:
             if eid:
                 entity_sources[eid].add(st)
-
-    flags = []
+                
+    triggers = []
     for entity_id, sources in entity_sources.items():
-        if len(sources) < CORROBORATION_MIN_SOURCES:
-            continue
-
-        master = masters.get(entity_id, {})
-        flags.append({
-            "rule": "CO_CORROBORATION",
-            "severity": "HIGH" if len(sources) >= 5 else "MEDIUM",
-            "entity_name": name_map.get(entity_id, entity_id),
-            "entity_id": entity_id,
-            "entity_type": master.get("master_type", "UNKNOWN"),
-            "sources": sorted(sources),
-            "source_count": len(sources),
-            "description": (
-                f"{name_map.get(entity_id, '?')} appears across "
-                f"{len(sources)} data sources: {', '.join(sorted(sources))}"
-            ),
-        })
-
-    # Sort by source count descending
-    flags.sort(key=lambda f: f["source_count"], reverse=True)
-    return flags
+        if len(sources) >= 3:
+            # Trigger corroboration
+            timestamps = []
+            for r in relations:
+                if r["source"] == entity_id or r["target"] == entity_id:
+                    ts = parse_timestamp(r.get("timestamp", ""))
+                    if ts:
+                        timestamps.append(normalize_ts(ts))
+            latest_ts = max(timestamps) if timestamps else None
+            latest_ts_str = latest_ts.isoformat() if latest_ts else ""
+            
+            triggers.append({
+                "person_id": entity_id,
+                "rule_code": "CO_CORROBORATION",
+                "rule_name": "Cross-Source Corroboration",
+                "weight": 10.0,
+                "confidence": 1.0,
+                "source_type": "investigator_annotation",
+                "timestamp": latest_ts_str,
+                "evidence": {
+                    "sources_count": len(sources),
+                    "sources_list": sorted(list(sources))
+                }
+            })
+    return triggers
 
 
 # ---------------------------------------------------------------------------
-# Orchestrator
+# Pipeline Orchestrator
 # ---------------------------------------------------------------------------
-def run_all_rules() -> dict:
-    """
-    Execute all validation rules against the unified graph.
-    Returns the complete flags report and saves to flags.json.
-    """
-    print(f"Loading graph from: {GRAPH_PATH}")
+def run_validation_pipeline() -> dict:
+    print("[validate] Starting Risk Intelligence calculation pipeline...")
+    
+    # 1. Load Graph Data
     graph = load_graph()
-
-    masters, name_map = build_lookups(graph)
     relations = graph.get("relations", [])
-
-    print(f"  Entities: {len(masters)}, Relations: {len(relations)}")
-    print("  Running rule-based validation...\n")
-
-    # Execute each rule
-    print("  [1/5] Detecting smurfing patterns...")
-    smurfing = detect_smurfing(relations, name_map)
-    print(f"         -> {len(smurfing)} flag(s)")
-
-    print("  [2/5] Scanning for forensic signal hits...")
-    forensic_hits = detect_forensic_hits(relations, name_map)
-    print(f"         -> {len(forensic_hits)} flag(s)")
-
-    print("  [3/5] Detecting communication bursts...")
-    comm_bursts = detect_communication_burst(relations, name_map)
-    print(f"         -> {len(comm_bursts)} flag(s)")
-
-    print("  [4/5] Detecting co-location / rendezvous events...")
-    colocations = detect_colocation(relations, masters, name_map)
-    print(f"         -> {len(colocations)} flag(s)")
-
-    print("  [5/5] Checking cross-source corroboration...")
-    corroboration = detect_cross_source_corroboration(relations, masters, name_map)
-    print(f"         -> {len(corroboration)} flag(s)")
-
-    # Assemble output
-    all_flags = {
-        "smurfing": smurfing,
-        "forensic_hits": forensic_hits,
-        "communication_bursts": comm_bursts,
-        "colocations": colocations,
-        "cross_source_corroboration": corroboration,
+    master_entities = graph.get("master_entities", [])
+    
+    # Build maps
+    masters_dict = {m["master_id"]: m for m in master_entities}
+    name_map = {m["master_id"]: get_entity_name(m) for m in master_entities}
+    
+    # Find latest timestamp in graph for Time Decay calculations
+    max_ts = datetime.min
+    for r in relations:
+        ts = parse_timestamp(r.get("timestamp", ""))
+        if ts:
+            ts_norm = normalize_ts(ts)
+            if ts_norm > max_ts:
+                max_ts = ts_norm
+    if max_ts == datetime.min:
+        max_ts = datetime.now()
+    print(f"[validate] Reference timeline maximum timestamp: {max_ts.isoformat()}")
+    
+    # 2. Run rule engine (Rule 1, 2, 3, 9, 10)
+    rule_triggers = run_rule_engine(relations, name_map)
+    print(f"[validate]   Core rules triggered: {len(rule_triggers)}")
+    
+    # 3. Run temporal analyzer (Rule 4, Comm->Tx, GPS->Tx, Email->Call->Tx)
+    temporal_triggers = run_temporal_analysis(relations, masters_dict, name_map)
+    print(f"[validate]   Temporal sequences triggered: {len(temporal_triggers)}")
+    
+    # 4. Run additional rules (Rule 5, 6, 7, 8, 11)
+    smurfing_triggers = detect_smurfing_triggers(relations, name_map)
+    hv_triggers = detect_high_velocity(relations, name_map)
+    coloc_triggers = detect_suspicious_colocation(relations, masters_dict, name_map)
+    frequent_triggers = detect_frequent_visits(relations, masters_dict, name_map)
+    corrob_triggers = detect_cross_source_corroboration(relations, masters_dict, name_map)
+    print(f"[validate]   Smurfing / velocity triggers: {len(smurfing_triggers) + len(hv_triggers)}")
+    print(f"[validate]   GPS co-location / visit triggers: {len(coloc_triggers) + len(frequent_triggers)}")
+    print(f"[validate]   Corroboration triggers: {len(corrob_triggers)}")
+    
+    # Combine all triggers
+    all_raw_triggers = (
+        rule_triggers + temporal_triggers + smurfing_triggers + 
+        hv_triggers + coloc_triggers + frequent_triggers + corrob_triggers
+    )
+    
+    # 5. Aggregate and Weight Evidence (Confidence & Time Decay)
+    weighted_triggers = aggregate_and_weight_evidence(all_raw_triggers, max_ts)
+    print(f"[validate] Decorated and weighted {len(weighted_triggers)} total evidence items.")
+    
+    # Group weighted evidence by person/entity ID
+    evidence_by_person = defaultdict(list)
+    for wt in weighted_triggers:
+        evidence_by_person[wt["person_id"]].append(wt)
+        
+    # 6. Compute Network Centrality Metrics
+    graph_metrics = compute_graph_metrics(master_entities, relations)
+    print(f"[validate] Calculated centrality metrics for {len(graph_metrics)} entities.")
+    
+    # 7. Build Person Profiles (only for master_type == PERSON)
+    person_profiles = []
+    for master in master_entities:
+        mid = master["master_id"]
+        # Include if type is PERSON or is associated with evidence
+        if master.get("master_type") == "PERSON" or mid in evidence_by_person:
+            # Get evidence
+            pe_evidence = evidence_by_person.get(mid, [])
+            profile = build_person_profile(mid, master, name_map, pe_evidence, graph_metrics, relations)
+            person_profiles.append(profile)
+            
+    # Sort person profiles by risk score descending
+    person_profiles.sort(key=lambda x: x["risk_score"], reverse=True)
+    print(f"[validate] Generated {len(person_profiles)} person risk profiles.")
+    
+    # 8. Build Relationship Profiles
+    relationship_profiles = build_relationship_profiles(relations, masters_dict, name_map)
+    print(f"[validate] Generated {len(relationship_profiles)} relationship risk profiles.")
+    
+    # Save Outputs
+    # A. Save person risk profiles
+    with open(PERSON_PROFILES_OUT, "w", encoding="utf-8") as f:
+        json.dump(person_profiles, f, indent=2, ensure_ascii=False)
+    print(f"[validate] Saved person profiles to {PERSON_PROFILES_OUT.name}")
+    
+    # B. Save relationship profiles
+    with open(RELATIONSHIP_PROFILES_OUT, "w", encoding="utf-8") as f:
+        json.dump(relationship_profiles, f, indent=2, ensure_ascii=False)
+    print(f"[validate] Saved relationship profiles to {RELATIONSHIP_PROFILES_OUT.name}")
+    
+    # C. Save alerts.json (Simplified list of alerts/triggers for easy consumption)
+    alerts_data = []
+    for wt in weighted_triggers:
+        alerts_data.append({
+            "entity_id": wt["person_id"],
+            "entity_name": name_map.get(wt["person_id"], wt["person_id"]),
+            "rule": wt["rule_code"],
+            "description": wt["rule_name"],
+            "weighted_score": wt["weighted_contribution"],
+            "timestamp": wt["timestamp"],
+            "evidence": wt["evidence"]
+        })
+    with open(ALERTS_OUT, "w", encoding="utf-8") as f:
+        json.dump(alerts_data, f, indent=2, ensure_ascii=False)
+    print(f"[validate] Saved alerts listing to {ALERTS_OUT.name}")
+    
+    # D. Save backward-compatible flags.json
+    legacy_flags = compile_legacy_flags(weighted_triggers, name_map, masters_dict)
+    with open(FLAGS_OUT, "w", encoding="utf-8") as f:
+        json.dump(legacy_flags, f, indent=2, ensure_ascii=False)
+    print(f"[validate] Saved backward-compatible flags to {FLAGS_OUT.name}")
+    
+    return {
+        "status": "success",
+        "person_profiles_count": len(person_profiles),
+        "relationship_profiles_count": len(relationship_profiles)
     }
-    total = sum(len(v) for v in all_flags.values())
 
-    report = {
+def compile_legacy_flags(weighted_triggers: list, name_map: dict, masters: dict) -> dict:
+    """
+    Groups and formats the decorated triggers into the legacy flags.json schema structure:
+    - smurfing
+    - forensic_hits
+    - communication_bursts
+    - colocations
+    - cross_source_corroboration
+    """
+    smurfing_list = []
+    forensic_hits_list = []
+    comm_bursts_list = []
+    colocations_list = []
+    corrob_list = []
+    
+    for wt in weighted_triggers:
+        code = wt["rule_code"]
+        score = wt["weighted_contribution"]
+        
+        # Map score to legacy severity (CRITICAL, HIGH, MEDIUM)
+        if score >= 15.0:
+            severity = "CRITICAL"
+        elif score >= 8.0:
+            severity = "HIGH"
+        else:
+            severity = "MEDIUM"
+            
+        evidence = wt["evidence"]
+        person_id = wt["person_id"]
+        name = name_map.get(person_id, person_id)
+        
+        if code in ("FIN_SMURFING", "FIN_MULE_PATTERN", "FIN_HIGH_VELOCITY"):
+            smurfing_list.append({
+                "rule": "SMURFING_DETECTED" if code == "FIN_SMURFING" else code,
+                "severity": severity,
+                "account_id": person_id,
+                "account_name": name,
+                "recipients": evidence.get("targets", [evidence.get("outbound_transfer", {}).get("target", "Unknown")]),
+                "recipient_ids": [], # filled as empty
+                "amounts": evidence.get("amounts", [evidence.get("outbound_transfer", {}).get("amount", 0)]),
+                "total_amount": evidence.get("total_amount", evidence.get("outbound_transfer", {}).get("amount", 0)),
+                "transfer_count": evidence.get("transfer_count", 1),
+                "time_window": wt["timestamp"],
+                "duration_minutes": evidence.get("delay_seconds", 0) // 60,
+                "description": f"Flagged financial behavior ({wt['rule_name']}): score contribution {score}"
+            })
+            
+        elif code in ("COMM_DELETION_LANGUAGE", "COMM_MONEY_REQUEST"):
+            forensic_hits_list.append({
+                "rule": "FORENSIC_HIT",
+                "severity": severity,
+                "channel": evidence.get("channel", "chat"),
+                "source": name,
+                "source_id": person_id,
+                "target": evidence.get("target", "Unknown"),
+                "target_id": "",
+                "signal": "delete_instruction" if code == "COMM_DELETION_LANGUAGE" else "has_money_ref",
+                "timestamp": wt["timestamp"],
+                "text_snippet": evidence.get("text_snippet", ""),
+                "description": f"Forensic hit ({wt['rule_name']}): {evidence.get('text_snippet', '')}"
+            })
+            
+        elif code in ("COMM_EXCESSIVE_CALLING", "COMM_CALL_BURST", "COMM_HUB", "TEMP_COMM_TO_TRANSFER", "TEMP_EMAIL_CALL_TRANSFER"):
+            comm_bursts_list.append({
+                "rule": "COMMUNICATION_BURST" if code == "COMM_CALL_BURST" else code,
+                "severity": severity,
+                "actors": [name, "Network Target"],
+                "actor_ids": [person_id],
+                "count": evidence.get("call_count", evidence.get("unique_partners_count", 1)),
+                "window": wt["timestamp"],
+                "description": f"Communication pattern ({wt['rule_name']}) flagged: score contribution {score}"
+            })
+            
+        elif code in ("GPS_SUSPICIOUS_COLOCATION", "GPS_FREQUENT_VISITS", "TEMP_COLOCATION_TO_TRANSFER"):
+            colocations_list.append({
+                "rule": "RENDEZVOUS" if code == "GPS_SUSPICIOUS_COLOCATION" else code,
+                "severity": severity,
+                "persons": [name, evidence.get("suspect", "Known Suspect")],
+                "person_ids": [person_id],
+                "location": evidence.get("location", "Unknown Location"),
+                "location_id": "",
+                "timestamps": [wt["timestamp"]],
+                "description": f"Location activity ({wt['rule_name']}) observed at {evidence.get('location', '')}"
+            })
+            
+        elif code == "CO_CORROBORATION":
+            corrob_list.append({
+                "rule": "CO_CORROBORATION",
+                "severity": severity,
+                "entity_name": name,
+                "entity_id": person_id,
+                "entity_type": masters.get(person_id, {}).get("master_type", "PERSON"),
+                "sources": evidence.get("sources_list", []),
+                "source_count": evidence.get("sources_count", 0),
+                "description": f"Corroboration flag: appears across {evidence.get('sources_count', 0)} sources"
+            })
+            
+    all_flags = {
+        "smurfing": smurfing_list,
+        "forensic_hits": forensic_hits_list,
+        "communication_bursts": comm_bursts_list,
+        "colocations": colocations_list,
+        "cross_source_corroboration": corrob_list
+    }
+    
+    total = sum(len(v) for v in all_flags.values())
+    
+    return {
         "generated_at": datetime.now().isoformat(),
         "total_flags": total,
         "severity_summary": {
-            "CRITICAL": sum(
-                1 for cat in all_flags.values()
-                for f in cat if f.get("severity") == "CRITICAL"
-            ),
-            "HIGH": sum(
-                1 for cat in all_flags.values()
-                for f in cat if f.get("severity") == "HIGH"
-            ),
-            "MEDIUM": sum(
-                1 for cat in all_flags.values()
-                for f in cat if f.get("severity") == "MEDIUM"
-            ),
+            "CRITICAL": sum(1 for c in all_flags.values() for f in c if f.get("severity") == "CRITICAL"),
+            "HIGH": sum(1 for c in all_flags.values() for f in c if f.get("severity") == "HIGH"),
+            "MEDIUM": sum(1 for c in all_flags.values() for f in c if f.get("severity") == "MEDIUM"),
         },
-        "flags": all_flags,
+        "flags": all_flags
     }
 
-    # Save
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(report, f, indent=2, ensure_ascii=False, default=str)
-
-    print(f"\n{'='*60}")
-    print(f"[OK] Validation complete -- {total} flags saved to: {OUTPUT_PATH}")
-    print(f"     CRITICAL: {report['severity_summary']['CRITICAL']}")
-    print(f"     HIGH:     {report['severity_summary']['HIGH']}")
-    print(f"     MEDIUM:   {report['severity_summary']['MEDIUM']}")
-    print(f"{'='*60}")
-
-    return report
-
-
-# ---------------------------------------------------------------------------
-# CLI Entry Point
-# ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    run_all_rules()
+    run_validation_pipeline()
