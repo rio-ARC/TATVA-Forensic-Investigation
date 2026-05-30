@@ -196,10 +196,16 @@ def read_transactions():
     """Returns flagged transactions (smurfing, circular flows, etc.)."""
     return get_alerts()
 
-@app.get("/api/timeline", response_model=List[TimelineEvent])
+@app.get("/api/timeline")
 def read_timeline():
-    """Returns the temporal sequence of events across all sources."""
-    return get_timeline()
+    """Returns the generated timeline.json produced by the timeline reconstruction layer."""
+    import os
+    import json
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "timeline_reconstruction", "timeline.json")
+    if os.path.exists(file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"scenes": []}
 
 @app.get("/api/insights/summary", response_model=GraphSummary)
 def read_summary():
