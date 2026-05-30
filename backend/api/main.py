@@ -212,7 +212,7 @@ def read_timeline():
     """Returns the generated timeline.json produced by the timeline reconstruction layer."""
     import os
     import json
-    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "timeline_reconstruction", "timeline.json")
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "analysis", "timeline_reconstruction", "timeline.json")
     if os.path.exists(file_path):
         with open(file_path, "r", encoding="utf-8") as f:
             return json.load(f)
