@@ -1,0 +1,1586 @@
+{
+  "generated_at": "2026-05-30T13:12:41.835918",
+  "overview": {
+    "total_entities": 47,
+    "total_relations": 137,
+    "entity_type_counts": {
+      "ENTITY": 15,
+      "PLACE": 14,
+      "PERSON": 9,
+      "INFRASTRUCTURE": 9
+    },
+    "relation_type_counts": {
+      "LOCATED_AT": 24,
+      "MENTIONED": 23,
+      "MESSAGED": 17,
+      "CALLED": 15,
+      "CONNECTED_TO_TOWER": 15,
+      "TRANSFERRED_TO": 15,
+      "MOVED_TO": 13,
+      "POSTED_ON": 6,
+      "MENTIONED_USER": 4,
+      "DETECTED": 3,
+      "TRANSFERRED_MONEY": 1,
+      "EMAILED": 1
+    },
+    "incident_window": {
+      "start": "2026-05-22T19:45:00",
+      "end": "2026-05-29T23:30:55.454719",
+      "duration_minutes": 10305.9
+    },
+    "data_sources_present": [
+      "asset_tracker",
+      "bank_transaction",
+      "cdr_record",
+      "chat",
+      "emails",
+      "fir_document",
+      "gps_analysis",
+      "investigator_annotation",
+      "mobile_gps",
+      "social",
+      "telecom_tower",
+      "vehicle_camera",
+      "vehicle_tracker",
+      "wearable_device"
+    ]
+  },
+  "topology": {
+    "total_nodes": 47,
+    "total_edges": 84,
+    "density": 0.0389,
+    "is_weakly_connected": false,
+    "weakly_connected_components": 5,
+    "largest_component_size": 40,
+    "average_clustering": 0.4176,
+    "avg_degree": 3.57,
+    "max_degree": 24,
+    "min_degree": 0
+  },
+  "key_actors": [
+    {
+      "master_id": "MASTER_b41353c7",
+      "name": "Rahul Sen",
+      "master_type": "PERSON",
+      "composite_score": 0.4104,
+      "degree_centrality": 0.5217,
+      "betweenness_centrality": 0.1074,
+      "pagerank": 0.034,
+      "source_count": 16,
+      "relation_count": 51
+    },
+    {
+      "master_id": "MASTER_f24caf16",
+      "name": "Vikram Khanna",
+      "master_type": "PERSON",
+      "composite_score": 0.2412,
+      "degree_centrality": 0.3043,
+      "betweenness_centrality": 0.0379,
+      "pagerank": 0.0185,
+      "source_count": 12,
+      "relation_count": 26
+    },
+    {
+      "master_id": "MASTER_ee1fa35b",
+      "name": "Rajan Mehta",
+      "master_type": "PERSON",
+      "composite_score": 0.2291,
+      "degree_centrality": 0.3261,
+      "betweenness_centrality": 0.1047,
+      "pagerank": 0.0912,
+      "source_count": 5,
+      "relation_count": 21
+    },
+    {
+      "master_id": "MASTER_6137f90b",
+      "name": "Arjun",
+      "master_type": "PERSON",
+      "composite_score": 0.2159,
+      "degree_centrality": 0.2391,
+      "betweenness_centrality": 0.027,
+      "pagerank": 0.0294,
+      "source_count": 11,
+      "relation_count": 28
+    },
+    {
+      "master_id": "MASTER_ad6e0d66",
+      "name": "Chatterjee Lane, Bowbazar, Kolkata",
+      "master_type": "PLACE",
+      "composite_score": 0.1644,
+      "degree_centrality": 0.2174,
+      "betweenness_centrality": 0.0263,
+      "pagerank": 0.0458,
+      "source_count": 7,
+      "relation_count": 16
+    },
+    {
+      "master_id": "MASTER_cc9e76cc",
+      "name": "Group_Chat",
+      "master_type": "INFRASTRUCTURE",
+      "composite_score": 0.1596,
+      "degree_centrality": 0.0652,
+      "betweenness_centrality": 0.0,
+      "pagerank": 0.017,
+      "source_count": 17,
+      "relation_count": 17
+    },
+    {
+      "master_id": "MASTER_59760bb7",
+      "name": "Bow Bazar North, Kolkata",
+      "master_type": "PLACE",
+      "composite_score": 0.1274,
+      "degree_centrality": 0.1957,
+      "betweenness_centrality": 0.0093,
+      "pagerank": 0.0576,
+      "source_count": 4,
+      "relation_count": 11
+    },
+    {
+      "master_id": "MASTER_425adff9",
+      "name": "@Arjung",
+      "master_type": "PERSON",
+      "composite_score": 0.0943,
+      "degree_centrality": 0.1304,
+      "betweenness_centrality": 0.0164,
+      "pagerank": 0.0169,
+      "source_count": 4,
+      "relation_count": 9
+    },
+    {
+      "master_id": "MASTER_e32ebe48",
+      "name": "Howrah Station",
+      "master_type": "PLACE",
+      "composite_score": 0.0897,
+      "degree_centrality": 0.1087,
+      "betweenness_centrality": 0.0,
+      "pagerank": 0.0229,
+      "source_count": 6,
+      "relation_count": 6
+    },
+    {
+      "master_id": "MASTER_9e7d3007",
+      "name": "Howrah Maidan, Haora",
+      "master_type": "PLACE",
+      "composite_score": 0.0889,
+      "degree_centrality": 0.1087,
+      "betweenness_centrality": 0.0,
+      "pagerank": 0.0779,
+      "source_count": 4,
+      "relation_count": 6
+    }
+  ],
+  "financial_summary": {
+    "total_volume": 193200,
+    "transfer_count": 15,
+    "unique_accounts_involved": 10,
+    "top_flows": [
+      {
+        "flow": "Rajan Mehta → ACC_HAWALA",
+        "total_amount": 64400,
+        "transfer_count": 1,
+        "methods": [
+          "NEFT"
+        ]
+      },
+      {
+        "flow": "Rahul Sen → ACC4001",
+        "total_amount": 9500,
+        "transfer_count": 1,
+        "methods": [
+          "UPI"
+        ]
+      },
+      {
+        "flow": "ACC4001 → Rajan Mehta",
+        "total_amount": 9500,
+        "transfer_count": 1,
+        "methods": [
+          "IMPS"
+        ]
+      },
+      {
+        "flow": "Rahul Sen → ACC2001",
+        "total_amount": 9400,
+        "transfer_count": 1,
+        "methods": [
+          "UPI"
+        ]
+      },
+      {
+        "flow": "ACC2001 → Rajan Mehta",
+        "total_amount": 9400,
+        "transfer_count": 1,
+        "methods": [
+          "IMPS"
+        ]
+      },
+      {
+        "flow": "Rahul Sen → ACC6001",
+        "total_amount": 9300,
+        "transfer_count": 1,
+        "methods": [
+          "UPI"
+        ]
+      },
+      {
+        "flow": "ACC6001 → Rajan Mehta",
+        "total_amount": 9300,
+        "transfer_count": 1,
+        "methods": [
+          "IMPS"
+        ]
+      },
+      {
+        "flow": "Rahul Sen → ACC3001",
+        "total_amount": 9200,
+        "transfer_count": 1,
+        "methods": [
+          "UPI"
+        ]
+      },
+      {
+        "flow": "ACC3001 → Rajan Mehta",
+        "total_amount": 9200,
+        "transfer_count": 1,
+        "methods": [
+          "IMPS"
+        ]
+      },
+      {
+        "flow": "Rahul Sen → ACC7001",
+        "total_amount": 9100,
+        "transfer_count": 1,
+        "methods": [
+          "UPI"
+        ]
+      },
+      {
+        "flow": "ACC7001 → Rajan Mehta",
+        "total_amount": 9100,
+        "transfer_count": 1,
+        "methods": [
+          "IMPS"
+        ]
+      },
+      {
+        "flow": "Rahul Sen → ACC8001",
+        "total_amount": 9000,
+        "transfer_count": 1,
+        "methods": [
+          "UPI"
+        ]
+      },
+      {
+        "flow": "ACC8001 → Rajan Mehta",
+        "total_amount": 9000,
+        "transfer_count": 1,
+        "methods": [
+          "IMPS"
+        ]
+      },
+      {
+        "flow": "Rahul Sen → ACC5001",
+        "total_amount": 8900,
+        "transfer_count": 1,
+        "methods": [
+          "UPI"
+        ]
+      },
+      {
+        "flow": "ACC5001 → Rajan Mehta",
+        "total_amount": 8900,
+        "transfer_count": 1,
+        "methods": [
+          "IMPS"
+        ]
+      }
+    ]
+  },
+  "communication_summary": {
+    "total_communications": 33,
+    "by_type": {
+      "MESSAGED": 17,
+      "CALLED": 15,
+      "EMAILED": 1
+    },
+    "total_call_duration_seconds": 2380,
+    "avg_call_duration_seconds": 158.7,
+    "most_active_communicators": [
+      {
+        "name": "Rahul Sen",
+        "count": 14
+      },
+      {
+        "name": "Arjun",
+        "count": 9
+      },
+      {
+        "name": "Vikram Khanna",
+        "count": 7
+      },
+      {
+        "name": "Rajan Mehta",
+        "count": 3
+      }
+    ]
+  },
+  "entity_profiles": [
+    {
+      "master_id": "MASTER_b41353c7",
+      "name": "Rahul Sen",
+      "master_type": "PERSON",
+      "entity_types": [
+        "PERSON",
+        "LOCATION",
+        "PHONE_NUMBER",
+        "ACCOUNT",
+        "DEVICE"
+      ],
+      "resolved_values": [
+        "rahul sen",
+        "9876543210",
+        "acc1001",
+        "android_001",
+        "rahul"
+      ],
+      "degree_centrality": 0.5217,
+      "betweenness_centrality": 0.1074,
+      "in_degree_centrality": 0.087,
+      "out_degree_centrality": 0.4348,
+      "pagerank": 0.034,
+      "source_types": [
+        "bank_transaction",
+        "cdr_record",
+        "chat.txt:message_0",
+        "chat.txt:message_11",
+        "chat.txt:message_12",
+        "chat.txt:message_16",
+        "chat.txt:message_2",
+        "chat.txt:message_4",
+        "chat.txt:message_6",
+        "chat.txt:message_8",
+        "emails.txt:body",
+        "emails.txt:header",
+        "fir_document",
+        "mobile_gps",
+        "social.json:post_tatva_post_006",
+        "telecom_tower"
+      ],
+      "source_count": 16,
+      "relation_count": 51,
+      "relation_types": [
+        "CALLED",
+        "CONNECTED_TO_TOWER",
+        "EMAILED",
+        "LOCATED_AT",
+        "MENTIONED",
+        "MESSAGED",
+        "TRANSFERRED_MONEY",
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_ee1fa35b",
+      "name": "Rajan Mehta",
+      "master_type": "PERSON",
+      "entity_types": [
+        "PERSON",
+        "PHONE_NUMBER",
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "rajan mehta",
+        "8877665544",
+        "rajan",
+        "acc9001"
+      ],
+      "degree_centrality": 0.3261,
+      "betweenness_centrality": 0.1047,
+      "in_degree_centrality": 0.2174,
+      "out_degree_centrality": 0.1087,
+      "pagerank": 0.0912,
+      "source_types": [
+        "bank_transaction",
+        "cdr_record",
+        "chat.txt:message_14",
+        "chat.txt:message_3",
+        "emails.txt:body"
+      ],
+      "source_count": 5,
+      "relation_count": 21,
+      "relation_types": [
+        "CALLED",
+        "CONNECTED_TO_TOWER",
+        "MENTIONED",
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_f24caf16",
+      "name": "Vikram Khanna",
+      "master_type": "PERSON",
+      "entity_types": [
+        "PERSON",
+        "WEARABLE_DEVICE",
+        "PHONE_NUMBER"
+      ],
+      "resolved_values": [
+        "watch_abc",
+        "vikram khanna",
+        "vikram",
+        "9988776655"
+      ],
+      "degree_centrality": 0.3043,
+      "betweenness_centrality": 0.0379,
+      "in_degree_centrality": 0.0652,
+      "out_degree_centrality": 0.2391,
+      "pagerank": 0.0185,
+      "source_types": [
+        "cdr_record",
+        "chat.txt:message_1",
+        "chat.txt:message_13",
+        "chat.txt:message_14",
+        "chat.txt:message_15",
+        "chat.txt:message_5",
+        "chat.txt:message_7",
+        "chat.txt:message_9",
+        "emails.txt:body",
+        "social.json:post_tatva_post_002",
+        "telecom_tower",
+        "wearable_device"
+      ],
+      "source_count": 12,
+      "relation_count": 26,
+      "relation_types": [
+        "CALLED",
+        "CONNECTED_TO_TOWER",
+        "LOCATED_AT",
+        "MENTIONED",
+        "MESSAGED"
+      ]
+    },
+    {
+      "master_id": "MASTER_6137f90b",
+      "name": "Arjun",
+      "master_type": "PERSON",
+      "entity_types": [
+        "PERSON",
+        "PHONE_NUMBER"
+      ],
+      "resolved_values": [
+        "9123456780",
+        "arjun",
+        "arjun ghosh"
+      ],
+      "degree_centrality": 0.2391,
+      "betweenness_centrality": 0.027,
+      "in_degree_centrality": 0.0652,
+      "out_degree_centrality": 0.1739,
+      "pagerank": 0.0294,
+      "source_types": [
+        "cdr_record",
+        "chat.txt:message_1",
+        "chat.txt:message_10",
+        "chat.txt:message_11",
+        "chat.txt:message_14",
+        "chat.txt:message_3",
+        "chat.txt:message_7",
+        "emails.txt:body",
+        "emails.txt:header",
+        "fir_document",
+        "telecom_tower"
+      ],
+      "source_count": 11,
+      "relation_count": 28,
+      "relation_types": [
+        "CALLED",
+        "CONNECTED_TO_TOWER",
+        "EMAILED",
+        "LOCATED_AT",
+        "MENTIONED",
+        "MESSAGED",
+        "TRANSFERRED_MONEY"
+      ]
+    },
+    {
+      "master_id": "MASTER_ad6e0d66",
+      "name": "Chatterjee Lane, Bowbazar, Kolkata",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "chatterjee lane, bowbazar, kolkata"
+      ],
+      "degree_centrality": 0.2174,
+      "betweenness_centrality": 0.0263,
+      "in_degree_centrality": 0.1304,
+      "out_degree_centrality": 0.087,
+      "pagerank": 0.0458,
+      "source_types": [
+        "asset_tracker",
+        "gps_analysis",
+        "investigator_annotation",
+        "mobile_gps",
+        "telecom_tower",
+        "vehicle_tracker",
+        "wearable_device"
+      ],
+      "source_count": 7,
+      "relation_count": 16,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_59760bb7",
+      "name": "Bow Bazar North, Kolkata",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "bow bazar north, kolkata"
+      ],
+      "degree_centrality": 0.1957,
+      "betweenness_centrality": 0.0093,
+      "in_degree_centrality": 0.1304,
+      "out_degree_centrality": 0.0652,
+      "pagerank": 0.0576,
+      "source_types": [
+        "gps_analysis",
+        "mobile_gps",
+        "telecom_tower",
+        "wearable_device"
+      ],
+      "source_count": 4,
+      "relation_count": 11,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_425adff9",
+      "name": "@Arjung",
+      "master_type": "PERSON",
+      "entity_types": [
+        "SOCIAL_HANDLE"
+      ],
+      "resolved_values": [
+        "@arjung"
+      ],
+      "degree_centrality": 0.1304,
+      "betweenness_centrality": 0.0164,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.1087,
+      "pagerank": 0.0169,
+      "source_types": [
+        "social.json:post_tatva_post_001",
+        "social.json:post_tatva_post_002",
+        "social.json:post_tatva_post_004",
+        "social.json:post_tatva_post_005"
+      ],
+      "source_count": 4,
+      "relation_count": 9,
+      "relation_types": [
+        "MENTIONED",
+        "MENTIONED_USER",
+        "POSTED_ON"
+      ]
+    },
+    {
+      "master_id": "MASTER_e32ebe48",
+      "name": "Howrah Station",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "howrah station",
+        "howrah",
+        "reached howrah station"
+      ],
+      "degree_centrality": 0.1087,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.1087,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0229,
+      "source_types": [
+        "chat.txt:message_13",
+        "chat.txt:message_14",
+        "chat.txt:message_15",
+        "emails.txt:body",
+        "social.json:post_tatva_post_003",
+        "social.json:post_tatva_post_005"
+      ],
+      "source_count": 6,
+      "relation_count": 6,
+      "relation_types": [
+        "MENTIONED"
+      ]
+    },
+    {
+      "master_id": "MASTER_10d0d169",
+      "name": "Biplabi Pulin Das Street, City College, Kolkata",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "biplabi pulin das street, city college, kolkata"
+      ],
+      "degree_centrality": 0.1087,
+      "betweenness_centrality": 0.0018,
+      "in_degree_centrality": 0.087,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0417,
+      "source_types": [
+        "gps_analysis",
+        "mobile_gps",
+        "vehicle_tracker"
+      ],
+      "source_count": 3,
+      "relation_count": 5,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_9e7d3007",
+      "name": "Howrah Maidan, Haora",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "howrah maidan, haora"
+      ],
+      "degree_centrality": 0.1087,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.1087,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0779,
+      "source_types": [
+        "gps_analysis",
+        "telecom_tower",
+        "vehicle_tracker",
+        "wearable_device"
+      ],
+      "source_count": 4,
+      "relation_count": 6,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_4f3dc74c",
+      "name": "@Vikramk",
+      "master_type": "PERSON",
+      "entity_types": [
+        "PERSON",
+        "SOCIAL_HANDLE"
+      ],
+      "resolved_values": [
+        "@vikramk"
+      ],
+      "degree_centrality": 0.1087,
+      "betweenness_centrality": 0.0078,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.087,
+      "pagerank": 0.0139,
+      "source_types": [
+        "social.json:post_tatva_post_003",
+        "social.json:post_tatva_post_005",
+        "social.json:post_tatva_post_006"
+      ],
+      "source_count": 3,
+      "relation_count": 7,
+      "relation_types": [
+        "MENTIONED",
+        "MENTIONED_USER",
+        "POSTED_ON"
+      ]
+    },
+    {
+      "master_id": "MASTER_472a3eae",
+      "name": "Cab_102",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "VEHICLE"
+      ],
+      "resolved_values": [
+        "cab_102"
+      ],
+      "degree_centrality": 0.0652,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0,
+      "out_degree_centrality": 0.0652,
+      "pagerank": 0.011,
+      "source_types": [
+        "vehicle_tracker"
+      ],
+      "source_count": 1,
+      "relation_count": 3,
+      "relation_types": [
+        "LOCATED_AT"
+      ]
+    },
+    {
+      "master_id": "MASTER_d11a8cf5",
+      "name": "Sri Gopal Mullick Ln, Bowbazar, Kolkata",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "sri gopal mullick ln, bowbazar, kolkata"
+      ],
+      "degree_centrality": 0.0652,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0435,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0222,
+      "source_types": [
+        "gps_analysis",
+        "wearable_device"
+      ],
+      "source_count": 2,
+      "relation_count": 3,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_90d56781",
+      "name": "Tracker_001",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "TRACKER"
+      ],
+      "resolved_values": [
+        "tracker_001"
+      ],
+      "degree_centrality": 0.0652,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0,
+      "out_degree_centrality": 0.0652,
+      "pagerank": 0.011,
+      "source_types": [
+        "asset_tracker"
+      ],
+      "source_count": 1,
+      "relation_count": 3,
+      "relation_types": [
+        "LOCATED_AT"
+      ]
+    },
+    {
+      "master_id": "MASTER_afcbc112",
+      "name": "Maniktala, Kolkata",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "maniktala, kolkata"
+      ],
+      "degree_centrality": 0.0652,
+      "betweenness_centrality": 0.0097,
+      "in_degree_centrality": 0.0435,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0239,
+      "source_types": [
+        "asset_tracker",
+        "gps_analysis"
+      ],
+      "source_count": 2,
+      "relation_count": 3,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_cc9e76cc",
+      "name": "Group_Chat",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "PLATFORM"
+      ],
+      "resolved_values": [
+        "group_chat"
+      ],
+      "degree_centrality": 0.0652,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0652,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.017,
+      "source_types": [
+        "chat.txt:message_0",
+        "chat.txt:message_1",
+        "chat.txt:message_10",
+        "chat.txt:message_11",
+        "chat.txt:message_12",
+        "chat.txt:message_13",
+        "chat.txt:message_14",
+        "chat.txt:message_15",
+        "chat.txt:message_16",
+        "chat.txt:message_2",
+        "chat.txt:message_3",
+        "chat.txt:message_4",
+        "chat.txt:message_5",
+        "chat.txt:message_6",
+        "chat.txt:message_7",
+        "chat.txt:message_8",
+        "chat.txt:message_9"
+      ],
+      "source_count": 17,
+      "relation_count": 17,
+      "relation_types": [
+        "MESSAGED"
+      ]
+    },
+    {
+      "master_id": "MASTER_656f09cf",
+      "name": "@Rahulsen",
+      "master_type": "PERSON",
+      "entity_types": [
+        "SOCIAL_HANDLE"
+      ],
+      "resolved_values": [
+        "@rahulsen"
+      ],
+      "degree_centrality": 0.0652,
+      "betweenness_centrality": 0.0005,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0435,
+      "pagerank": 0.0139,
+      "source_types": [
+        "social.json:post_tatva_post_001",
+        "social.json:post_tatva_post_002",
+        "social.json:post_tatva_post_004"
+      ],
+      "source_count": 3,
+      "relation_count": 5,
+      "relation_types": [
+        "MENTIONED_USER",
+        "POSTED_ON"
+      ]
+    },
+    {
+      "master_id": "MASTER_69b137e7",
+      "name": "Cctv Camera At Traffic Signal",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "CAMERA"
+      ],
+      "resolved_values": [
+        "cctv camera at traffic signal"
+      ],
+      "degree_centrality": 0.0652,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0,
+      "out_degree_centrality": 0.0652,
+      "pagerank": 0.011,
+      "source_types": [
+        "vehicle_camera"
+      ],
+      "source_count": 1,
+      "relation_count": 3,
+      "relation_types": [
+        "DETECTED"
+      ]
+    },
+    {
+      "master_id": "MASTER_4df7510c",
+      "name": "Cell Tower (Twr_Kol_102)",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "CELL_TOWER"
+      ],
+      "resolved_values": [
+        "cell tower (twr_kol_102)"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0435,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.028,
+      "source_types": [
+        "cdr_record"
+      ],
+      "source_count": 1,
+      "relation_count": 7,
+      "relation_types": [
+        "CONNECTED_TO_TOWER"
+      ]
+    },
+    {
+      "master_id": "MASTER_08924bd8",
+      "name": "Surya Sen Street, Baithakkhana, Kolkata",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "surya sen street, baithakkhana, kolkata"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0141,
+      "source_types": [
+        "gps_analysis",
+        "telecom_tower"
+      ],
+      "source_count": 2,
+      "relation_count": 2,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_a09d56fd",
+      "name": "Bowbazar, Kolkata",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "bowbazar, kolkata"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0124,
+      "source_types": [
+        "gps_analysis",
+        "telecom_tower"
+      ],
+      "source_count": 2,
+      "relation_count": 2,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_8c5f6b57",
+      "name": "Bidhannagar",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "bidhannagar"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0435,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0344,
+      "source_types": [
+        "asset_tracker",
+        "gps_analysis"
+      ],
+      "source_count": 2,
+      "relation_count": 2,
+      "relation_types": [
+        "LOCATED_AT",
+        "MOVED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_359a9c21",
+      "name": "Hyundai",
+      "master_type": "PERSON",
+      "entity_types": [
+        "PERSON"
+      ],
+      "resolved_values": [
+        "hyundai"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0435,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0154,
+      "source_types": [
+        "emails.txt:body",
+        "social.json:post_tatva_post_006"
+      ],
+      "source_count": 2,
+      "relation_count": 2,
+      "relation_types": [
+        "MENTIONED"
+      ]
+    },
+    {
+      "master_id": "MASTER_9c967250",
+      "name": "ACC8001",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "acc8001"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0125,
+      "source_types": [
+        "bank_transaction"
+      ],
+      "source_count": 1,
+      "relation_count": 2,
+      "relation_types": [
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_0435e1b0",
+      "name": "ACC3001",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "acc3001"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0125,
+      "source_types": [
+        "bank_transaction"
+      ],
+      "source_count": 1,
+      "relation_count": 2,
+      "relation_types": [
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_d7c86824",
+      "name": "ACC2001",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "acc2001"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0125,
+      "source_types": [
+        "bank_transaction"
+      ],
+      "source_count": 1,
+      "relation_count": 2,
+      "relation_types": [
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_03b528ae",
+      "name": "ACC4001",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "acc4001"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0125,
+      "source_types": [
+        "bank_transaction"
+      ],
+      "source_count": 1,
+      "relation_count": 2,
+      "relation_types": [
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_f3d6d2a8",
+      "name": "ACC6001",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "acc6001"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0125,
+      "source_types": [
+        "bank_transaction"
+      ],
+      "source_count": 1,
+      "relation_count": 2,
+      "relation_types": [
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_5945757a",
+      "name": "ACC7001",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "acc7001"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0125,
+      "source_types": [
+        "bank_transaction"
+      ],
+      "source_count": 1,
+      "relation_count": 2,
+      "relation_types": [
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_2eb1ee24",
+      "name": "ACC5001",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "acc5001"
+      ],
+      "degree_centrality": 0.0435,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.0125,
+      "source_types": [
+        "bank_transaction"
+      ],
+      "source_count": 1,
+      "relation_count": 2,
+      "relation_types": [
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_a8a8a6cf",
+      "name": "Park Street",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "park street"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0,
+      "out_degree_centrality": 0.0217,
+      "pagerank": 0.011,
+      "source_types": [
+        "investigator_annotation"
+      ],
+      "source_count": 1,
+      "relation_count": 1,
+      "relation_types": [
+        "LOCATED_AT"
+      ]
+    },
+    {
+      "master_id": "MASTER_c3de5e12",
+      "name": "Cell Tower (Twr_Kol_105)",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "CELL_TOWER"
+      ],
+      "resolved_values": [
+        "cell tower (twr_kol_105)"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0141,
+      "source_types": [
+        "cdr_record"
+      ],
+      "source_count": 1,
+      "relation_count": 3,
+      "relation_types": [
+        "CONNECTED_TO_TOWER"
+      ]
+    },
+    {
+      "master_id": "MASTER_0df9e8ff",
+      "name": "Cell Tower (Twr_Kol_210)",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "CELL_TOWER"
+      ],
+      "resolved_values": [
+        "cell tower (twr_kol_210)"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0124,
+      "source_types": [
+        "cdr_record"
+      ],
+      "source_count": 1,
+      "relation_count": 3,
+      "relation_types": [
+        "CONNECTED_TO_TOWER"
+      ]
+    },
+    {
+      "master_id": "MASTER_2660ab98",
+      "name": "Cell Tower (Twr_Kol_315)",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "CELL_TOWER"
+      ],
+      "resolved_values": [
+        "cell tower (twr_kol_315)"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0265,
+      "source_types": [
+        "cdr_record"
+      ],
+      "source_count": 1,
+      "relation_count": 2,
+      "relation_types": [
+        "CONNECTED_TO_TOWER"
+      ]
+    },
+    {
+      "master_id": "MASTER_e6f4f60a",
+      "name": "MASTER_e6f4f60a",
+      "master_type": "PERSON",
+      "entity_types": [
+        "PERSON"
+      ],
+      "resolved_values": [],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0125,
+      "source_types": [
+        "emails.txt:body"
+      ],
+      "source_count": 1,
+      "relation_count": 1,
+      "relation_types": [
+        "MENTIONED"
+      ]
+    },
+    {
+      "master_id": "MASTER_c824d68e",
+      "name": "Email_Address_Cc44D0C6",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "EMAIL_ADDRESS"
+      ],
+      "resolved_values": [
+        "email_address_cc44d0c6"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0125,
+      "source_types": [
+        "emails.txt:body"
+      ],
+      "source_count": 1,
+      "relation_count": 1,
+      "relation_types": [
+        "MENTIONED"
+      ]
+    },
+    {
+      "master_id": "MASTER_277d526f",
+      "name": "Email_Address_5029504C",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "EMAIL_ADDRESS"
+      ],
+      "resolved_values": [
+        "email_address_5029504c"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0125,
+      "source_types": [
+        "emails.txt:body"
+      ],
+      "source_count": 1,
+      "relation_count": 1,
+      "relation_types": [
+        "MENTIONED"
+      ]
+    },
+    {
+      "master_id": "MASTER_bc85a6b2",
+      "name": "Twitter",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "PLATFORM"
+      ],
+      "resolved_values": [
+        "twitter"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0169,
+      "source_types": [
+        "social.json:post_tatva_post_001",
+        "social.json:post_tatva_post_004"
+      ],
+      "source_count": 2,
+      "relation_count": 2,
+      "relation_types": [
+        "POSTED_ON"
+      ]
+    },
+    {
+      "master_id": "MASTER_a811d74e",
+      "name": "Instagram",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "PLATFORM"
+      ],
+      "resolved_values": [
+        "instagram"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0139,
+      "source_types": [
+        "social.json:post_tatva_post_002",
+        "social.json:post_tatva_post_005"
+      ],
+      "source_count": 2,
+      "relation_count": 2,
+      "relation_types": [
+        "POSTED_ON"
+      ]
+    },
+    {
+      "master_id": "MASTER_ed885df3",
+      "name": "Facebook",
+      "master_type": "INFRASTRUCTURE",
+      "entity_types": [
+        "PLATFORM"
+      ],
+      "resolved_values": [
+        "facebook"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.014,
+      "source_types": [
+        "social.json:post_tatva_post_003",
+        "social.json:post_tatva_post_006"
+      ],
+      "source_count": 2,
+      "relation_count": 2,
+      "relation_types": [
+        "POSTED_ON"
+      ]
+    },
+    {
+      "master_id": "MASTER_d551104f",
+      "name": "ACC_HAWALA",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "ACCOUNT"
+      ],
+      "resolved_values": [
+        "acc_hawala"
+      ],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0265,
+      "source_types": [
+        "bank_transaction"
+      ],
+      "source_count": 1,
+      "relation_count": 1,
+      "relation_types": [
+        "TRANSFERRED_TO"
+      ]
+    },
+    {
+      "master_id": "MASTER_1f959ec0",
+      "name": "MASTER_1f959ec0",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "VEHICLE"
+      ],
+      "resolved_values": [],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0141,
+      "source_types": [
+        "vehicle_camera"
+      ],
+      "source_count": 1,
+      "relation_count": 1,
+      "relation_types": [
+        "DETECTED"
+      ]
+    },
+    {
+      "master_id": "MASTER_31445d32",
+      "name": "MASTER_31445d32",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "VEHICLE"
+      ],
+      "resolved_values": [],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0141,
+      "source_types": [
+        "vehicle_camera"
+      ],
+      "source_count": 1,
+      "relation_count": 1,
+      "relation_types": [
+        "DETECTED"
+      ]
+    },
+    {
+      "master_id": "MASTER_a9dc4b8d",
+      "name": "MASTER_a9dc4b8d",
+      "master_type": "ENTITY",
+      "entity_types": [
+        "VEHICLE"
+      ],
+      "resolved_values": [],
+      "degree_centrality": 0.0217,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0217,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.0141,
+      "source_types": [
+        "vehicle_camera"
+      ],
+      "source_count": 1,
+      "relation_count": 1,
+      "relation_types": [
+        "DETECTED"
+      ]
+    },
+    {
+      "master_id": "MASTER_5a11fc81",
+      "name": "Kolkata",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "kolkata"
+      ],
+      "degree_centrality": 0.0,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.011,
+      "source_types": [],
+      "source_count": 0,
+      "relation_count": 0,
+      "relation_types": []
+    },
+    {
+      "master_id": "MASTER_08915f79",
+      "name": "Delhi",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "delhi"
+      ],
+      "degree_centrality": 0.0,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.011,
+      "source_types": [],
+      "source_count": 0,
+      "relation_count": 0,
+      "relation_types": []
+    },
+    {
+      "master_id": "MASTER_17f6b404",
+      "name": "Mumbai",
+      "master_type": "PLACE",
+      "entity_types": [
+        "LOCATION"
+      ],
+      "resolved_values": [
+        "mumbai"
+      ],
+      "degree_centrality": 0.0,
+      "betweenness_centrality": 0.0,
+      "in_degree_centrality": 0.0,
+      "out_degree_centrality": 0.0,
+      "pagerank": 0.011,
+      "source_types": [],
+      "source_count": 0,
+      "relation_count": 0,
+      "relation_types": []
+    }
+  ]
+}
