@@ -609,6 +609,95 @@ def process_case(case_id: str = Body(..., embed=True)):
         cache.invalidate_insights()
 
     try:
+        # 1. Map and copy uploaded files to Graph_Integration_Layer/data/
+        import shutil
+        from pathlib import Path
+        import json
+        
+        case_upload_dir = Path(os.path.join(UPLOAD_DIR, case_id))
+        integration_data_dir = Path(__file__).parent.parent / "Graph_Integration_Layer" / "data"
+        integration_data_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Clear existing data files in Graph_Integration_Layer/data/ to prevent mixing cases
+        for f in integration_data_dir.glob("*"):
+            if f.is_file() and f.name not in [".gitkeep", "README.md"]:
+                try:
+                    f.unlink()
+                except Exception:
+                    pass
+
+        if case_upload_dir.exists():
+            print(f"[API] Copying uploaded files for case {case_id}...")
+            for filepath in case_upload_dir.glob("*"):
+                if not filepath.is_file():
+                    continue
+                filename_lower = filepath.name.lower()
+                dest_name = None
+                
+                if "fir" in filename_lower:
+                    dest_name = "fir.txt"
+                elif "cdr" in filename_lower or "call" in filename_lower:
+                    dest_name = "cdr.csv"
+                elif "gps" in filename_lower or "geo" in filename_lower:
+                    dest_name = "gps.csv"
+                elif "bank" in filename_lower or "transfer" in filename_lower or "transaction" in filename_lower:
+                    dest_name = "transactions.csv"
+                elif "email" in filename_lower:
+                    dest_name = "emails.txt"
+                elif "chat" in filename_lower:
+                    dest_name = "chat.txt"
+                elif "social" in filename_lower:
+                    dest_name = "social.json"
+                elif "annotation" in filename_lower:
+                    dest_name = "annotations.csv"
+                else:
+                    ext = filepath.suffix.lower()
+                    if ext == ".txt":
+                        dest_name = "fir.txt"
+                    elif ext == ".csv":
+                        dest_name = "transactions.csv"
+                    elif ext == ".json":
+                        dest_name = "social.json"
+                
+                if dest_name:
+                    dest_path = integration_data_dir / dest_name
+                    print(f"  -> Copying {filepath.name} to {dest_name}")
+                    shutil.copy2(filepath, dest_path)
+
+        # 2. Run Graph Integration main pipeline to generate new unified_graph.json
+        print(f"[API] Running Graph Integration pipeline...")
+        from Graph_Integration_Layer.main import main as run_integration_pipeline
+        run_integration_pipeline()
+
+        # 3. Ingest the newly generated graph into Neo4j
+        print(f"[API] Ingesting unified graph into Neo4j AuraDB...")
+        from db.neo4j_importer import ingest_unified_graph, clear_database
+        from db.neo4j_client import Neo4jClient
+        
+        graph_path = Path(__file__).parent.parent / "Graph_Integration_Layer" / "output" / "unified_graph.json"
+        if graph_path.exists():
+            with open(graph_path, "r", encoding="utf-8") as f:
+                new_graph_data = json.load(f)
+            
+            n4j_client = Neo4jClient()
+            if n4j_client.driver:
+                clear_database(n4j_client)
+                ingest_unified_graph(n4j_client, new_graph_data)
+                n4j_client.close()
+                print("[API] Neo4j database successfully updated with new graph.")
+            else:
+                print("[API] WARNING: Could not connect to Neo4j to ingest new graph.")
+        else:
+            print("[API] WARNING: unified_graph.json not found after integration step.")
+
+        # 4. Invalidate memory cache in graph_insights
+        import insights.graph_insights as gi
+        gi._GRAPH_DATA = {}
+        gi._SUSPECTS = []
+        gi._ALERTS = []
+        gi._TIMELINE = []
+        gi._SUMMARY = None
+
         print(f"[API] Running Graph summary calculation...")
         summary = run_summary()
 

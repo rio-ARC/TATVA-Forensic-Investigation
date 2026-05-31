@@ -540,38 +540,7 @@ export default function InvestigationPage() {
                   </div>
                 )}
 
-                {/* Evidence Hierarchy */}
-                <div className="space-y-4">
-                  <h3 className="uppercase tracking-widest border-b border-[#3f4852]/20 pb-2" style={{ fontFamily: 'JetBrains Mono', fontSize: '12px', color: '#bec7d4' }}>
-                    Evidence Hierarchy
-                  </h3>
 
-                  {/* Evidence Item 1 */}
-                  <div className="group flex gap-4 p-3 rounded hover:bg-[#353436]/20 transition-all cursor-pointer">
-                    <div className="w-1 bg-[#ffdb9d] rounded-full transition-all group-hover:w-2" />
-                    <div>
-                      <div style={{ fontFamily: 'JetBrains Mono', fontSize: '14px', fontWeight: '500', color: '#e5e2e3' }}>Digital Fingerprint Match</div>
-                      <div className="font-mono mb-1" style={{ fontSize: '10px', color: '#bec7d4' }}>0.98 Match Probability // Log-ID: 88291</div>
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined" style={{ fontSize: '12px', color: '#bec7d4' }}>attachment</span>
-                        <span className="underline" style={{ fontSize: '10px', color: '#98cbff' }}>FORENSIC_DUMP_01.LOG</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Evidence Item 2 */}
-                  <div className="group flex gap-4 p-3 rounded hover:bg-[#353436]/20 transition-all cursor-pointer">
-                    <div className="w-1 bg-[#ffb4ab] rounded-full transition-all group-hover:w-2" />
-                    <div>
-                      <div style={{ fontFamily: 'JetBrains Mono', fontSize: '14px', fontWeight: '500', color: '#e5e2e3' }}>IP Geolocation Divergence</div>
-                      <div className="font-mono mb-1" style={{ fontSize: '10px', color: '#bec7d4' }}>Conflict Found // Region: South-East Asia</div>
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined" style={{ fontSize: '12px', color: '#bec7d4' }}>history</span>
-                        <span style={{ fontSize: '10px', color: '#bec7d4' }}>PREVIOUS: NORTH AMERICA</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
                 {/* Suspects List Section */}
                 {activeTab === 'EXPLAINABILITY' && suspects.length > 0 && (
