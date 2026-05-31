@@ -22,6 +22,8 @@
     "@vitejs/plugin-react": "^6.0.2",
     "d3": "^7.9.0",
     "d3-force": "^3.0.0",
+    "jspdf": "^4.2.1",
+    "marked": "^18.0.4",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-force-graph-3d": "^1.29.1",

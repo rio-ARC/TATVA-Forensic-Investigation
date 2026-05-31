@@ -1,9 +1,10 @@
-from fastapi import FastAPI, HTTPException, Body, Query, UploadFile, File
+from fastapi import FastAPI, HTTPException, Body, Query, UploadFile, File, BackgroundTasks
 import hashlib
 import os
 import shutil
 import aiofiles
 import base64
+from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
@@ -594,103 +595,90 @@ def sync_artifacts_to_redis():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/case/process")
-def process_case(case_id: str = Body(..., embed=True)):
-    """Executes the full forensic data processing and LLM report generation pipeline sequentially."""
-    # Log progress to Supabase
-    db.log_query(
-        query_text=f"Triggered processing pipeline for case '{case_id}'",
-        query_type="pipeline_trigger",
-        result_count=1,
-        case_id=case_id
-    )
-    # Clear old insights cache since new processing is starting
-    if cache.connected:
-        cache.invalidate_insights()
+@app.get("/api/report/export")
+def export_report():
+    """
+    Returns the latest Gemini-generated forensic investigation report.
+    The frontend uses this to render and download a structured PDF report.
+    """
+    import json as _json
+    report_path = Path(__file__).parent.parent / "Gemini_Engine" / "outputs" / "investigation_report.md"
+    risk_profiles_path = Path(__file__).parent.parent / "analysis" / "rule_validation" / "output" / "person_risk_profiles.json"
+    timeline_path = Path(__file__).parent.parent / "analysis" / "timeline_reconstruction" / "timeline.json"
+    summary_path = Path(__file__).parent.parent / "analysis" / "graph_summary" / "summary.json"
 
+    report_md = ""
+    if report_path.exists():
+        with open(report_path, "r", encoding="utf-8") as f:
+            report_md = f.read()
+    else:
+        raise HTTPException(status_code=404, detail="Investigation report not yet generated. Please run the processing pipeline first.")
+
+    risk_profiles = []
+    if risk_profiles_path.exists():
+        try:
+            with open(risk_profiles_path, "r", encoding="utf-8") as f:
+                risk_profiles = _json.load(f)
+        except Exception:
+            pass
+
+    timeline = {}
+    if timeline_path.exists():
+        try:
+            with open(timeline_path, "r", encoding="utf-8") as f:
+                timeline = _json.load(f)
+        except Exception:
+            pass
+
+    summary = {}
+    if summary_path.exists():
+        try:
+            with open(summary_path, "r", encoding="utf-8") as f:
+                summary = _json.load(f)
+        except Exception:
+            pass
+
+    return {
+        "report_markdown": report_md,
+        "risk_profiles": risk_profiles,
+        "timeline": timeline,
+        "summary": summary,
+        "generated_at": report_path.stat().st_mtime if report_path.exists() else None,
+    }
+
+
+def _execute_pipeline_bg(case_id: str):
+    """Executes the pipeline steps sequentially in the background."""
+    import json as _json
     try:
-        # 1. Map and copy uploaded files to Graph_Integration_Layer/data/
-        import shutil
-        from pathlib import Path
-        import json
-        
-        case_upload_dir = Path(os.path.join(UPLOAD_DIR, case_id))
-        integration_data_dir = Path(__file__).parent.parent / "Graph_Integration_Layer" / "data"
-        integration_data_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Clear existing data files in Graph_Integration_Layer/data/ to prevent mixing cases
-        for f in integration_data_dir.glob("*"):
-            if f.is_file() and f.name not in [".gitkeep", "README.md"]:
-                try:
-                    f.unlink()
-                except Exception:
-                    pass
-
-        if case_upload_dir.exists():
-            print(f"[API] Copying uploaded files for case {case_id}...")
-            for filepath in case_upload_dir.glob("*"):
-                if not filepath.is_file():
-                    continue
-                filename_lower = filepath.name.lower()
-                dest_name = None
-                
-                if "fir" in filename_lower:
-                    dest_name = "fir.txt"
-                elif "cdr" in filename_lower or "call" in filename_lower:
-                    dest_name = "cdr.csv"
-                elif "gps" in filename_lower or "geo" in filename_lower:
-                    dest_name = "gps.csv"
-                elif "bank" in filename_lower or "transfer" in filename_lower or "transaction" in filename_lower:
-                    dest_name = "transactions.csv"
-                elif "email" in filename_lower:
-                    dest_name = "emails.txt"
-                elif "chat" in filename_lower:
-                    dest_name = "chat.txt"
-                elif "social" in filename_lower:
-                    dest_name = "social.json"
-                elif "annotation" in filename_lower:
-                    dest_name = "annotations.csv"
-                else:
-                    ext = filepath.suffix.lower()
-                    if ext == ".txt":
-                        dest_name = "fir.txt"
-                    elif ext == ".csv":
-                        dest_name = "transactions.csv"
-                    elif ext == ".json":
-                        dest_name = "social.json"
-                
-                if dest_name:
-                    dest_path = integration_data_dir / dest_name
-                    print(f"  -> Copying {filepath.name} to {dest_name}")
-                    shutil.copy2(filepath, dest_path)
-
-        # 2. Run Graph Integration main pipeline to generate new unified_graph.json
-        print(f"[API] Running Graph Integration pipeline...")
+        # ── STEP 1: Dynamic Graph Integration ────────────────────────────────
+        print(f"[API BG] Step 1: Running dynamic Graph Integration pipeline for case '{case_id}'...")
         from Graph_Integration_Layer.main import main as run_integration_pipeline
-        run_integration_pipeline()
+        run_integration_pipeline(case_id=case_id)
 
-        # 3. Ingest the newly generated graph into Neo4j
-        print(f"[API] Ingesting unified graph into Neo4j AuraDB...")
+        # ── STEP 2: Neo4j Ingestion ───────────────────────────────────────────
+        print(f"[API BG] Step 2: Ingesting unified graph into Neo4j AuraDB...")
         from db.neo4j_importer import ingest_unified_graph, clear_database
         from db.neo4j_client import Neo4jClient
-        
+
         graph_path = Path(__file__).parent.parent / "Graph_Integration_Layer" / "output" / "unified_graph.json"
         if graph_path.exists():
             with open(graph_path, "r", encoding="utf-8") as f:
-                new_graph_data = json.load(f)
-            
+                new_graph_data = _json.load(f)
+
             n4j_client = Neo4jClient()
             if n4j_client.driver:
                 clear_database(n4j_client)
                 ingest_unified_graph(n4j_client, new_graph_data)
                 n4j_client.close()
-                print("[API] Neo4j database successfully updated with new graph.")
+                print("[API BG] Neo4j database successfully updated with new graph.")
             else:
-                print("[API] WARNING: Could not connect to Neo4j to ingest new graph.")
+                print("[API BG] WARNING: Could not connect to Neo4j — graph ingestion skipped.")
         else:
-            print("[API] WARNING: unified_graph.json not found after integration step.")
+            print("[API BG] WARNING: unified_graph.json not found after integration step.")
 
-        # 4. Invalidate memory cache in graph_insights
+        # ── STEP 3: Invalidate in-memory graph_insights cache ─────────────────
+        print(f"[API BG] Step 3: Clearing in-memory insights cache...")
         import insights.graph_insights as gi
         gi._GRAPH_DATA = {}
         gi._SUSPECTS = []
@@ -698,27 +686,47 @@ def process_case(case_id: str = Body(..., embed=True)):
         gi._TIMELINE = []
         gi._SUMMARY = None
 
-        print(f"[API] Running Graph summary calculation...")
+        # ── STEP 4: Analytics Refresh ─────────────────────────────────────────
+        print(f"[API BG] Step 4a: Running Graph summary calculation...")
         summary = run_summary()
 
-        print(f"[API] Running Timeline reconstruction...")
+        print(f"[API BG] Step 4b: Running Timeline reconstruction...")
         timeline = run_reconstruction()
 
-        print(f"[API] Running Risk Intelligence rule validation engine...")
+        print(f"[API BG] Step 4c: Running Risk Intelligence rule validation engine...")
         validation = run_validation_pipeline()
 
-        print(f"[API] Running Gemini Engine forensic report generator...")
+        # ── STEP 5: Gemini Report Generation ─────────────────────────────────
+        print(f"[API BG] Step 5: Running Gemini Engine forensic report generator...")
         run_engine()
 
-        return {
-            "status": "success",
-            "message": f"Full TATVA pipeline successfully executed for case '{case_id}'!",
-            "report_path": "backend/Gemini_Engine/outputs/investigation_report.md",
-            "cache_invalidated": cache.connected
-        }
+        print(f"[API BG] Pipeline execution successfully finished for case '{case_id}'!")
     except Exception as e:
-        print(f"[API] Pipeline execution failed: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Pipeline execution failed for case '{case_id}': {str(e)}"
-        )
+        import traceback
+        tb = traceback.format_exc()
+        print(f"[API BG] Pipeline execution failed: {e}\n{tb}")
+
+
+@app.post("/api/case/process")
+def process_case(background_tasks: BackgroundTasks, case_id: str = Body(..., embed=True)):
+    """
+    Triggers the full TATVA forensic data processing pipeline for a case as a background task.
+    """
+    # Log pipeline trigger
+    db.log_query(
+        query_text=f"Triggered processing pipeline in background for case '{case_id}'",
+        query_type="pipeline_trigger",
+        result_count=1,
+        case_id=case_id
+    )
+
+    # Clear Redis insights cache
+    if cache.connected:
+        cache.invalidate_insights()
+
+    background_tasks.add_task(_execute_pipeline_bg, case_id)
+
+    return {
+        "status": "success",
+        "message": f"TATVA pipeline successfully triggered in background for case '{case_id}'!"
+    }

@@ -284,7 +284,7 @@ export default function CaseFilePage() {
       await fetchCases()
 
       // 4. Navigate to reconstruction/processing page
-      navigate('/reconstruction')
+      navigate('/reconstruction', { state: { caseId } })
 
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Unknown error occurred'

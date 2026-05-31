@@ -1,0 +1,32 @@
+[
+{
+"post_id": "intel_post_001",
+"platform": "twitter",
+"author_handle": "@NeerajOps",
+"author_name": "Neeraj Malhotra",
+"timestamp": "2026-06-10 19:05:00 +0530",
+"content": "Big movement tonight near Salt Lake. @SamarD keep everything ready.",
+"mentions": ["@SamarD"],
+"hashtags": ["kolkata", "nightops"]
+},
+{
+"post_id": "intel_post_002",
+"platform": "instagram",
+"author_handle": "@SamarD",
+"author_name": "Samar Dey",
+"timestamp": "2026-06-10 20:00:00 +0530",
+"content": "Everything aligned. Waiting for Ishaan near Sector V.",
+"mentions": ["@IshaanK"],
+"hashtags": ["movement", "sectorv"]
+},
+{
+"post_id": "intel_post_003",
+"platform": "facebook",
+"author_handle": "@IshaanK",
+"author_name": "Ishaan Kapoor",
+"timestamp": "2026-06-10 21:15:00 +0530",
+"content": "Reached Sealdah safely. Delivery successful.",
+"mentions": [],
+"hashtags": ["delivery", "done"]
+}
+]

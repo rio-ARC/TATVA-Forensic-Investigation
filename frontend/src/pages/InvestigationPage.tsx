@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 // ====================================================================
 
 import ForceGraphKnowledgeGraph from '../components/ForceGraphKnowledgeGraph'
+import ExportReportModal from '../components/ExportReportModal'
 import {
   type GraphRenderPayload,
   type GraphView,
@@ -36,6 +37,7 @@ type TabType = 'EXPLAINABILITY' | 'TIMELINE' | 'ASSISTANT'
 export default function InvestigationPage() {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<TabType>('EXPLAINABILITY')
+  const [showExportModal, setShowExportModal] = useState(false)
   const [suspects, setSuspects] = useState<any[]>([])
   const [selectedEntity, setSelectedEntity] = useState<any>(null)
 
@@ -600,22 +602,30 @@ export default function InvestigationPage() {
           {/* Action Area */}
           <div className="p-6 border-t border-[#3f4852]/30 space-y-3 flex-shrink-0">
             <button
-              onClick={() => alert(JSON.stringify(selectedEntity || suspects, null, 2))}
+              onClick={() => setShowExportModal(true)}
               className="w-full py-4 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all"
-              style={{ background: '#feb700', color: '#412d00', fontFamily: 'Geist', fontSize: '24px', fontWeight: '600', boxShadow: 'inset 0 0 10px rgba(152,203,255,0.1)' }}
+              style={{ background: '#feb700', color: '#412d00', fontFamily: 'JetBrains Mono', fontSize: '14px', fontWeight: '700', letterSpacing: '0.08em', boxShadow: '0 0 24px rgba(254,183,0,0.2)' }}
             >
-              <span className="material-symbols-outlined">send</span>
-              <span style={{ fontSize: '18px' }}>Export Findings</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>picture_as_pdf</span>
+              <span>EXPORT FINDINGS</span>
             </button>
             <button
               className="w-full py-3 rounded-lg hover:text-[#e5e2e3] transition-all border border-[#3f4852]/30 uppercase tracking-widest"
-              style={{ background: '#2a2a2b', color: '#bec7d4', fontFamily: 'JetBrains Mono', fontSize: '14px', fontWeight: '500' }}
+              style={{ background: '#2a2a2b', color: '#bec7d4', fontFamily: 'JetBrains Mono', fontSize: '13px', fontWeight: '500' }}
             >
               Request Agency Peer Review
             </button>
           </div>
         </aside>
       </div>
+
+      {/* Export PDF Modal */}
+      {showExportModal && (
+        <ExportReportModal
+          caseId={ACTIVE_CASE_ID}
+          onClose={() => setShowExportModal(false)}
+        />
+      )}
     </div>
   )
 }

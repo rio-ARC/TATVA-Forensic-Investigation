@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useLogSimulator } from '../hooks/useLogSimulator'
 
 // ====================================================================
@@ -12,20 +12,107 @@ import { useLogSimulator } from '../hooks/useLogSimulator'
 
 export default function ReconstructionPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const caseId = location.state?.caseId
   const [summary, setSummary] = useState<any>(null)
-  useLogSimulator('logs-feed', 3000)
+  const [currentStage, setCurrentStage] = useState(0)
+  const [error, setError] = useState<string | null>(null)
+  const [isProcessing, setIsProcessing] = useState(true)
+
+  useLogSimulator('logs-feed', 2000)
+
+  const stages = [
+    { label: "Parsing Evidence", sublabel: "Running schema detection", color: "#feb700" },
+    { label: "Extracting Entities", sublabel: "Running preprocessors", color: "#98cbff" },
+    { label: "Resolving Identities", sublabel: "Cross-referencing nodes", color: "#feb700" },
+    { label: "Constructing Knowledge Graph", sublabel: "Integrating master graph", color: "#98cbff" },
+    { label: "Running Graph Intelligence", sublabel: "Detecting circular flow & cycles", color: "#feb700" },
+    { label: "Temporal Reconstruction", sublabel: "Building causality timeline", color: "#98cbff" },
+    { label: "Anomaly Detection", sublabel: "Calculating risk profiles", color: "#ffb4ab" },
+    { label: "Generating Intelligence Signals", sublabel: "Running Gemini report engine", color: "#feb700" },
+  ]
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/insights/summary')
-      .then(res => res.json())
-      .then(data => setSummary(data))
-      .catch(err => console.error('Failed to fetch summary', err))
+    // 1. If no case_id, fallback to static/legacy mode by passing null/empty,
+    //    but alert/notify in logs.
+    const runCaseId = caseId || '';
+    console.log(`[ReconstructionPage] Initiating pipeline run for case: ${runCaseId || 'Legacy Static Mode'}`)
 
-    const timer = setTimeout(() => {
-      navigate('/investigation')
-    }, 8000) // 8 seconds simulated loading time
-    return () => clearTimeout(timer)
-  }, [navigate])
+    let isMounted = true;
+
+    // Simulate progress ticks for visual feedback
+    const stageInterval = setInterval(() => {
+      if (!isMounted) return
+      setCurrentStage((prev) => {
+        // Stop automatically incrementing at stage 6 (Temporal Recon) and wait for API response
+        if (prev < 5) return prev + 1
+        return prev
+      })
+    }, 4500)
+
+    // Trigger backend processing pipeline
+    fetch('http://localhost:8000/api/case/process', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ case_id: runCaseId })
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const detail = await res.json().catch(() => ({}));
+          throw new Error(detail?.detail || `HTTP Error ${res.status}`)
+        }
+        return res.json()
+      })
+      .then(() => {
+        if (!isMounted) return
+        // Complete remaining stages rapidly
+        setCurrentStage(6)
+        setTimeout(() => {
+          if (!isMounted) return
+          setCurrentStage(7)
+          // Fetch final summary metrics
+          fetch('http://localhost:8000/api/insights/summary')
+            .then(res => res.json())
+            .then(data => {
+              if (!isMounted) return
+              setSummary(data)
+              setIsProcessing(false)
+              // Wait a brief moment to showcase completeness, then navigate
+              setTimeout(() => {
+                navigate('/investigation')
+              }, 2000)
+            })
+            .catch(() => {
+              if (isMounted) navigate('/investigation')
+            })
+        }, 1000)
+      })
+      .catch((err) => {
+        if (!isMounted) return
+        console.error('[ReconstructionPage] Processing pipeline failed:', err)
+        setError(err.message || 'An unknown network error occurred.')
+        setIsProcessing(false)
+      })
+
+    return () => {
+      isMounted = false;
+      clearInterval(stageInterval)
+    }
+  }, [caseId, navigate])
+
+  const getStageStatus = (index: number) => {
+    if (error && currentStage === index) return 'error'
+    if (currentStage > index) return 'active'
+    if (currentStage === index) return 'processing'
+    return 'pending'
+  }
+
+  const getProgressPercentage = () => {
+    if (error) return 0
+    return Math.min(Math.round(((currentStage + 1) / stages.length) * 100), 100)
+  }
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#0a0a0b', fontFamily: 'Geist, sans-serif', color: '#e5e2e3' }}>
@@ -137,24 +224,27 @@ export default function ReconstructionPage() {
             </div>
 
             <div className="space-y-4 flex-grow overflow-y-auto pr-2 custom-scrollbar">
-              <PipelineStage color="#feb700" label="Parsing Evidence" sublabel="42.8 GB Raw Ingested" status="active" />
-              <PipelineStage color="#98cbff" label="Extracting Entities" sublabel="Processing 1,240 nodes" status="processing" />
-              <PipelineStage color="#88919d" label="Resolving Identities" sublabel="Pending Cross-Reference" status="pending" />
-              <PipelineStage color="#88919d" label="Constructing Knowledge Graph" sublabel="" status="pending" />
-              <PipelineStage color="#88919d" label="Running Graph Intelligence" sublabel="" status="pending" />
-              <PipelineStage color="#88919d" label="Temporal Reconstruction" sublabel="" status="pending" />
-              <PipelineStage color="#ffb4ab" label="Anomaly Detection" sublabel="" status="error" />
-              <PipelineStage color="#88919d" label="Generating Intelligence Signals" sublabel="" status="pending" />
+              {stages.map((stage, i) => (
+                <PipelineStage
+                  key={i}
+                  color={stage.color}
+                  label={stage.label}
+                  sublabel={stage.sublabel}
+                  status={getStageStatus(i)}
+                />
+              ))}
             </div>
 
             {/* Progress bar */}
             <div className="mt-4 pt-4 border-t border-[#3f4852]/20">
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-1.5 h-1.5 bg-[#feb700] rounded-full animate-pulse" />
-                <span className="uppercase tracking-widest" style={{ fontFamily: 'JetBrains Mono', fontSize: '12px', color: '#feb700' }}>Reconstructing...</span>
+                <div className={`w-1.5 h-1.5 rounded-full ${error ? 'bg-[#ffb4ab]' : 'bg-[#feb700] animate-pulse'}`} />
+                <span className="uppercase tracking-widest" style={{ fontFamily: 'JetBrains Mono', fontSize: '12px', color: error ? '#ffb4ab' : '#feb700' }}>
+                  {error ? 'PROCESSING FAILED' : isProcessing ? 'RECONSTRUCTING...' : 'COMPLETE'}
+                </span>
               </div>
               <div className="h-1 bg-[#353436] rounded-full overflow-hidden">
-                <div className="h-full w-[45%] transition-all duration-1000" style={{ background: '#feb700', boxShadow: '0 0 8px #feb700' }} />
+                <div className="h-full transition-all duration-1000" style={{ width: `${getProgressPercentage()}%`, background: error ? '#ffb4ab' : '#feb700', boxShadow: error ? 'none' : '0 0 8px #feb700' }} />
               </div>
             </div>
           </div>
@@ -167,39 +257,61 @@ export default function ReconstructionPage() {
                 RECON_TYPE: MULTIDIMENSIONAL
               </div>
               <div className="glass-panel-blue px-3 py-1 rounded" style={{ fontFamily: 'JetBrains Mono', fontSize: '10px', color: '#98cbff', border: '1px solid rgba(152,203,255,0.2)' }}>
-                STABILITY: 94.2%
+                STABILITY: {error ? '0.0%' : isProcessing ? '94.2%' : '100.0%'}
               </div>
             </div>
 
             {/* Graph area */}
-            <div className="flex-grow relative flex items-center justify-center pointer-events-none" id="graph-area">
-              <div className="relative w-96 h-96">
-                {/* Orbit rings */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-64 h-64 border-2 border-dashed border-[#feb700]/20 rounded-full" style={{ animation: 'spin 20s linear infinite' }} />
-                  <div className="absolute w-80 h-80 border border-[#98cbff]/10 rounded-full" style={{ animation: 'spin 30s linear infinite reverse' }} />
+            <div className="flex-grow relative flex items-center justify-center" id="graph-area">
+              {error ? (
+                <div className="max-w-md p-6 glass-panel-blue rounded-xl border-l-4 border-[#ffb4ab] text-center pointer-events-auto">
+                  <span className="material-symbols-outlined text-4xl text-[#ffb4ab] mb-3">error</span>
+                  <h4 style={{ fontFamily: 'Geist', fontSize: '18px', fontWeight: 'bold', color: '#ffb4ab', marginBottom: '8px' }}>Pipeline Failure</h4>
+                  <p className="text-sm opacity-80 mb-6" style={{ fontFamily: 'Geist' }}>{error}</p>
+                  <div className="flex gap-4 justify-center">
+                    <button
+                      onClick={() => window.location.reload()}
+                      className="px-4 py-2 bg-[#ffb4ab] text-[#600004] font-bold rounded hover:brightness-110 active:scale-95 transition-all text-xs uppercase"
+                    >
+                      Retry Ingestion
+                    </button>
+                    <button
+                      onClick={() => navigate('/case/new')}
+                      className="px-4 py-2 border border-[#3f4852] text-[#e5e2e3] rounded hover:bg-[#353436]/20 transition-all text-xs uppercase"
+                    >
+                      Back to Intake
+                    </button>
+                  </div>
                 </div>
+              ) : (
+                <div className="relative w-96 h-96 pointer-events-none">
+                  {/* Orbit rings */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-64 h-64 border-2 border-dashed border-[#feb700]/20 rounded-full" style={{ animation: 'spin 20s linear infinite' }} />
+                    <div className="absolute w-80 h-80 border border-[#98cbff]/10 rounded-full" style={{ animation: 'spin 30s linear infinite reverse' }} />
+                  </div>
 
-                {/* Floating Nodes */}
-                <div className="absolute node-pulse" style={{ top: '25%', left: '25%' }}>
-                  <div className="w-4 h-4 bg-[#98cbff] rounded-full" style={{ boxShadow: '0 0 12px #98cbff' }} />
-                  <span className="absolute whitespace-nowrap -translate-x-1/2 left-1/2" style={{ top: '-24px', fontFamily: 'JetBrains Mono', fontSize: '10px', color: '#98cbff' }}>ENTITY_84A</span>
-                </div>
-                <div className="absolute node-pulse" style={{ bottom: '33%', right: '25%', animationDelay: '0.5s' }}>
-                  <div className="w-3 h-3 bg-[#feb700] rounded-full" style={{ boxShadow: '0 0 10px #feb700' }} />
-                  <span className="absolute whitespace-nowrap -translate-x-1/2 left-1/2" style={{ bottom: '-24px', fontFamily: 'JetBrains Mono', fontSize: '10px', color: '#feb700' }}>TRANS_ID_981</span>
-                </div>
-                <div className="absolute node-pulse" style={{ top: '50%', right: '33%', animationDelay: '1.2s' }}>
-                  <div className="w-5 h-5 bg-[#ffb4ab] rounded-full" style={{ boxShadow: '0 0 15px #ffb4ab' }} />
-                  <span className="absolute whitespace-nowrap -translate-x-1/2 left-1/2" style={{ top: '-32px', fontFamily: 'JetBrains Mono', fontSize: '10px', color: '#ffb4ab' }}>ANOMALY_ERR</span>
-                </div>
+                  {/* Floating Nodes */}
+                  <div className="absolute node-pulse" style={{ top: '25%', left: '25%' }}>
+                    <div className="w-4 h-4 bg-[#98cbff] rounded-full" style={{ boxShadow: '0 0 12px #98cbff' }} />
+                    <span className="absolute whitespace-nowrap -translate-x-1/2 left-1/2" style={{ top: '-24px', fontFamily: 'JetBrains Mono', fontSize: '10px', color: '#98cbff' }}>ENTITY_84A</span>
+                  </div>
+                  <div className="absolute node-pulse" style={{ bottom: '33%', right: '25%', animationDelay: '0.5s' }}>
+                    <div className="w-3 h-3 bg-[#feb700] rounded-full" style={{ boxShadow: '0 0 10px #feb700' }} />
+                    <span className="absolute whitespace-nowrap -translate-x-1/2 left-1/2" style={{ bottom: '-24px', fontFamily: 'JetBrains Mono', fontSize: '10px', color: '#feb700' }}>TRANS_ID_981</span>
+                  </div>
+                  <div className="absolute node-pulse" style={{ top: '50%', right: '33%', animationDelay: '1.2s' }}>
+                    <div className="w-5 h-5 bg-[#ffb4ab] rounded-full" style={{ boxShadow: '0 0 15px #ffb4ab' }} />
+                    <span className="absolute whitespace-nowrap -translate-x-1/2 left-1/2" style={{ top: '-32px', fontFamily: 'JetBrains Mono', fontSize: '10px', color: '#ffb4ab' }}>ANOMALY_ERR</span>
+                  </div>
 
-                {/* Central Hub */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full blur-xl animate-pulse" style={{ background: 'linear-gradient(135deg, rgba(254,183,0,0.4), rgba(152,203,255,0.4))' }} />
-                  <span className="material-symbols-outlined absolute text-4xl text-[#e5e2e3]">hub</span>
+                  {/* Central Hub */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full blur-xl animate-pulse" style={{ background: 'linear-gradient(135deg, rgba(254,183,0,0.4), rgba(152,203,255,0.4))' }} />
+                    <span className="material-symbols-outlined absolute text-4xl text-[#e5e2e3]">hub</span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* ── Bottom Metric Cards ── */}
