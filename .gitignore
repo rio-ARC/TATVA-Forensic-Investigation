@@ -27,6 +27,7 @@ __pycache__/
 ._*
 Thumbs.db
 ehthumbs.db
+tatva_local.db
 
 # Logs and databases
 *.log
