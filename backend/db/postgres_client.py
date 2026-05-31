@@ -178,7 +178,8 @@ class PostgresClient:
 
     def _connect(self):
         if not self.db_url:
-            print("[PostgreSQL] No database URL configured. Skipping connection.")
+            print("[PostgreSQL] No database URL configured. Falling back to SQLite.")
+            self._fallback_to_sqlite()
             return
 
         try:
@@ -196,7 +197,22 @@ class PostgresClient:
             print(f"[PostgreSQL] Connected to Supabase successfully.")
         except Exception as e:
             print(f"[PostgreSQL] Connection failed: {e}")
+            self._fallback_to_sqlite()
+
+    def _fallback_to_sqlite(self):
+        try:
+            db_path = Path(__file__).parent.parent / "tatva_local.db"
+            self.db_url = f"sqlite:///{db_path}"
+            self.engine = create_engine(
+                self.db_url,
+                connect_args={"check_same_thread": False}
+            )
+            self.Session = sessionmaker(bind=self.engine)
+            print(f"[SQLite] Falling back to local SQLite database: {db_path}")
+        except Exception as ex:
+            print(f"[SQLite] Local fallback initialization failed: {ex}")
             self.engine = None
+            self.Session = None
 
     def create_tables(self):
         """Create all tables if they don't exist."""

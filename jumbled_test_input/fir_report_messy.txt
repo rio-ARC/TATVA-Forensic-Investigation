@@ -1,0 +1,13 @@
+First Information Report (FIR)
+PS: Park Street Division, Cyber Crimes Unit
+Ref No: CR/554/2026
+Date of Incident: 22-05-2026
+
+Narrative details:
+Investigation into illegal money routing. The prime suspect, Rahul Sen, met with his associate Arjun Ghosh at Park Street, Kolkata, at 21:00 hours on 22 May 2026. The target of their meeting was coordinating sub-threshold fund transfers from bank account ACC1001 to multiple shell accounts to bypass automated banking flags (smurfing). Rahul was tracked using mobile handset ANDROID_001 and SIM number 9876543210. 
+
+Rajan Mehta acted as the layer-mule, providing multiple accounts (like ACC9001 and others) and phone contact 8877665544 to receive funds. Arjun Ghosh (using phone 9123456780) communicated with Vikram Khanna to manage cash routing. Vikram was monitored via WATCH_ABC in Bowbazar before travelling to Howrah Station around 22:40 hours to retrieve physical cash. 
+
+Lookout vehicles identified: a white Hyundai (TN09BY9726) at Park Street, a black Kia SUV (MH12AB4589) at Howrah Station, and a red Yamaha bike (CB24CD7788) at the Bowbazar transit point.
+
+Offence Penalties: IPC Sec 420 (Cheating), IPC Sec 120B (Conspiracy), PMLA 2002.
