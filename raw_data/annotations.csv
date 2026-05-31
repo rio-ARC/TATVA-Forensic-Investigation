@@ -1,0 +1,13 @@
+source_entity,target_entity,relation,confidence,evidence
+Neeraj,9011223344,USES_PHONE,0.98,SIM registration verification
+Neeraj,PIXEL_009,USES_DEVICE,0.96,Device forensic extraction
+Neeraj,ACC5501,OWNS_ACCOUNT,0.99,Bank KYC records
+Neeraj,neeraj.ops@gmail.com,USES_EMAIL,0.95,Recovered mail session
+Samar,9334455667,USES_PHONE,0.94,SIM ownership confirmation
+Samar,samar.coord@protonmail.com,USES_EMAIL,0.93,Recovered from cloud backup
+Ishaan,9445566778,USES_PHONE,0.91,Telecom metadata correlation
+Ishaan,BAND_X12,USES_DEVICE,0.90,Smart wearable association
+Kabir,9776655443,USES_PHONE,0.89,Subscriber registration data
+Kabir,ACC9901,OWNS_ACCOUNT,0.92,Bank ownership records
+Salt Lake,22.5867,LOCATED_AT,0.95,GIS mapping authority
+Sealdah Station,22.5678,LOCATED_AT,0.93,Geo-intelligence mapping
