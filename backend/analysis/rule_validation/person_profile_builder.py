@@ -97,12 +97,12 @@ def build_person_profile(
     else:
         avg_confidence = 1.0
         
-    # Get normalized risk score & risk level
-    from risk_scorer import calculate_person_risk
-    risk_score, risk_level = calculate_person_risk(person_id, evidence)
-    
     # Get graph metrics
     metrics = graph_metrics.get(person_id, {"degree": 0.0, "betweenness": 0.0, "pagerank": 0.0})
+    
+    # Get normalized risk score & risk level
+    from risk_scorer import calculate_person_risk
+    risk_score, risk_level = calculate_person_risk(person_id, evidence, metrics)
     
     # Build timeline of events
     timeline = build_person_timeline(person_id, relations, name_map)

@@ -107,7 +107,7 @@ def get_graph_render_payload() -> GraphRenderPayload:
 
     # Sync risk scores with premium Person Risk Profiles from Risk Intelligence Engine
     import json
-    profiles_path = os.path.join(os.path.dirname(__file__), "analysis", "rule_validation", "output", "person_risk_profiles.json")
+    profiles_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "analysis", "rule_validation", "output", "person_risk_profiles.json")
     risk_lookup = {}
     if os.path.exists(profiles_path):
         try:
