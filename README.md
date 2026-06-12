@@ -153,3 +153,10 @@ npm install
 npm run dev
 ```
 Open `http://localhost:5173` to access the TATVA portal.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
